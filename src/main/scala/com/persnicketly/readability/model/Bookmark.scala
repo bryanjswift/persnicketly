@@ -5,14 +5,13 @@ import org.joda.time.DateTime
 case class Bookmark(
   user_id: Int,
   read_percent: Double,
-  date_updated: DateTime,
+  date_updated: String,
   favorite: Boolean,
   id: Int,
-  date_archived: Option[DateTime],
-  date_opened: Option[DateTime],
-  date_added: DateTime,
-  article_href: String,
-  date_favorited: Option[DateTime],
+  date_archived: Option[String],
+  date_opened: Option[String],
+  date_added: String,
+  date_favorited: Option[String],
   archive: Boolean,
   article: Article)
 
