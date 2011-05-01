@@ -1,0 +1,25 @@
+# Welcome to Persnicketly #
+
+The goal of this webservice is to help users of [Readability][1] find high quality
+content to read. Persnicketly's approach to this problem at a high level is
+simple. We look at the bookmark feeds of any Readability user that allows us to
+and extract their starred or favorited articles. By aggregating this information
+we can help users be persnickety[2] about what they spend their most precious
+resource (focus/attention) on.
+
+## There's more to it, right? ##
+
+In addition to bubbling good content to the top of the persnicketly reading list
+we would also like to make it easier to browse good content you're interested in
+by putting the good stuff in big buckets; buckets with labels like:
+
+* Education
+* Fiction
+* Health
+* Politics
+* Technology
+
+
+
+[1]: http://readability.com
+[2]: http://dictionary.reference.com/browse/persnickety 
