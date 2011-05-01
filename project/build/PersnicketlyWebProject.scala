@@ -44,8 +44,8 @@ class PersnicketlyWebProject(info: ProjectInfo) extends DefaultProject(info)
   ))
 
   lazy val server = runTask(
-    getMainClass(true), runClasspath, List("server", "example.conf")
-  ) dependsOn(compile) describedAs("Runs Example Service with example.conf")
+    getMainClass(true), runClasspath, List("server", "config.json")
+  ) dependsOn(compile) describedAs("Runs Example Service with config.json")
 
   // override looking for jars in ./lib
   override def dependencyPath = sourceDirectoryName / mainDirectoryName / "lib"
