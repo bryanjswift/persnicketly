@@ -13,5 +13,6 @@ case class Bookmark(
   date_added: DateTime,
   article_href: String,
   date_favorited: Option[DateTime],
-  archive: Boolean)
+  archive: Boolean,
+  article: Article)
 
