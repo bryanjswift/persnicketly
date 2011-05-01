@@ -23,6 +23,8 @@ class PersnicketlyWebProject(info: ProjectInfo) extends DefaultProject(info)
   // Velocity
   val velocity = "org.apache.velocity" % "velocity" % "1.6.4"
   val simpleVelocity = "bryanjswift" %% "simple-velocity" % "0.3.4"
+  // oauth
+  val oauth = "net.databinder" %% "dispatch-oauth" % "0.8.0"
 
   // Test Dependencies
   val scalatest = "org.scalatest" % "scalatest" % "1.2" % "test->default"
