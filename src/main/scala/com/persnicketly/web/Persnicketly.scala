@@ -7,7 +7,7 @@ import com.persnicketly.web.health.AliveHealthCheck
 object Persnicketly extends Service with Jersey {
   healthCheck[AliveHealthCheck]
 
-  def name = "web-service"
+  def name = "persnicketly-web"
   
   override def banner = Some("""
 This is the Persnicketly web service. And it's starting.
