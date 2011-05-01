@@ -2,8 +2,11 @@ package com.persnicketly.web
 
 import com.yammer.dropwizard.Service
 import com.yammer.dropwizard.service.Jersey
+import com.persnicketly.web.health.AliveHealthCheck
 
 object Persnicketly extends Service with Jersey {
+  healthCheck[AliveHealthCheck]
+
   def name = "web-service"
   
   override def banner = Some("""
