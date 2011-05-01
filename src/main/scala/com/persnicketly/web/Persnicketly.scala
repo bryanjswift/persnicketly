@@ -1,4 +1,4 @@
-package com.pernicketly.web
+package com.persnicketly.web
 
 import com.yammer.dropwizard.Service
 import com.yammer.dropwizard.service.Jersey
