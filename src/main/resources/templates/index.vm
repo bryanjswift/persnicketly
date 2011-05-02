@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Be Persnickety</title>
+    <link href="/css/persnicketly.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <h1>Persnicketly</h1>
+    <a href="/readbility/login">Sign in with Readability</a>
+    <script src="/js/persnicketly.js"></script>
+  </body>
+</html>
