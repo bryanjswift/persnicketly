@@ -19,14 +19,12 @@ class PersnicketlyWebProject(info: ProjectInfo) extends DefaultWebProject(info)
   val yammerRepo = "Yammer's Internal Repo" at "http://repo.yammer.com/maven/"
 
   // The many faces of Jetty
-  val servletApi = "javax.servlet" % "servlet-api" % "2.5"
   val jettyVersion = "7.4.0.v20110414"
-  val jettyGroup = "org.eclipse.jetty"
-  val jettyWebapp = jettyGroup % "jetty-webapp" % jettyVersion
-  val jettyServer = jettyGroup % "jetty-server" % jettyVersion
-  val jettyServlet = jettyGroup % "jetty-servlet" % jettyVersion
-  val jettyServlets = jettyGroup % "jetty-servlets" % jettyVersion
-  
+  val jettyWebapp = "org.eclipse.jetty" % "jetty-webapp" % jettyVersion
+  val jettyServer = "org.eclipse.jetty" % "jetty-server" % jettyVersion
+  val jettyServlet = "org.eclipse.jetty" % "jetty-servlet" % jettyVersion
+  val jettyServlets = "org.eclipse.jetty" % "jetty-servlets" % jettyVersion
+  val servletApi = "javax.servlet" % "servlet-api" % "2.5"
   // guice
   val guice = "com.google.inject" % "guice" % "3.0"
   val guiceServlet = "com.google.inject.extensions" % "guice-servlet" % "3.0"
