@@ -7,9 +7,9 @@ import javax.ws.rs.core.MediaType
 
 @Singleton
 class RootServlet extends Servlet {
-  override def doGet(http: HttpHelper) {
+  override def doGet(helper: HttpHelper) {
     val view = new VelocityView("/templates/index.vm")
-    http.response.setContentType(MediaType.TEXT_HTML)
-    view.render(Map[String,Any](), http.response)
+    helper.response.setContentType(MediaType.TEXT_HTML)
+    view.render(Map[String,Any](), helper.response)
   }
 }
