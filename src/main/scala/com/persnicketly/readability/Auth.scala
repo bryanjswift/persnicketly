@@ -1,6 +1,5 @@
 package com.persnicketly.readability
 
-import dispatch.Handler
 import dispatch.oauth.{Consumer, Token}
 import dispatch.oauth.OAuth.Request2RequestSigner
 import dispatch.Request._
