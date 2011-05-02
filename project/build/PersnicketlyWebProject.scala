@@ -2,24 +2,48 @@ import sbt._
 import assembly._
 import maven._
 
-class PersnicketlyWebProject(info: ProjectInfo) extends DefaultProject(info)
+class PersnicketlyWebProject(info: ProjectInfo) extends DefaultWebProject(info)
                                                         with MavenDependencies
                                                         with IdeaProject
                                                         with AssemblyBuilder {
 
-  // Always check for new versions of snapshot dependencies.
-  override def snapshotUpdatePolicy = SnapshotUpdatePolicy.Always
-
-  // Repositories
+  // for Jersey
+  val JavaNet2Repository = "Java.net Repository for Maven" at "http://download.java.net/maven/2/"
+  // for metrics and fig and jersey-guice-nogrizzly and jersey-scala
   val codasRepo = "Coda's Repo" at "http://repo.codahale.com"
+  // for guice
   val googleMaven = "Google Maven" at "http://google-maven-repository.googlecode.com/svn/repository/"
   // for simple-velocity
   val bjsRepo = "Bryan J Swift's Repository" at "http://repos.bryanjswift.com/maven2/"
-  val sunRepo = "Sun Repo" at "http://download.java.net/maven/2/"
+  // for ??
   val yammerRepo = "Yammer's Internal Repo" at "http://repo.yammer.com/maven/"
 
-  // Service Dependencies
-  val dropWizard = "com.yammer" %% "dropwizard" % "0.0.3-SNAPSHOT" withSources()
+  // The many faces of Jetty
+  val servletApi = "javax.servlet" % "servlet-api" % "2.5"
+  val jettyVersion = "7.4.0.v20110414"
+  val jettyGroup = "org.eclipse.jetty"
+  val jettyWebapp = jettyGroup % "jetty-webapp" % jettyVersion
+  val jettyServer = jettyGroup % "jetty-server" % jettyVersion
+  val jettyServlet = jettyGroup % "jetty-servlet" % jettyVersion
+  val jettyServlets = jettyGroup % "jetty-servlets" % jettyVersion
+  
+  // guice
+  val guice = "com.google.inject" % "guice" % "3.0"
+  val guiceServlet = "com.google.inject.extensions" % "guice-servlet" % "3.0"
+  // Jersey
+  val jerseyScala = "com.codahale" %% "jersey-scala" % "0.1.3"
+  // TODO: 05/01/11 <bryanjswift> -- Change back to regular packaging once
+  // http://java.net/jira/browse/JERSEY-697 is resolved.
+  val jerseyGuice = "com.sun.jersey.contribs" % "jersey-guice-nogrizzly" % "1.6"
+  // configuration with JSON files
+  val fig = "com.codahale" %% "fig" % "1.1.1"
+  // JSON interaction
+  val jerkson = "com.codahale" %% "jerkson" % "0.1.7"
+  // health checking
+  val metrics = "com.yammer" %% "metrics" % "2.0.0-BETA11"
+  // SLF4J for a nicer logging interface
+  val slf4j = "org.slf4j" % "slf4j-api" % "1.6.1"
+  val slf4jJDK = "org.slf4j" % "slf4j-log4j12" % "1.6.1"
   // Velocity
   val velocity = "org.apache.velocity" % "velocity" % "1.6.4"
   val simpleVelocity = "bryanjswift" %% "simple-velocity" % "0.3.4"
@@ -29,28 +53,8 @@ class PersnicketlyWebProject(info: ProjectInfo) extends DefaultProject(info)
   // Joda Time for nice immutable dates
   val jodaTime = "joda-time" % "joda-time" % "1.6.2"
 
-  // Test Dependencies
-  val scalatest = "org.scalatest" % "scalatest" % "1.2" % "test->default"
-
-  override def fork = forkRun(List(
-    "-server", // make sure we're using the 64-bit server VM
-    "-d64",
-    "-XX:+UseParNewGC", // use parallel GC for the new generation
-    "-XX:+UseConcMarkSweepGC", // use concurrent mark-and-sweep for the old generation
-    "-XX:+CMSParallelRemarkEnabled", // use multiple threads for the remark phase
-    "-XX:+AggressiveOpts", // use the latest and greatest in JVM tech
-    "-XX:+UseFastAccessorMethods", // be sure to inline simple accessor methods
-    "-XX:+UseBiasedLocking", // speed up uncontended locks
-    "-Xss128k", // reduce the thread stack size, freeing up space for the heap
-    "-Xmx500M", // same with the max heap size
-    //      "-XX:+PrintGCDetails",                 // log GC details to stdout
-    //      "-XX:+PrintGCTimeStamps",
-    "-XX:+HeapDumpOnOutOfMemoryError" // dump the heap if we run out of memory
-  ))
-
-  lazy val server = runTask(
-    getMainClass(true), runClasspath, List("server", "config.json")
-  ) dependsOn(compile) describedAs("Runs Example Service with config.json")
+  // for specs via ScalaTest
+  val scalatest = "org.scalatest" % "scalatest" % "1.2" % "test"
 
   // override looking for jars in ./lib
   override def dependencyPath = sourceDirectoryName / mainDirectoryName / "lib"
@@ -58,4 +62,8 @@ class PersnicketlyWebProject(info: ProjectInfo) extends DefaultProject(info)
   override def managedDependencyPath = "project" / "lib_managed"
   // java compile options
   override def javaCompileOptions = super.javaCompileOptions ++ List(JavaCompileOption("-Xlint:unchecked"), JavaCompileOption("-g"))
+  // manually define jetty classpath
+  override def jettyClasspath = managedDependencyPath / "compile" * "*.jar"
+  // don't scan directories - using JRebel
+  override def scanDirectories = Nil
 }

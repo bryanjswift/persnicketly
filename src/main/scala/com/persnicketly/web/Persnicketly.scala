@@ -1,15 +1,27 @@
 package com.persnicketly.web
 
-import com.yammer.dropwizard.Service
-import com.yammer.dropwizard.service.Jersey
-import com.persnicketly.web.health.AliveHealthCheck
+import com.codahale.fig.Configuration
+import org.eclipse.jetty.server.Server
+import org.eclipse.jetty.webapp.WebAppContext
+import org.eclipse.jetty.servlet.ServletContextHandler
 
-object Persnicketly extends Service with Jersey {
-  healthCheck[AliveHealthCheck]
+object Persnicketly {
+  val Config = new Configuration("config.json")
+  def main(args:Array[String]) {
+    val server = new Server(Config("http.port").as[Int]);
+    server.setHandler(new ServletContextHandler())
+    // create the context for the webapp
+    val webapp = Config("webapp.path").or("src/main/webapp")
+    val context = new WebAppContext()
+    context.setDescriptor(webapp + "/WEB-INF/web.xml")
+    context.setResourceBase(webapp)
+    context.setContextPath(Config("webapp.context").or("/"))
+    context.setParentLoaderPriority(true)
 
-  def name = "persnicketly-web"
-  
-  override def banner = Some("""
-This is the Persnicketly web service. And it's starting.
-""")
+    // set the webapp context as the handler
+    server.setHandler(context)
+    // start the server
+    server.start()
+    server.join()
+  }
 }
