@@ -1,4 +1,4 @@
-package com.persnicketly.web.resources
+package com.persnicketly.web.resource
 
 import javax.ws.rs.core.MediaType
 import com.google.inject.{Inject, Singleton}
