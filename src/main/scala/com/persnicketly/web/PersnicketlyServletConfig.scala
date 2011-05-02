@@ -7,7 +7,7 @@ import com.sun.jersey.spi.container.servlet.ServletContainer
 import com.sun.jersey.api.core.PackagesResourceConfig
 import scala.collection.JavaConversions.asJavaMap
 import com.persnicketly.web.servlet.readability.LoginServlet
-import servlet.RootServlet
+import com.persnicketly.web.servlet.RootServlet
 
 class PersnicketlyServletConfig extends GuiceServletContextListener {
   private val log = LoggerFactory.getLogger(classOf[PersnicketlyServletConfig])
