@@ -24,7 +24,6 @@ class CallbackServlet extends Servlet {
     val result = http(marks as_str)()
     val view = new VelocityView("/templates/readability/callback.vm")
     helper.response.setContentType(MediaType.TEXT_HTML)
-    //view.render(Map[String,Any]("access" -> accessToken.toString), helper.response)
     view.render(Map[String,Any]("data" -> result), helper.response)
   }
 }
