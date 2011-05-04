@@ -7,7 +7,8 @@
   </head>
   <body>
     <h1>Persnicketly</h1>
-    <p>Thanks for registering.. ${access}</p>
+    <p>Thanks for registering.. </p>
+    <pre><code>${data}</code></pre>
     <script src="/js/persnicketly.js"></script>
   </body>
 </html>
