@@ -16,7 +16,7 @@ class LoginServlet extends Servlet {
     val http = new Http
     val token = http.apply(handler)()
     LoginServlet.tokens += (token.value -> token)
-    log.info("token = {}", token)
+    log.info("auth_token = {}", token)
     val authorizeUrl = Auth.authorize_url(token).to_uri.toString
     helper.response.sendRedirect(authorizeUrl)
   }
