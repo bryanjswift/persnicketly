@@ -48,6 +48,7 @@ class PersnicketlyWebProject(info: ProjectInfo) extends DefaultWebProject(info)
   // oauth
   val oauth = "net.databinder" %% "dispatch-oauth" % "0.8.0"
   val nio = "net.databinder" %% "dispatch-nio" % "0.8.0"
+  val jsonHttp = "net.databinder" %% "dispatch-http-json" % "0.8.0"
   // Joda Time for nice immutable dates
   val jodaTime = "joda-time" % "joda-time" % "1.6.2"
 
