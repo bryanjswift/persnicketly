@@ -47,5 +47,7 @@ class BookmarkExtractorSpec extends WordSpec with ShouldMatchers {
       bookmark.userId should be (userId)
       bookmark.bookmarkId should be (bookmarkId)
     }
+    // what if JSON is empty (or not there)
+    // what if specific needed values are empty (or not there)
   }
 }
