@@ -3,9 +3,13 @@ package com.persnicketly.web.servlet.readability
 import dispatch.url
 import dispatch.nio.Http
 import dispatch.oauth.OAuth.Request2RequestSigner
+import dispatch.json.Js.obj
+import dispatch.json.JsHttp.requestToJsHandlers
 import com.google.inject.Singleton
 import com.persnicketly.readability.Auth
 import com.persnicketly.web.{Persnicketly, Servlet}
+import com.persnicketly.readability.model.UserDataExtractor
+import com.persnicketly.persistence.UserDao
 import org.slf4j.LoggerFactory
 import velocity.VelocityView
 import javax.ws.rs.core.MediaType
@@ -15,15 +19,20 @@ class CallbackServlet extends Servlet {
   private val log = LoggerFactory.getLogger(classOf[CallbackServlet])
   override def doGet(helper: HttpHelper) {
     val verifier = helper("oauth_verifier").get
-    val token = LoginServlet.tokens.get(helper("oauth_token").get).get
+    val user = UserDao.get(helper("oauth_token").get)
+    val token = user.get.requestToken
     log.info("auth_token - {} :: verifier - {}", token, verifier)
     val http = new Http
     val accessToken = http(Auth.access_token(Persnicketly.oauthConsumer, token, verifier))();
+    val consumer = Persnicketly.oauthConsumer
     log.info("access_token - {}", accessToken)
-    val marks = url("https://www.readability.com/api/rest/v1/bookmarks") <@ (Persnicketly.oauthConsumer, accessToken)
-    val result = http(marks as_str)()
+    val userUrl = url("https://www.readability.com/api/rest/v1/users/_current") <@ (consumer, accessToken)
+    val o = http(userUrl ># (obj))()
+    val userInfo = UserDataExtractor.unapply(o)
+    val updatedUser = user.get.copy(accessToken = Some(accessToken), verifier = Some(verifier), personalInfo = userInfo)
+    val dbUser = UserDao.save(updatedUser)
     val view = new VelocityView("/templates/readability/callback.vm")
     helper.response.setContentType(MediaType.TEXT_HTML)
-    view.render(Map[String,Any]("data" -> result), helper.response)
+    view.render(Map[String,Any]("data" -> updatedUser.toString), helper.response)
   }
 }
