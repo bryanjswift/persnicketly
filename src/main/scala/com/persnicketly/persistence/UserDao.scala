@@ -68,5 +68,7 @@ object UserDao {
   }
   def dao = { new UserDao }
   def save(user: User) = { dao.save(user) }
+  def get(id: ObjectId) = dao.get(id)
+  def get(requestToken: String) = dao.get(requestToken)
 }
 
