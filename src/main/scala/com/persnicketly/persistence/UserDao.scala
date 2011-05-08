@@ -18,13 +18,13 @@ class UserDao {
    * @param user data to save
    * @return User as it now exists in database
    */
-  def save(user: User): Option[User] = {
+  def save(user: User): User = {
     val query = user.id match {
       case Some(id) => MongoDBObject("_id" -> id)
       case None => MongoDBObject("request_token_value" -> user.requestToken.value)
     }
     users.update(query, user, upsert = true, multi = false)
-    get(user.requestToken.value)
+    get(user.requestToken.value).get
   }
 
   /**
