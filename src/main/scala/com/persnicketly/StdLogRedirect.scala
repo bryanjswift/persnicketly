@@ -5,8 +5,10 @@ import org.slf4j.LoggerFactory
 
 object StdLogRedirect {
   def redirectLogs = {
+    /*
     System.setOut(proxy(System.out, "stdout"))
     System.setErr(proxy(System.err, "stderr"))
+    */
   }
   private def proxy(real: PrintStream, name: String): PrintStream = {
     new PrintStream(real) {
