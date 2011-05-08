@@ -1,13 +1,38 @@
 <!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>Be Persnickety</title>
+    <meta name="description" content="Collecting your favorite articles on Readability." />
+    <meta name="author" content="Rachel Diesel & Bryan J Swift" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0" />
+    <link href="/humans.txt" rel="author" />
     <link href="/css/persnicketly.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="http://use.typekit.com/rxz7gnq.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
   </head>
   <body>
-    <h1>Persnicketly</h1>
-    <a href="/readbility/login">Sign in with Readability</a>
+    <header>
+      <h1><img src="/img/text/title.png" alt="Persnicketly" width="160" /></h1>
+    </header>
+    <section>
+      <h2>The best of Readability's bookmarks at your desk or on-the-go.</h2>
+      <p class="description">We're collecting and curating the most favorited Readability bookmarks and serving them to you when you want them, where you want them.</p>
+      <img src="/img/chair_stars.png" alt="" width="264" />
+      <h3>We're going to launch soon,</h3>
+      <p class="please">but until then <strong><a href="/readability/login">sign in to Readability</a></strong> and help us get started collecting favorites.</p>
+      <a id="signIn" class="cta" href="/readability/login">Sign in to Readability</a>
+      <a id="learnMore" class="cta" href="/learn-more">Learn More</a>
+    </section>
+    <footer>
+      <p>Persnicketly &copy; 2011</p>
+      <a href="/about">about</a>
+    </footer>
     <script src="/js/persnicketly.js"></script>
   </body>
 </html>
