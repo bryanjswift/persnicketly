@@ -24,6 +24,12 @@
     "forwarded": false
   },
 
+  "db": {
+    "host": "127.0.0.1",
+    "name": "persnicketly",
+    "port": 27017
+  },
+
   "metrics": {
     // The TCP/IP port Jetty will expose your metrics on.
     "port": 8081
