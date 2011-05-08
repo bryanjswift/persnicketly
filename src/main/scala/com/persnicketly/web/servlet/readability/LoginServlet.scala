@@ -18,7 +18,7 @@ class LoginServlet extends Servlet {
     val http = new Http
     val token = http.apply(handler)()
     // save user
-    val userId = UserDao.save(User(None, token, None, None))
+    val user = UserDao.save(User(None, token, None, None, None))
     // set cookie to ObjectId of User
     LoginServlet.tokens += (token.value -> token)
     log.info("auth_token = {}", token)
