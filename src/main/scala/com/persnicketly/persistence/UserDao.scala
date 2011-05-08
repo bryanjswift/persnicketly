@@ -71,9 +71,32 @@ object UserDao {
     val ud = UserData(o.getAs[String]("username"), o.getAs[String]("first_name"), o.getAs[String]("last_name"))
     User(o._id, TokenHelper(rtv, rts).get, TokenHelper(atv, ats), v, ud)
   }
-  def dao = { new UserDao }
+
+  /**
+   * Get a new DAO object
+   * @return a new instance of UserDao
+   */
+  private def dao = { new UserDao }
+
+  /**
+   * Proxy to a UserDao object to save data
+   * @param user to save
+   * @return saved User
+   */
   def save(user: User) = { dao.save(user) }
+
+  /**
+   * Proxy to UserDao instance to get data
+   * @param id to retrieve
+   * @return Some(User) if id exists, None otherwise
+   */
   def get(id: ObjectId) = dao.get(id)
+
+  /**
+   * Proxy to UserDao instance to get data
+   * @param requestToken to retrieve user for
+   * @return Some(User) if requestToken exists, None otherwise
+   */
   def get(requestToken: String) = dao.get(requestToken)
 }
 
