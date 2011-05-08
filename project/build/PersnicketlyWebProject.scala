@@ -15,8 +15,6 @@ class PersnicketlyWebProject(info: ProjectInfo) extends DefaultWebProject(info)
   val googleMaven = "Google Maven" at "http://google-maven-repository.googlecode.com/svn/repository/"
   // for simple-velocity
   val bjsRepo = "Bryan J Swift's Repository" at "http://repos.bryanjswift.com/maven2/"
-  // for ??
-  val yammerRepo = "Yammer's Internal Repo" at "http://repo.yammer.com/maven/"
 
   // The many faces of Jetty
   val jettyVersion = "7.4.0.v20110414"
@@ -49,6 +47,8 @@ class PersnicketlyWebProject(info: ProjectInfo) extends DefaultWebProject(info)
   val jsonHttp = "net.databinder" %% "dispatch-http-json" % "0.8.0"
   // Joda Time for nice immutable dates
   val jodaTime = "joda-time" % "joda-time" % "1.6.2"
+  // MongoDB
+  val casbah = "com.mongodb.casbah" %% "casbah" % "2.1.2"
 
   // for specs via ScalaTest
   val scalatest = "org.scalatest" % "scalatest" % "1.2" % "test"
