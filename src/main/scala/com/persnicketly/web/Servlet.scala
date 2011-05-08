@@ -1,7 +1,7 @@
 package com.persnicketly.web
 
-import javax.servlet.http.{HttpServlet, HttpServletRequest => Request, HttpServletResponse => Response}
 import scala.util.matching.Regex
+import javax.servlet.http.{Cookie, HttpServlet, HttpServletRequest => Request, HttpServletResponse => Response}
 
 trait Servlet extends HttpServlet {
   override def doGet(request:Request, response:Response) = doGet(new HttpHelper(request, response))
@@ -22,6 +22,15 @@ trait Servlet extends HttpServlet {
     def apply(param:String, default:String = "") = {
       val value = request.getParameter(param)
       if (value == null || value == "" || value == default) None else Some(value)
+    }
+    def cookie(key: String, value: String) = {
+      val c = new Cookie(key, value)
+      c.setDomain(Persnicketly.Config("http.cookie").or(".persnicketly.com"))
+      c.setMaxAge(60 * 60 * 24 * 365)
+      response.addCookie(c)
+    }
+    def cookie(key: String) = {
+      request.getCookies.find(c => c.getName == key).map(c => c.getValue)
     }
   }
 }
