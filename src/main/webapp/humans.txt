@@ -1,0 +1,26 @@
+/* the humans responsible & colophon */
+/* humanstxt.org */
+
+
+/* TEAM */
+  Developer: Bryan J Swift
+  Site: http://portfolio.bryanjswift.com
+  Twitter: http://twitter.com/bryanjswift
+  Location: New York, NY
+
+  Designer: Rachel Diesel
+  Site: http://dieselation.com
+  Location: New York, NY
+
+/* THANKS */
+
+  Readability: http://www.readability.com
+  Favrd: http://favrd.textism.com
+
+/* SITE */
+  Standards: HTML5, CSS3
+  Components: MongoDB, Databinder Dispatch, Jetty, Google Guice, Jersey, Fig, Velocity, Metrics
+  Software: HTML5 Boilerplate, MacVim, Photoshop CS5, IntelliJ IDEA
+  Hardware: Coded on an 11" MacBook Air
+  
+
