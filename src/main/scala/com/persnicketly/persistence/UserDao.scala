@@ -51,10 +51,15 @@ object UserDao {
     builder += "request_token_value" -> user.requestToken.value
     builder += "request_token_secret" -> user.requestToken.secret
     user.accessToken.foreach(t => {
-      builder += "access_token_value" -> user.accessToken.get.value
-      builder += "access_token_secret" -> user.accessToken.get.secret
+      builder += "access_token_value" -> t.value
+      builder += "access_token_secret" -> t.secret
     })
     user.verifier.foreach(v => builder += ("verifier" -> v))
+    user.personalInfo.foreach(info => {
+      builder += "username" -> info.username
+      builder += "first_name" -> info.firstName
+      builder += "last_name" -> info.lastName
+    })
     builder.result
   }
   implicit def dbobject2user(o: DBObject): User = {
