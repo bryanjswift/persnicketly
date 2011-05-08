@@ -1,6 +1,7 @@
 {
   "http": {
     "domain": "localhost:8080",
+    "cookie": "localhost",
     // The type of connector to use. Other valid values are "select_channel" or
     // "socket".
     "connector": "blocking_channel",
