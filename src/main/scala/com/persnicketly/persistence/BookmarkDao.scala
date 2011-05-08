@@ -4,6 +4,7 @@ import com.mongodb.casbah.Imports._
 import com.mongodb.casbah.commons.conversions.scala._
 import com.persnicketly.web.Persnicketly
 import com.persnicketly.readability.model.Bookmark
+import org.bson.types.ObjectId
 
 class BookmarkDao {
   import BookmarkDao._
@@ -11,13 +12,14 @@ class BookmarkDao {
   val config = Persnicketly.Config
   val connection = MongoConnection(config("db.host").or("localhost"), config("db.port").or(27017))
   val bookmarks = connection(config("db.name").or("persnicketly_test"))("bookmarks")
-  def save(bookmark: Bookmark) = {
+  def save(bookmark: Bookmark): Option[ObjectId] = {
     bookmarks.save(bookmark)
+    bookmarks.findOne(MongoDBObject("bookmark_id" -> bookmark.bookmarkId)).get._id
   }
 }
 
 object BookmarkDao {
-  implicit def bookmark2dbobject(bookmark: Bookmark):DBObject = {
+  implicit def bookmark2dbobject(bookmark: Bookmark): DBObject = {
     val builder = MongoDBObject.newBuilder
     builder += "bookmark_id" -> bookmark.bookmarkId
     builder += "user_id" -> bookmark.userId
@@ -32,4 +34,7 @@ object BookmarkDao {
     builder += "article_excert" -> bookmark.article.excerpt
     builder.result
   }
+  def dao = { new BookmarkDao }
+  def save(bookmark: Bookmark) = { dao.save(bookmark) }
 }
+
