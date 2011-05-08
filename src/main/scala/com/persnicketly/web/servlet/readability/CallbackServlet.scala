@@ -31,6 +31,8 @@ class CallbackServlet extends Servlet {
     val userInfo = UserDataExtractor.unapply(o)
     val updatedUser = user.get.copy(accessToken = Some(accessToken), verifier = Some(verifier), personalInfo = userInfo)
     val dbUser = UserDao.save(updatedUser)
+    log.info("setting _user cookie to {}", dbUser.id.get.toString)
+    helper.cookie("_user", dbUser.id.get.toString)
     val view = new VelocityView("/templates/readability/callback.vm")
     helper.response.setContentType(MediaType.TEXT_HTML)
     view.render(Map[String,Any]("data" -> updatedUser.toString), helper.response)
