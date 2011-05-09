@@ -8,4 +8,5 @@ project/test
 src_managed
 tags
 target
-
+# config files
+src/main/resources/velocity/velocity.properties
