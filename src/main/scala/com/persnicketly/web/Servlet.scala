@@ -30,7 +30,12 @@ trait Servlet extends HttpServlet {
       response.addCookie(c)
     }
     def cookie(key: String): Option[String] = {
-      request.getCookies.find(c => c.getName == key).map(c => c.getValue)
+      val cookies = request.getCookies
+      if (cookies == null) {
+        None
+      } else {
+        cookies.find(c => c.getName == key).map(c => c.getValue)
+      }
     }
   }
 }
