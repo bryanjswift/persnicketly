@@ -5,7 +5,7 @@ html, body, div, span, a, img, p, ul, ol, li, h1, h2, h3 {
 ul, ol { list-style: none; }
 body {
   max-width: 320px; font-size: 100%; font-family: "museo-slab-1", "museo-slab-2", "Trebuche MS", Arial, sans-serif;
-  font-weight: 700; line-height: 1; background: url(/img/bg_body.jpg) left top;
+  font-weight: 700; line-height: 1; color: #646157; background: url(/img/bg_body.jpg) left top;
 }
 a { text-decoration: none; }
 header, nav, footer, section { display: block; }
@@ -13,26 +13,31 @@ header {
   position: relative; z-index: 2; min-height: 59px; background: url(/img/bg_header.png) no-repeat left top;
   -o-background-size: 100%; -webkit-background-size: 100%; -moz-background-size: 100%;
 }
+header img { position: relative; top: 12px; left: 8px; }
 section { margin: -59px 12px 21px; padding: 59px 11px 9px; font-size: 0.9375em; background: #fafaf9; }
-section h2, section h3 { font-size: 1em; }
-h2 { color: #6a3387; font-weight: 500; font-style: italic; text-shadow: rgba(0,0,0,0.2) 1px 1px 0; }
-h3 { color: #119337; text-shadow: rgba(0,0,0,0.2) 1px 1px 0; }
-section p { font-size: 0.866666667em; font-weight: 500; }
-.description { font-family: "Trebuche MS", "Helvetica", Arial, sans-serif; }
-.please { text-shadow: rgba(0,0,0,0.2) 1px 1px 0; font-style: italic; }
+section h2, section h3 { font-size: 1em; line-height: 1.1; text-shadow: rgba(0,0,0,0.2) 1px 1px 0; }
+h2 { margin: 8px 0 0; color: #6a3387; font-weight: 500; font-style: italic; }
+h3 { margin: 8px 0 0; color: #119337; }
+section p { font-size: 0.866666667em; font-weight: 500; line-height: 1.230769231; }
+.description { margin: 8px 0 2px; font-family: "Trebuche MS", "Helvetica", Arial, sans-serif; }
+.please { margin: 4px 0 0; font-style: italic; color: #7d7a70; text-shadow: rgba(0,0,0,0.2) 1px 1px 0; }
+.please strong { font-weight: 500; }
+.please a { color: #646157; font-weight: 500; }
 .cta {
-  display: block; padding: 11px 40px 8px 30px; color: #fff; text-transform: uppercase; line-height: 1;
+  display: block; margin: 6px 0 0; padding: 11px 40px 8px 30px; color: #fff;
+  text-transform: uppercase; line-height: 1;
 }
-#signIn { background: #00adcf; }
+#signIn { margin: 23px 0 0; background: #00adcf; }
 #learnMore { background: #741a8a; }
 footer {
-  position: relative; height: 42px; font-size: 0.8em; background: url(/img/bg_footer.png) repeat-x left top;
+  position: relative; padding: 16px 0 0 11px; height: 28px; font-size: 0.70em; font-weight: normal;
+  background: url(/img/bg_footer.png) repeat-x left top;
   -o-background-size: 100%; -webkit-background-size: 100%; -moz-background-size: 100%;
 }
 footer p {
   color: rgba(255,255,255,0.52); font-family: "Trebuche MS", "Helvetica", Arial, sans-serif; text-transform: uppercase;
 }
 footer a {
-  display: block; position: absolute; top: 2px; right: 0; padding: 0 10px 0 8px; height: 38px;
-  color: #fff; text-shadow: rgba(0,0,0,0.76) 2px 2px 0; background: url(/img/bg_about.png) no-repeat left top;
+  display: block; position: absolute; top: 2px; right: 0; padding: 13px 10px 0 8px; height: 25px;
+  color: #fff; color: rgba(255,255,255,0.95); background: url(/img/bg_about.png) no-repeat left top;
 }
