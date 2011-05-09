@@ -1,5 +1,5 @@
 /* Reset */
-html, body, div, span, a, img, p, ul, ol, li, h1, h2, h3 {
+html, body, div, span, a, img, p, ul, ol, li, h1, h2, h3, h4 {
   margin: 0; border: 0; padding: 0; vertical-align: baseline;
 }
 ul, ol { list-style: none; }
@@ -15,7 +15,7 @@ header {
   -o-background-size: 100%; -webkit-background-size: 100%; -moz-background-size: 100%;
 }
 header img { position: relative; top: 12px; left: 8px; }
-section { margin: -59px 12px 21px; padding: 59px 11px 9px; font-size: 0.9375em; background: #fafaf9; }
+section { margin: -59px 12px 21px; padding: 59px 10px 9px; font-size: 0.9375em; background: #fafaf9; }
 section h2, section h3 { font-size: 1em; line-height: 1.1; text-shadow: rgba(0,0,0,0.2) 1px 1px 0; }
 h2 { margin: 8px 0 0; color: #6a3387; font-weight: 500; font-style: italic; }
 h3 { margin: 8px 0 0; color: #119337; }
@@ -26,14 +26,15 @@ section p { font-size: 0.866666667em; font-weight: 500; line-height: 1.230769231
 .please a { color: #646157; font-weight: 500; }
 .cta {
   display: block; position: relative; margin: 6px 0 0; padding: 13px 40px 10px 30px; color: #fff;
-  text-transform: uppercase; line-height: 1; background: url(/img/arrow_curl.png) no-repeat 241px 9px;
-  text-shadow: rgba(0,0,0,0.2) 1px 1px 0;
+  font-size: 0.95em; text-transform: uppercase; line-height: 1; text-shadow: rgba(0,0,0,0.2) 1px 1px 0;
+  background: url(/img/arrow_curl.png) no-repeat 243px 7px;
   -o-background-size: 39px 34px; -webkit-background-size: 39px 34px; -moz-background-size: 39px 34px;
 }
 .cta img { position: absolute; left: 4px; }
 .cta span { position: relative; top: -2px; z-index: 3; }
 #signIn { margin: 23px 0 0; background-color: #00adcf; }
-#signIn img { top: 3px; }
+#signIn img, #signUp img { top: 3px; }
+#signUp { background-color: #d0009f; }
 #learnMore { background-color: #741a8a; }
 #learnMore img { top: 2px; }
 footer {
@@ -48,3 +49,15 @@ footer a {
   display: block; position: absolute; top: 2px; right: 0; padding: 13px 16px 0 18px; height: 25px;
   color: #fff; color: rgba(255,255,255,0.95); background: url(/img/bg_about.png) no-repeat left top;
 }
+/* Learn More */
+h4 {
+  margin: 15px 0 0; font-size: 0.866666667em; color: #7d7a70;
+  text-transform: uppercase; text-shadow: rgba(0,0,0,0.2) 1px 1px 0;
+}
+#about a, #more a { margin: 3px 0 0; }
+#more h2, #soon h2 { margin: 28px 0 0; }
+#who { margin: 20px 0; font-weight: 500; text-align: center; color: #5d5d5d; }
+#who span { padding: 0 4px; color: #fff; }
+#bryan { background: #741a8a; }
+#diesel { background: #009994; }
+footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 5px; }
