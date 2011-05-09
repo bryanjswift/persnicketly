@@ -6,7 +6,7 @@ import com.google.inject.{Guice, Injector, Singleton}
 import com.sun.jersey.spi.container.servlet.ServletContainer
 import com.sun.jersey.api.core.PackagesResourceConfig
 import scala.collection.JavaConversions.asJavaMap
-import com.persnicketly.web.servlet.RootServlet
+import com.persnicketly.web.servlet.{RootServlet, TemplateServlet}
 import com.persnicketly.web.servlet.readability.{CallbackServlet, LoginServlet}
 import com.persnicketly.StdLogRedirect
 
@@ -23,6 +23,7 @@ private class PersnicketlyServletModule extends ServletModule {
     serve("/").`with`(classOf[RootServlet])
     serve("/readability/login").`with`(classOf[LoginServlet])
     serve("/readability/callback").`with`(classOf[CallbackServlet])
+    serve("/learn-more").`with`(classOf[TemplateServlet])
     serve("/d/*").`with`(classOf[JerseyServletContainer], jerseyParams)
   }
 }
