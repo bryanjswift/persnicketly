@@ -2,14 +2,13 @@
   win.mpq = [
     ["init","b13487272824c77655227e84f830d7ee"],
     ["register", params],
-    ["track", "pageview"]
+    ["track", "pageview", { "url": doc.location.href }]
   ];
   var s = doc.createElement(tag)
     , el = doc.getElementsByTagName(tag)[0]
     , nav = win.navigator
     , params = {
-        "url": doc.location.href
-      , "userAgent": nav.userAgent
+        "userAgent": nav.userAgent
       , "language": nav.language
       , "referrer": (document.referrer || document.referer)
       };
