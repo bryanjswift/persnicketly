@@ -25,11 +25,13 @@
         <div id="about">
           <h2>About Persnicketly</h2>
           <p class="description">We're collecting and curating the most favorited Readability bookmarks and serving them to you when you want them, where you want them.</p>
+          #if (${user.isEmpty()})
           <h4>Help to get Persnicketly started</h4>
           <a id="signIn" class="cta" href="/readability/login">
             <img src="/img/blue_chair.png" alt="" height="29" />
             <span>Sign in to Readability</span>
           </a>
+          #end
         </div>
         <div id="more">
           <h2>More on Readability</h2>
