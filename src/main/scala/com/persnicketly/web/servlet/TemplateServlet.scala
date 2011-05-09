@@ -13,7 +13,7 @@ class TemplateServlet extends Servlet {
     log.info("Rendering view - /template{}.vm", helper.uri)
     val view = new VelocityView("/templates%s.vm".format(helper.uri))
     helper.response.setContentType(MediaType.TEXT_HTML)
-    view.render(Map[String,Any](), helper.response)
+    view.render(Map[String,Any]("user" -> helper.cookie("_user")), helper.response)
   }
 }
 

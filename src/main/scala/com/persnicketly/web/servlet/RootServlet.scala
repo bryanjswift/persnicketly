@@ -10,6 +10,6 @@ class RootServlet extends Servlet {
   override def doGet(helper: HttpHelper) {
     val view = new VelocityView("/templates/index.vm")
     helper.response.setContentType(MediaType.TEXT_HTML)
-    view.render(Map[String,Any](), helper.response)
+    view.render(Map[String,Any]("user" -> helper.cookie("_user")), helper.response)
   }
 }
