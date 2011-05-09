@@ -20,7 +20,7 @@ private class PersnicketlyServletModule extends ServletModule {
   override protected def configureServlets(): Unit = {
     StdLogRedirect.redirectLogs
     val jerseyParams = Map(PackagesResourceConfig.PROPERTY_PACKAGES -> "com.persnicketly.web.resource,com.codahale.jersey.providers,com.codahale.jersey.providers,com.codahale.jersey.inject")
-    serve("/").`with`(classOf[RootServlet])
+    serve("/", "/index.html").`with`(classOf[RootServlet])
     serve("/readability/login").`with`(classOf[LoginServlet])
     serve("/readability/callback").`with`(classOf[CallbackServlet])
     serve("/learn-more").`with`(classOf[TemplateServlet])
