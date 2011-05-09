@@ -61,3 +61,6 @@ h4 {
 #bryan { background: #741a8a; }
 #diesel { background: #009994; }
 footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 5px; }
+/* 404 */
+.placekitten { position: relative; margin: 8px 0 0; }
+.placekitten img { max-width: 100%; }
