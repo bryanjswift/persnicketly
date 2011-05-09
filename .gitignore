@@ -10,3 +10,4 @@ tags
 target
 # config files
 src/main/resources/velocity/velocity.properties
+config.json
