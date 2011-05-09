@@ -23,13 +23,13 @@ trait Servlet extends HttpServlet {
       val value = request.getParameter(param)
       if (value == null || value == "" || value == default) None else Some(value)
     }
-    def cookie(key: String, value: String) = {
+    def cookie(key: String, value: String): Unit = {
       val c = new Cookie(key, value)
       c.setDomain(Persnicketly.Config("http.cookie").or(".persnicketly.com"))
       c.setMaxAge(60 * 60 * 24 * 365)
       response.addCookie(c)
     }
-    def cookie(key: String) = {
+    def cookie(key: String): Option[String] = {
       request.getCookies.find(c => c.getName == key).map(c => c.getValue)
     }
   }
