@@ -5,10 +5,11 @@ html, body, div, span, a, img, p, ul, ol, li, h1, h2, h3 {
 ul, ol { list-style: none; }
 body {
   max-width: 320px; font-size: 100%; font-family: "museo-slab-1", "museo-slab-2", "Trebuche MS", Arial, sans-serif;
-  font-weight: 700; line-height: 1; color: #646157; background: url(/img/bg_body.jpg) left top;
+  font-weight: 700; line-height: 1; color: #646157; background: #fff;
 }
 a { text-decoration: none; }
 header, nav, footer, section { display: block; }
+#wrapper { background: url(/img/bg_body.jpg) left top; }
 header {
   position: relative; z-index: 2; min-height: 59px; background: url(/img/bg_header.png) no-repeat left top;
   -o-background-size: 100%; -webkit-background-size: 100%; -moz-background-size: 100%;
@@ -24,11 +25,17 @@ section p { font-size: 0.866666667em; font-weight: 500; line-height: 1.230769231
 .please strong { font-weight: 500; }
 .please a { color: #646157; font-weight: 500; }
 .cta {
-  display: block; margin: 6px 0 0; padding: 11px 40px 8px 30px; color: #fff;
-  text-transform: uppercase; line-height: 1;
+  display: block; position: relative; margin: 6px 0 0; padding: 13px 40px 10px 30px; color: #fff;
+  text-transform: uppercase; line-height: 1; background: url(/img/arrow_curl.png) no-repeat 241px 9px;
+  text-shadow: rgba(0,0,0,0.2) 1px 1px 0;
+  -o-background-size: 39px 34px; -webkit-background-size: 39px 34px; -moz-background-size: 39px 34px;
 }
-#signIn { margin: 23px 0 0; background: #00adcf; }
-#learnMore { background: #741a8a; }
+.cta img { position: absolute; left: 4px; }
+.cta span { position: relative; top: -2px; z-index: 3; }
+#signIn { margin: 23px 0 0; background-color: #00adcf; }
+#signIn img { top: 3px; }
+#learnMore { background-color: #741a8a; }
+#learnMore img { top: 2px; }
 footer {
   position: relative; padding: 16px 0 0 11px; height: 28px; font-size: 0.70em; font-weight: normal;
   background: url(/img/bg_footer.png) repeat-x left top;
@@ -38,6 +45,6 @@ footer p {
   color: rgba(255,255,255,0.52); font-family: "Trebuche MS", "Helvetica", Arial, sans-serif; text-transform: uppercase;
 }
 footer a {
-  display: block; position: absolute; top: 2px; right: 0; padding: 13px 10px 0 8px; height: 25px;
+  display: block; position: absolute; top: 2px; right: 0; padding: 13px 16px 0 18px; height: 25px;
   color: #fff; color: rgba(255,255,255,0.95); background: url(/img/bg_about.png) no-repeat left top;
 }
