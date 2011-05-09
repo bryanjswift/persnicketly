@@ -64,3 +64,5 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
 /* 404 */
 .placekitten { position: relative; margin: 8px 0 0; }
 .placekitten img { max-width: 100%; }
+/* Thanks */
+#thanks .cta { margin: 11px 0 0; }

@@ -1,14 +1,46 @@
 <!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>Be Persnickety</title>
+    <meta name="description" content="Collecting your favorite articles on Readability." />
+    <meta name="author" content="Rachel Diesel & Bryan J Swift" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0" />
+    <link href="/humans.txt" rel="author" />
     <link href="/css/persnicketly.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="http://use.typekit.com/rxz7gnq.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
   </head>
   <body>
-    <h1>Persnicketly</h1>
-    <p>Thanks for registering.. </p>
-    <pre><code>${data}</code></pre>
+    <div id="wrapper">
+      <header>
+        <h1><img src="/img/text/title.png" alt="Persnicketly" width="160" /></h1>
+      </header>
+      <section id="thanks">
+        #set ( $name = "" )
+        #if (${personalInfo.isDefined()})
+          #set ( $name = ", ${personalInfo.get().firstName()}" )
+        #end
+        <h2>Thanks for signing up${name}!</h2>
+        <p class="description">We'll be sure to let you know when we launch, in the mean time keep on reading with Readability and don't forget to favorite the good stuff.</p>
+        <img src="/img/chair_stars.png" alt="" width="264" />
+        <h3>We'll get the show on the road soon,</h3>
+        <p class="please">when we do we'll publish a single article to your Readability reading list to let you know it's time to check us out again.</p>
+        <a id="learnMore" class="cta" href="/learn-more">
+          <img src="/img/purple_books.png" alt="" width="33" />
+          <span>Learn More</span>
+        </a>
+      </section>
+      <footer>
+        <p>Persnicketly &copy; 2011</p>
+        <a href="/learn-more">about</a>
+      </footer>
+    </div>
     <script src="/js/persnicketly.js"></script>
   </body>
 </html>

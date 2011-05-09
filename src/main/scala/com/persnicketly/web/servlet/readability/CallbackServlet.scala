@@ -35,6 +35,6 @@ class CallbackServlet extends Servlet {
     helper.cookie("_user", dbUser.id.get.toString)
     val view = new VelocityView("/templates/readability/callback.vm")
     helper.response.setContentType(MediaType.TEXT_HTML)
-    view.render(Map[String,Any]("data" -> updatedUser.toString), helper.response)
+    view.render(Map[String,Any]("personalInfo" -> dbUser.personalInfo), helper.response)
   }
 }
