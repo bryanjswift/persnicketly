@@ -13,7 +13,7 @@ var mpq = (function(doc, tag, win) {
   el.parentNode.insertBefore(s, el);
   return [
     ["init","b13487272824c77655227e84f830d7ee"],
-    ["register", params ],
+    ["register", params],
     ["track", "pageview"]
   ];
 })(document, "script", window);
