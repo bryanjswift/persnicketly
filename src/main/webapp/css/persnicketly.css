@@ -32,10 +32,10 @@ section p { font-size: 0.866666667em; font-weight: 500; line-height: 1.230769231
 }
 .cta img { position: absolute; left: 4px; }
 .cta span { position: relative; top: -2px; z-index: 3; }
-#signIn { margin: 23px 0 0; background-color: #00adcf; }
+#signIn { margin: 23px 0 0; background-color: #4eacca; }
 #signIn img, #signUp img { top: 3px; }
-#signUp { background-color: #d0009f; }
-#learnMore { background-color: #741a8a; }
+#signUp { background-color: #ba239c; }
+#learnMore { background-color: #683686; }
 #learnMore img { top: 2px; }
 footer {
   position: relative; padding: 16px 0 0 11px; height: 28px; font-size: 0.70em; font-weight: normal;
@@ -58,8 +58,8 @@ h4 {
 #more h2, #soon h2 { margin: 28px 0 0; }
 #who { margin: 20px 0; font-weight: 500; text-align: center; color: #5d5d5d; }
 #who span { padding: 0 4px; color: #fff; }
-#bryan { background: #741a8a; }
-#diesel { background: #009994; }
+#bryan { background: #683686; }
+#diesel { background: #4eacca; }
 footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 5px; }
 /* 404 */
 .placekitten { position: relative; margin: 8px 0 0; }
