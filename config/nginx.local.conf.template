@@ -1,4 +1,4 @@
-user www-data;
+user nobody;
 worker_processes  4;
 
 pid        ${persnicketly-tmp}/nginx.pid;
@@ -9,7 +9,10 @@ events {
 }
 
 http {
-    include       /etc/nginx/mime.types;
+    include       ${nginx-home}/nginx/mime.types;
+
+    # fallback in case we can't determine a type
+    default_type application/octet-stream;
 
     access_log    ${persnicketly-tmp}/access.log;
     error_log     ${persnicketly-tmp}/error.log;
