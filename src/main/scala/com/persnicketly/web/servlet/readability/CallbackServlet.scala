@@ -1,7 +1,6 @@
 package com.persnicketly.web.servlet.readability
 
 import dispatch.url
-import dispatch.nio.Http
 import dispatch.oauth.OAuth.Request2RequestSigner
 import dispatch.json.Js.obj
 import dispatch.json.JsHttp.requestToJsHandlers
@@ -22,8 +21,7 @@ class CallbackServlet extends Servlet {
     val user = UserDao.get(helper("oauth_token").get)
     val token = user.get.requestToken
     log.info("auth_token - {} :: verifier - {}", token, verifier)
-    val http = new Http
-    val accessToken = http(Auth.access_token(Persnicketly.oauthConsumer, token, verifier))();
+    val accessToken = Auth.access_token(Persnicketly.oauthConsumer, token, verifier)
     val consumer = Persnicketly.oauthConsumer
     log.info("access_token - {}", accessToken)
     var updatedUser = user.get.copy(accessToken = Some(accessToken), verifier = Some(verifier))
