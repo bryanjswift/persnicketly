@@ -1,7 +1,7 @@
 user www-data;
 worker_processes  4;
 
-pid        /var/run/nginx.pid;
+pid        ${persnicketly-tmp}/nginx.pid;
 
 events {
     worker_connections  1024;
@@ -11,8 +11,8 @@ events {
 http {
     include       /etc/nginx/mime.types;
 
-    access_log    /var/log/nginx/access.log;
-    error_log     /var/log/nginx/error.log;
+    access_log    ${persnicketly-tmp}/access.log;
+    error_log     ${persnicketly-tmp}/error.log;
 
     sendfile                on;
     tcp_nopush              on;
