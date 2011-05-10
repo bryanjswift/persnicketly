@@ -1,4 +1,4 @@
-package com.persnicketly.readability.model
+package com.persnicketly.readability.api
 
 import org.scalatest.WordSpec
 import org.scalatest.matchers.ShouldMatchers
