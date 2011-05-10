@@ -14,5 +14,7 @@
       };
   s.src = "//api.mixpanel.com/site_media/js/api/mixpanel.js";
   s.async = 1;
-  el.parentNode.insertBefore(s, el);
+  if (location.href.match(/.*persnicketly\.com.*/)) {
+    el.parentNode.insertBefore(s, el);
+  }
 })(document, "script", window);
