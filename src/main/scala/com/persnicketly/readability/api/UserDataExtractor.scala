@@ -1,7 +1,8 @@
-package com.persnicketly.readability.model
+package com.persnicketly.readability.api
 
 import dispatch.json.Js._
 import dispatch.json.{Extract, Js, JsObject, JsString, JsValue}
+import com.persnicketly.readability.model.UserData
 
 object UserDataJson extends Js {
   val username = 'username ? str
