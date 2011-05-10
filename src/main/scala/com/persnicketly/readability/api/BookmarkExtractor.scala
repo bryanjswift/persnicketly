@@ -1,8 +1,9 @@
-package com.persnicketly.readability.model
+package com.persnicketly.readability.api
 
 import dispatch.json.Js._
 import dispatch.json.{Js, JsString, Obj}
 import dispatch.json.{Extract, JsValue, JsObject}
+import com.persnicketly.readability.model.{Article, Bookmark}
 import org.joda.time.format.DateTimeFormat
 
 object BookmarkExtractor extends Extract[Bookmark] {
