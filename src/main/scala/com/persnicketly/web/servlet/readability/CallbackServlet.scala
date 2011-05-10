@@ -6,9 +6,8 @@ import dispatch.oauth.OAuth.Request2RequestSigner
 import dispatch.json.Js.obj
 import dispatch.json.JsHttp.requestToJsHandlers
 import com.google.inject.Singleton
-import com.persnicketly.readability.Auth
+import com.persnicketly.readability.{Api, Auth}
 import com.persnicketly.web.{Persnicketly, Servlet}
-import com.persnicketly.readability.model.UserDataExtractor
 import com.persnicketly.persistence.UserDao
 import org.slf4j.LoggerFactory
 import velocity.VelocityView
@@ -17,6 +16,7 @@ import javax.ws.rs.core.MediaType
 @Singleton
 class CallbackServlet extends Servlet {
   private val log = LoggerFactory.getLogger(classOf[CallbackServlet])
+
   override def doGet(helper: HttpHelper) {
     val verifier = helper("oauth_verifier").get
     val user = UserDao.get(helper("oauth_token").get)
@@ -26,10 +26,9 @@ class CallbackServlet extends Servlet {
     val accessToken = http(Auth.access_token(Persnicketly.oauthConsumer, token, verifier))();
     val consumer = Persnicketly.oauthConsumer
     log.info("access_token - {}", accessToken)
-    val userUrl = url("https://www.readability.com/api/rest/v1/users/_current") <@ (consumer, accessToken)
-    val o = http(userUrl ># (obj))()
-    val userInfo = UserDataExtractor.unapply(o)
-    val updatedUser = user.get.copy(accessToken = Some(accessToken), verifier = Some(verifier), personalInfo = userInfo)
+    var updatedUser = user.get.copy(accessToken = Some(accessToken), verifier = Some(verifier))
+    val userInfo = Api.currentUser(consumer, updatedUser)
+    updatedUser = updatedUser.copy(personalInfo = userInfo)
     val dbUser = UserDao.save(updatedUser)
     log.info("setting _user cookie to {}", dbUser.id.get.toString)
     helper.cookie("_user", dbUser.id.get.toString)
