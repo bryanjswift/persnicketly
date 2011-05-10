@@ -12,3 +12,4 @@ target
 src/main/resources/velocity/velocity.properties
 config.json
 nginx.local.conf
+mongod.local.conf

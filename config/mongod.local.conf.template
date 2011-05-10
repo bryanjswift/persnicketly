@@ -1,6 +1,6 @@
 # Store data in /Volumes/Freelance/projects/personal/readability/db instead of the default /data/db
-dbpath = /Volumes/Freelance/projects/personal/readability/db
-logpath = /Volumes/Freelance/projects/personal/readability/log/mongodb.log
+dbpath = ${persnicketly-tmp}/db
+logpath = ${persnicketly-tmp}/mongodb.log
 logappend = false
 
 # Only accept local connections
