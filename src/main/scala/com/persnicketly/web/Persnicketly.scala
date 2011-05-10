@@ -8,7 +8,7 @@ import dispatch.oauth.Consumer
 
 object Persnicketly {
   val Config = new Configuration("config.json")
-  val oauthConsumer = new Consumer("bryanjswift", "ynbCCZ5q7ggBGAkaAGFngRDAChg4pbYm")
+  val oauthConsumer = new Consumer("Persnicketly", "ynbCCZ5q7ggBGAkaAGFngRDAChg4pbYm")
   val oauthCallback = String.format("http://%s/readability/callback", Config("http.domain").or("persnicketly.com"))
   def main(args:Array[String]): Unit = {
     val server = new Server(Config("http.port").as[Int]);
