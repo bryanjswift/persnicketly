@@ -9,8 +9,9 @@ import javax.ws.rs.core.MediaType
 @Singleton
 class TemplateServlet extends Servlet {
   private val log = LoggerFactory.getLogger(classOf[TemplateServlet])
+
   override def doGet(helper: HttpHelper): Unit = {
-    log.info("Rendering view - /template{}.vm", helper.uri)
+    log.info("Rendering view - /templates{}.vm", helper.uri)
     val view = new VelocityView("/templates%s.vm".format(helper.uri))
     helper.response.setContentType(MediaType.TEXT_HTML)
     view.render(Map[String,Any]("user" -> helper.cookie("_user")), helper.response)
