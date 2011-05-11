@@ -40,6 +40,7 @@ section p { font-size: 1em; line-height: 1.375; }
 .cta {
   display: block; position: relative; margin: 6px 0 0; padding: 13px 0 10px 0; width: 75%; color: #fff;
   font-size: 0.95em; text-transform: uppercase; line-height: 1; text-shadow: rgba(0,0,0,0.2) 1px 1px 0;
+  background: url(/img/bg_arrow.png) no-repeat right center;
   background: url(/img/bg_arrow.png) no-repeat right center, url(/img/cta_curl.png) no-repeat right bottom;
   /*
   box-shadow: rgba(0,0,0,0.33) 1px 1px 0px; -webkit-box-shadow: rgba(0,0,0,0.33) 1px 1px 0px;
