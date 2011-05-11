@@ -12,11 +12,11 @@ header, nav, footer, section { display: block; }
 #wrapper { background: url(/img/background.png) left top; }
 header {
   position: relative; z-index: 2; background: url(/img/paper.png);
+  box-shadow: rgba(0,0,0,0.6) 1px 1px 4px; -webkit-box-shadow: rgba(0,0,0,0.6) 1px 1px 4px;
+  -moz-box-shadow: rgba(0,0,0,0.6) 1px 1px 4px; -ms-box-shadow: rgba(0,0,0,0.6) 1px 1px 4px;
 }
 header h1 {
   padding: 10px 2%; color: #868378; font-size: 1.6875em;
-  box-shadow: rgba(0,0,0,0.6) 1px 1px 4px; -webkit-box-shadow: rgba(0,0,0,0.6) 1px 1px 4px;
-  -moz-box-shadow: rgba(0,0,0,0.6) 1px 1px 4px; -ms-box-shadow: rgba(0,0,0,0.6) 1px 1px 4px;
   text-shadow: rgba(255,255,255,0.75) 1px 1px 5px, #000 -1px -1px 0px;
 }
 header h1 a { color: #868378; }
@@ -92,8 +92,8 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
   .hero { max-width: 92.8825623%; }
 }
 @media screen and (min-width: 645px) {
-  header { margin: 0 19.04296875% 0 0; }
-  header h1 { padding: 10px 0 10px 9.2%; }
+  header { margin: 0 19.04296875% 0 0; padding: 0 0 0 7.91015625%; }
+  header h1 { padding: 10px 0; }
   section { margin: 0 20.8984375% 21px 7.91015625%; padding: 10px; }
   footer { padding-left: 7.91015625%; }
   footer a { right: 19.8984375%; }
