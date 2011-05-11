@@ -28,7 +28,7 @@
     </script>
     <div id="wrapper">
       <header>
-        <h1><a href="/"><img src="/img/text/title.png" alt="Persnicketly" width="160" /></a></h1>
+        <h1><a href="/">Persnicketly</a></h1>
       </header>
       <section id="thanks">
         #set ( $name = "" )

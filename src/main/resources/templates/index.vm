@@ -28,12 +28,15 @@
     </script>
     <div id="wrapper">
       <header>
-        <h1><img src="/img/text/title.png" alt="Persnicketly" width="160" /></h1>
+        <h1>Persnicketly</h1>
       </header>
       <section>
-        <h2>The best of Readability's bookmarks at your desk or on-the-go.</h2>
-        <p class="description">We're collecting and curating the most favorited Readability bookmarks and serving them to you when you want them, where you want them.</p>
-        <img src="/img/chair_stars.png" alt="" width="264" />
+        <div id="what">
+          <h2>The best of Readability's bookmarks at your desk or on-the-go.</h2>
+          <p class="description">We're collecting and curating the most favorited Readability bookmarks and serving them to you when you want them, where you want them.</p>
+          <img class="hero" src="/img/chair_stars.png" alt="" />
+        </div>
+        <div id="when">
         <h3>We're going to launch soon,</h3>
         <p class="please">but until then <strong><a href="/readability/login">sign in to Readability</a></strong> and help us get started collecting favorites.</p>
         #if (${user.isEmpty()})
@@ -41,6 +44,8 @@
           <img src="/img/blue_chair.png" alt="" height="29" />
           <span>Sign in to Readability</span>
         </a>
+        #else
+        <p>Logged in</p>
         #end
         <a id="learnMore" class="cta" href="/learn-more">
           <img src="/img/purple_books.png" alt="" width="33" />
