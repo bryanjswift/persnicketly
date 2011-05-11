@@ -1,4 +1,3 @@
-user nobody;
 worker_processes  4;
 
 pid        ${persnicketly-tmp}/nginx.pid;
@@ -46,7 +45,7 @@ http {
 
     server {
       # enable one of the following if you're on Linux or FreeBSD
-      listen 80 default; # for Linux
+      listen 1500 default; # for Linux
 
       client_max_body_size 4G;
       server_name _;

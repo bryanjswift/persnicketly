@@ -1,6 +1,6 @@
 {
   "http": {
-    "domain": "localhost:8080",
+    "domain": "localhost:1500", // Port 1500 is defined in nginx.local.conf.template
     "cookie": "localhost",
     // The type of connector to use. Other valid values are "select_channel" or
     // "socket".
@@ -32,7 +32,7 @@
   },
 
   "webapp": {
-    "path": "/var/www/persnicketly-webapp/",
+    "path": "src/main/webapp/",
     "context": "/"
   },
 
