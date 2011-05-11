@@ -28,7 +28,7 @@
     </script>
     <div id="wrapper">
       <header>
-        <h1>Persnicketly</h1>
+        <h1>Persnicketly<span class="headerCurl"></span></h1>
       </header>
       <section>
         <div id="what">

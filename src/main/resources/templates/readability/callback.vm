@@ -28,7 +28,7 @@
     </script>
     <div id="wrapper">
       <header>
-        <h1><a href="/">Persnicketly</a></h1>
+        <h1><a href="/">Persnicketly<span class="headerCurl"></span></a></h1>
       </header>
       <section id="thanks">
         #set ( $name = "" )
