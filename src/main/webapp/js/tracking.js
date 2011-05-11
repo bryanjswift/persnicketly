@@ -2,7 +2,7 @@
   win.mpq = [
     ["init","b13487272824c77655227e84f830d7ee"],
     ["register", params],
-    ["track", "pageview", { "url": doc.location.href }]
+    ["track", "pageview", { "path": location.path || location.pathname, "domain": location.host || location.hostname }]
   ];
   var s = doc.createElement(tag)
     , el = doc.getElementsByTagName(tag)[0]
