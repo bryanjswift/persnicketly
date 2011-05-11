@@ -58,7 +58,8 @@ footer {
   -o-background-size: 100%; -webkit-background-size: 100%; -moz-background-size: 100%;
 }
 footer p {
-  color: rgba(255,255,255,0.52); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; text-transform: uppercase;
+  color: #aaa9a3; color: rgba(255,255,255,0.52); text-transform: uppercase;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 footer a {
   display: block; position: absolute; top: 2px; right: 1%; padding: 13px 1% 0 18px; height: 25px;
@@ -95,7 +96,7 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
 @media screen and (min-width: 850px) {
   header { margin: 0 19.04296875% 0 0; padding: 0 0 0 7.91015625%; }
   header h1 { padding: 10px 0; }
-  .headerCurl {
+  .boxshadow .headerCurl {
     display: block; position: absolute; left: 100%; bottom: -9px; width: 55px; height: 61px;
     background: url(/img/header_curl.png) no-repeat right bottom;
   }
