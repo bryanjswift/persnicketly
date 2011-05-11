@@ -8,17 +8,16 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>Thanks!</title>
-    <meta name="description" content="Collecting your favorite articles on Readability." />
+    <meta name="description" content="You authorized us to read your reading list on Readability. Thanks!" />
     <meta name="author" content="Rachel Diesel & Bryan J Swift" />
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0" />
     <link href="/humans.txt" rel="author" />
     <link href="/css/persnicketly.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="http://use.typekit.com/rxz7gnq.js"></script>
-    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
-  </head>
-  <body>
+    <script src="/js/libs/modernizr-custom.js"></script>
+    <script src="http://use.typekit.com/rxz7gnq.js"></script>
     <script>
     (function(d,t) {
+      try{Typekit.load();}catch(e){}
       var el = d.createElement(t)
         , sib = d.getElementsByTagName(t)[0];
       el.src = '/js/tracking.js';
@@ -26,6 +25,8 @@
       sib.parentNode.insertBefore(el, sib);
     })(document, 'script');
     </script>
+  </head>
+  <body>
     <div id="wrapper">
       <header>
         <h1><a href="/">Persnicketly<span class="headerCurl"></span></a></h1>

@@ -13,12 +13,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0" />
     <link href="/humans.txt" rel="author" />
     <link href="/css/persnicketly.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="http://use.typekit.com/rxz7gnq.js"></script>
-    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
-  </head>
-  <body>
+    <script src="/js/libs/modernizr-custom.js"></script>
+    <script src="http://use.typekit.com/rxz7gnq.js"></script>
     <script>
     (function(d,t) {
+      try{Typekit.load();}catch(e){}
       var el = d.createElement(t)
         , sib = d.getElementsByTagName(t)[0];
       el.src = '/js/tracking.js';
@@ -26,6 +25,8 @@
       sib.parentNode.insertBefore(el, sib);
     })(document, 'script');
     </script>
+  </head>
+  <body>
     <div id="wrapper">
       <header>
         <h1>Persnicketly<span class="headerCurl"></span></h1>
