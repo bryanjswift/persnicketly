@@ -86,14 +86,24 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
        screen and (max-device-width: 480px),
        screen and (-webkit-min-device-pixel-ratio: 2) {
   body { max-width: 100%; }
+  header {
+    padding: 0 0 8px;
+    background: url(/img/small/bg_header.png) no-repeat right bottom;
+    box-shadow: none; -webkit-box-shadow: none; -moz-box-shadow: none; -ms-box-shadow: none;
+  }
   header h1 { padding: 10px 12px; }
-  section { margin: 0 12px 21px; padding: 10px; }
+  section { margin: -30px 12px 21px; padding: 30px 10px 10px; }
   section h2, section h3 { font-size: 0.9375em; line-height: 1.2; }
   section p { font-size: 0.8125em; line-height: 1.384615385; }
   .cta { width: 100%; }
   .hero { max-width: 92.8825623%; }
 }
 @media screen and (-webkit-min-device-pixel-ratio: 2) {
+  header {
+    background-image: url(/img/x2/bg_header.png);
+    -o-background-size: 320px 59px; -webkit-background-size: 320px 59px;
+    -moz-background-size: 320px 59px;
+  }
   .cta {
     background: url(/img/x2/bg_arrow.png) no-repeat right center, url(/img/x2/cta_curl.png) no-repeat right bottom;
     -o-background-size: 34px 21px, 15px 25px; -webkit-background-size: 34px 21px, 15px 25px;
