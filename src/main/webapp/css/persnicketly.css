@@ -74,7 +74,7 @@ footer a {
 /* Learn More */
 #about a, #more a { margin: 3px 0 0; }
 #more h2, #soon h2 { margin: 28px 0 0; }
-#who { margin: 20px 0; font-weight: 500; text-align: center; color: #5d5d5d; }
+#who { clear: both; margin: 20px 0; width: 117%; font-weight: 500; text-align: center; color: #5d5d5d; }
 #who span { padding: 0 4px; color: #fff; }
 #bryan { background: #683686; }
 #diesel { background: #4eacca; }
@@ -100,6 +100,7 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
   section { margin: -30px 12px 21px; padding: 30px 10px 10px; }
   section h2, section h3 { font-size: 0.9375em; line-height: 1.2; }
   section p { font-size: 0.8125em; line-height: 1.384615385; }
+  #who { width: 100%; }
   .cta { width: 100%; }
   .hero { max-width: 92.8825623%; }
 }
@@ -131,6 +132,11 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
   .please { margin: 19px 0 24px; }
   #when h4 { display: block; }
   #when #signIn { margin: 6px 0 0; }
+  .col { float: left; width: 49%; }
+  .col.last { margin: 0 0 0 5.5%; width: 44.5%; }
+  .col.last #soon h2 { margin: 3px 0 0; }
+  #who { width: 100%; }
+  #who p { font-size: 0.866666667em; }
   .cta { width: 100%; }
   footer { padding-left: 7.91015625%; }
   footer a { right: 19.8984375%; }
