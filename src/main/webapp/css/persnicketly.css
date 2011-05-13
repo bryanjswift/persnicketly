@@ -1,5 +1,5 @@
 /* Reset */
-html, body, div, span, a, img, p, ul, ol, li, h1, h2, h3, h4 {
+html, body, div, span, a, img, p, ul, ol, li, h1, h2, h3, h4, h5 {
   margin: 0; border: 0; padding: 0; vertical-align: baseline;
 }
 ul, ol { list-style: none; }
@@ -28,6 +28,10 @@ section {
 section h2, section h3 { font-size: 1.25em; line-height: 1.1; text-shadow: rgba(0,0,0,0.2) 1px 1px 0; }
 h2 { margin: 8px 0 0; color: #6a3387; font-weight: 500; font-style: italic; }
 h3 { margin: 8px 0 0; color: #119337; }
+h4 {
+  margin: 15px 0 0; font-size: 0.866666667em; font-weight: 500; color: #7d7a70;
+  text-transform: uppercase; text-shadow: rgba(0,0,0,0.2) 1px 1px 0;
+}
 section p { font-size: 1em; line-height: 1.375; }
 .description { margin: 8px 0; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight: normal; }
 .hero { max-width: 100%; }
@@ -65,11 +69,9 @@ footer a {
   display: block; position: absolute; top: 2px; right: 1%; padding: 13px 1% 0 18px; height: 25px;
   color: #fff; color: rgba(255,255,255,0.95); background: url(/img/bg_about.png) no-repeat left top;
 }
+/* Index */
+#when h4 { display: none; }
 /* Learn More */
-h4 {
-  margin: 15px 0 0; font-size: 0.866666667em; color: #7d7a70;
-  text-transform: uppercase; text-shadow: rgba(0,0,0,0.2) 1px 1px 0;
-}
 #about a, #more a { margin: 3px 0 0; }
 #more h2, #soon h2 { margin: 28px 0 0; }
 #who { margin: 20px 0; font-weight: 500; text-align: center; color: #5d5d5d; }
@@ -81,6 +83,10 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
 .placekitten { position: relative; margin: 8px 0 0; }
 .placekitten img { max-width: 100%; }
 /* Thanks */
+#thanks { padding: 22px 25px 40px; text-align: center; background: #e7e7e7; }
+#thanks h3 { margin: 0; text-shadow: none; }
+#thanks .serviceName { margin: 15px 0 0; font-size: 1.5em; }
+#thanks .notice { margin: 8px 0 0; }
 #thanks .cta { margin: 11px 0 0; }
 @media screen and (max-width: 640px),
        screen and (max-device-width: 480px),
@@ -117,7 +123,16 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
     display: block; position: absolute; left: 100%; bottom: -9px; width: 55px; height: 61px;
     background: url(/img/header_curl.png) no-repeat right bottom;
   }
-  section { margin: 0 20.8984375% 21px 7.91015625%; padding: 10px; }
+  section { margin: 0 20.8984375% 21px 7.91015625%; padding: 25px; overflow: hidden; }
+  #what, #when { width: 52%; }
+  h2 { margin: 3px 0 0; }
+  .description { margin: 25px 0 25px; }
+  .hero { max-width: 135%; }
+  #when { float: right; }
+  .please { margin: 19px 0 24px; }
+  #when h4 { display: block; }
+  #when #signIn { margin: 6px 0 0; }
+  .cta { width: 100%; }
   footer { padding-left: 7.91015625%; }
   footer a { right: 19.8984375%; }
 }
