@@ -107,8 +107,7 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
 @media screen and (-webkit-min-device-pixel-ratio: 2) {
   header {
     background-image: url(/img/x2/bg_header.png);
-    -o-background-size: 320px 59px; -webkit-background-size: 320px 59px;
-    -moz-background-size: 320px 59px;
+    -o-background-size: auto 59px; -webkit-background-size: auto 59px; -moz-background-size: auto 59px;
   }
   .cta {
     background: url(/img/x2/bg_arrow.png) no-repeat right center, url(/img/x2/cta_curl.png) no-repeat right bottom;
