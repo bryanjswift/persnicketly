@@ -27,6 +27,7 @@ trait Servlet extends HttpServlet {
       val c = new Cookie(key, value)
       c.setDomain(Persnicketly.Config("http.cookie").or(".persnicketly.com"))
       c.setMaxAge(60 * 60 * 24 * 365)
+      c.setPath("/")
       response.addCookie(c)
     }
     def cookie(key: String): Option[String] = {
