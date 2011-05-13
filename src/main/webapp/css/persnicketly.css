@@ -83,11 +83,12 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
 .placekitten { position: relative; margin: 8px 0 0; }
 .placekitten img { max-width: 100%; }
 /* Thanks */
-#thanks { padding: 22px 25px 40px; text-align: center; background: #e7e7e7; }
-#thanks h3 { margin: 0; text-shadow: none; }
-#thanks .serviceName { margin: 15px 0 0; font-size: 1.5em; }
-#thanks .notice { margin: 8px 0 0; }
 #thanks .cta { margin: 11px 0 0; }
+/* Confirmation */
+#confirm { padding: 22px 25px 40px; text-align: center; background: #e7e7e7; }
+#confirm h3 { margin: 0; }
+#confirm .serviceName { margin: 15px 0 0; font-size: 1.5em; }
+#confirm .notice { margin: 8px 0 0; }
 @media screen and (max-width: 640px),
        screen and (max-device-width: 480px),
        screen and (-webkit-min-device-pixel-ratio: 2) {

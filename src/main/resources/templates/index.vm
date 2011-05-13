@@ -30,7 +30,7 @@
             <span>Sign in to Readability</span>
           </a>
           #else
-          <div id="thanks">
+          <div id="confirm">
             <h3>Thanks for signing up to use</h3>
             <p class="serviceName">Persnicketly</p>
             <p class="notice">We'll publish a note to your reading list when we're up and running.</p>

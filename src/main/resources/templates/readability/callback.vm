@@ -19,15 +19,19 @@
         #if (${personalInfo.isDefined()})
           #set ( $name = ", ${personalInfo.get().firstName()}" )
         #end
-        <h2>Thanks for signing up${name}!</h2>
-        <p class="description">We'll be sure to let you know when we launch, in the mean time keep on reading with Readability and don't forget to favorite the good stuff.</p>
-        <img src="/img/chair_stars.png" alt="" width="264" />
-        <h3>We'll get the show on the road soon,</h3>
-        <p class="please">when we do we'll publish a single article to your Readability reading list to let you know it's time to check us out again.</p>
-        <a id="learnMore" class="cta" href="/learn-more">
-          <img src="/img/purple_books.png" alt="" width="33" />
-          <span>Learn More</span>
-        </a>
+        <div id="what">
+          <h2>Thanks for signing up${name}!</h2>
+          <p class="description">We'll be sure to let you know when we launch, in the mean time keep on reading with Readability and don't forget to favorite the good stuff.</p>
+          <img class="hero" src="/img/chair_stars.png" alt="" />
+        </div>
+        <div id="when">
+          <h3>We'll get the show on the road soon,</h3>
+          <p class="please">when we do we'll publish a single article to your Readability reading list to let you know it's time to check us out again.</p>
+          <a id="learnMore" class="cta" href="/learn-more">
+            <img src="/img/purple_books.png" alt="" width="33" />
+            <span>Learn More</span>
+          </a>
+        </div>
       </section>
       <footer>
         <p>Persnicketly &copy; 2011</p>
