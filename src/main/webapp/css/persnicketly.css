@@ -104,6 +104,8 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
   .cta { width: 100%; }
   .hero { max-width: 92.8825623%; }
   #confirm { padding: 10px 25px 20px; text-align: center; }
+  #confirm .serviceName { margin: 5px 0 0; }
+  #confirm .notice { margin: 3px 0 0; }
 }
 @media screen and (-webkit-min-device-pixel-ratio: 2) {
   header {
