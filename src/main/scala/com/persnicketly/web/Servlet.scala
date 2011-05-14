@@ -23,13 +23,6 @@ trait Servlet extends HttpServlet {
       val value = request.getParameter(param)
       if (value == null || value == "" || value == default) None else Some(value)
     }
-    def cookie(key: String, value: String): Unit = {
-      val c = new Cookie(key, value)
-      c.setDomain(Persnicketly.Config("http.cookie").or(".persnicketly.com"))
-      c.setMaxAge(60 * 60 * 24 * 365)
-      c.setPath("/")
-      response.addCookie(c)
-    }
     def cookie(key: String): Option[String] = {
       val cookies = request.getCookies
       if (cookies == null) {
@@ -38,6 +31,33 @@ trait Servlet extends HttpServlet {
         cookies.find(c => c.getName == key).map(c => c.getValue)
       }
     }
+    def cookie(key: String, value: String): Unit = {
+      val c = new Cookie(key, value)
+      c.setDomain(Persnicketly.Config("http.cookie").or(".persnicketly.com"))
+      c.setMaxAge(60 * 60 * 24 * 365)
+      c.setPath("/")
+      response.addCookie(c)
+    }
+    def header(name: String): Option[String] = {
+      val headerNames = request.getHeaderNames.asInstanceOf[java.util.Enumeration[String]]
+      if (headerNames == null) {
+        None
+      } else {
+        headerNames.find(h => h == name).map(h => request.getHeader(h))
+      }
+    }
+    def header(name: String, value: String): Unit = {
+      response.setHeader(name, value)
+    }
+  }
+
+  private class RichEnumeration[T](enumeration: java.util.Enumeration[T]) extends Iterator[T] {
+    def hasNext: Boolean = enumeration.hasMoreElements()
+    def next: T = enumeration.nextElement()
+  }
+
+  private implicit def enumerationToRichEnumeration[T](enumeration: java.util.Enumeration[T]): RichEnumeration[T] = {
+    new RichEnumeration(enumeration)
   }
 }
 
