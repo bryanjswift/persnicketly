@@ -59,7 +59,6 @@ section p { font-size: 1em; line-height: 1.375; }
 footer {
   position: relative; padding: 16px 0 0 2%; height: 28px; font-size: 0.70em; font-weight: normal;
   background: url(/img/bg_footer.png) repeat-x left top;
-  -o-background-size: 100%; -webkit-background-size: 100%; -moz-background-size: 100%;
 }
 footer p {
   color: #aaa9a3; color: rgba(255,255,255,0.52); text-transform: uppercase;
@@ -111,6 +110,10 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
   header {
     background-image: url(/img/x2/bg_header.png);
     -o-background-size: auto 59px; -webkit-background-size: auto 59px; -moz-background-size: auto 59px;
+  }
+  footer {
+    background: url(/img/x2/bg_footer.png) repeat-x left top;
+    -o-background-size: auto 42px; -webkit-background-size: auto 42px; -moz-background-size: auto 42px;
   }
   .cta {
     background: url(/img/x2/bg_arrow.png) no-repeat right center, url(/img/x2/cta_curl.png) no-repeat right bottom;
