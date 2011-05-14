@@ -85,7 +85,6 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
 /* Thanks */
 #thanks .cta { margin: 11px 0 0; }
 /* Confirmation */
-#confirm { padding: 22px 25px 40px; text-align: center; background: #e7e7e7; }
 #confirm h3 { margin: 0; }
 #confirm .serviceName { margin: 15px 0 0; font-size: 1.5em; }
 #confirm .notice { margin: 8px 0 0; }
@@ -104,6 +103,7 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
   #who { width: 100%; }
   .cta { width: 100%; }
   .hero { max-width: 92.8825623%; }
+  #confirm { padding: 10px 0; text-align: center; }
 }
 @media screen and (-webkit-min-device-pixel-ratio: 2) {
   header {
@@ -138,6 +138,7 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
   #who { width: 100%; }
   #who p { font-size: 0.866666667em; }
   .cta { width: 100%; }
+  #confirm { padding: 22px 25px 40px; text-align: center; background: #e7e7e7; }
   footer { padding-left: 7.91015625%; }
   footer a { right: 19.8984375%; }
 }
