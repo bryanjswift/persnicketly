@@ -30,19 +30,19 @@
           <div id="more">
             <h2>More on Readability</h2>
             <p class="description">Readability allows any web page to become more readable by stripping out the distractions that make reading content on the web challenging. While there is a small membership fee 70% of that fee goes directly to publishers and content creators in your reading list. What about the other 30%? Well that goes to improving the tools and services offered to you by Readability. Pretty cool, huh?</p>
+            #if (${user.isEmpty()})
             <h4>No Readability account?</h4>
             <a id="signUp" class="cta" href="/readability/login">
               <img src="/img/pink_chair.png" alt="" height="29" />
               <span>Sign up for Readability</span>
             </a>
+            #end
           </div>
         </div>
         <div class="col last">
           <div id="soon">
             <h2>Coming Soon!</h2>
             <p class="description">We're launching soon, just as soon as all the design work is finished and the coding is &lt;/done&gt;. Help is get out database populated by siging in above and approving our app, we'll publish an article to your Readbility reading list when we launch.</p>
-          </div>
-          <div id="email">
           </div>
           <div id="who">
             <p>Persnicketly was created by</p>
