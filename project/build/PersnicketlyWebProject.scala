@@ -47,7 +47,10 @@ class PersnicketlyWebProject(info: ProjectInfo) extends DefaultWebProject(info)
   // Joda Time for nice immutable dates
   val jodaTime = "joda-time" % "joda-time" % "1.6.2"
   // MongoDB
-  val casbah = "com.mongodb.casbah" %% "casbah" % "2.1.2"
+  val casbahQuery = "com.mongodb.casbah" %% "casbah-query" % "2.1.2"
+  val casbahCore = "com.mongodb.casbah" %% "casbah-core" % "2.1.2"
+  val casbahCommons = "com.mongodb.casbah" %% "casbah-commons" % "2.1.2"
+  val casbahGridFs = "com.mongodb.casbah" %% "casbah-gridfs" % "2.1.2"
 
   // for specs via ScalaTest
   val scalatest = "org.scalatest" % "scalatest" % "1.2" % "test"
