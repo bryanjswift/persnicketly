@@ -36,6 +36,10 @@
     "context": "/"
   },
 
+  "log": {
+    "re": "INF: \\[console logger\\] "
+  },
+
   "metrics": {
     // The TCP/IP port Jetty will expose your metrics on.
     "port": 8081
