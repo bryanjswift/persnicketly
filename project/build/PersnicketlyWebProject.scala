@@ -26,15 +26,8 @@ class PersnicketlyWebProject(info: ProjectInfo) extends DefaultWebProject(info)
   // guice
   val guice = "com.google.inject" % "guice" % "3.0"
   val guiceServlet = "com.google.inject.extensions" % "guice-servlet" % "3.0"
-  // Jersey
-  val jerseyScala = "com.codahale" %% "jersey-scala" % "0.1.3"
-  // TODO: 05/01/11 <bryanjswift> -- Change back to regular packaging once
-  // http://java.net/jira/browse/JERSEY-697 is resolved.
-  val jerseyGuice = "com.sun.jersey.contribs" % "jersey-guice-nogrizzly" % "1.6"
   // configuration with JSON files
-  val fig = "com.codahale" %% "fig" % "1.1.1"
-  // health checking
-  val metrics = "com.yammer" %% "metrics" % "2.0.0-BETA14"
+  val fig = "com.codahale" %% "fig" % "1.1.3"
   // SLF4J for a nicer logging interface
   val slf4j = "org.slf4j" % "slf4j-api" % "1.6.1"
   val slf4jJDK = "org.slf4j" % "slf4j-log4j12" % "1.6.1"
