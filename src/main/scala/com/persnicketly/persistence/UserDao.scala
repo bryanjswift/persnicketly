@@ -8,10 +8,10 @@ import org.bson.types.ObjectId
 
 class UserDao {
   import UserDao._
+  import Persnicketly.Config
   RegisterJodaTimeConversionHelpers()
-  val config = Persnicketly.Config
-  val connection = MongoConnection(config("db.host").or("localhost"), config("db.port").or(27017))
-  val users = connection(config("db.name").or("persnicketly_test"))("users")
+  val connection = MongoConnection(Config("db.host").or("localhost"), Config("db.port").or(27017))
+  val users = connection(Config("db.name").or("persnicketly_test"))("users")
 
   /**
    * Save user data by updating existing record or inserting new

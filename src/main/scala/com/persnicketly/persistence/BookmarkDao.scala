@@ -8,10 +8,10 @@ import org.bson.types.ObjectId
 
 class BookmarkDao {
   import BookmarkDao._
+  import Persnicketly.Config
   RegisterJodaTimeConversionHelpers()
-  val config = Persnicketly.Config
-  val connection = MongoConnection(config("db.host").or("localhost"), config("db.port").or(27017))
-  val bookmarks = connection(config("db.name").or("persnicketly_test"))("bookmarks")
+  val connection = MongoConnection(Config("db.host").or("localhost"), Config("db.port").or(27017))
+  val bookmarks = connection(Config("db.name").or("persnicketly_test"))("bookmarks")
   def save(bookmark: Bookmark): Option[ObjectId] = {
     bookmarks.save(bookmark)
     bookmarks.findOne(MongoDBObject("bookmark_id" -> bookmark.bookmarkId)).get._id
