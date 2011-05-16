@@ -46,6 +46,8 @@ class PersnicketlyWebProject(info: ProjectInfo) extends DefaultWebProject(info)
   val jsonHttp = "net.databinder" %% "dispatch-http-json" % "0.8.0"
   // Joda Time for nice immutable dates
   val jodaTime = "joda-time" % "joda-time" % "1.6.2"
+  // Command line argument processing
+  val cli = "commons-cli" % "commons-cli" % "1.2"
   // MongoDB
   val casbahQuery = "com.mongodb.casbah" %% "casbah-query" % "2.1.2"
   val casbahCore = "com.mongodb.casbah" %% "casbah-core" % "2.1.2"
