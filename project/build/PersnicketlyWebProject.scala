@@ -34,7 +34,7 @@ class PersnicketlyWebProject(info: ProjectInfo) extends DefaultWebProject(info)
   // configuration with JSON files
   val fig = "com.codahale" %% "fig" % "1.1.1"
   // health checking
-  val metrics = "com.yammer" %% "metrics" % "2.0.0-BETA11"
+  val metrics = "com.yammer" %% "metrics" % "2.0.0-BETA14"
   // SLF4J for a nicer logging interface
   val slf4j = "org.slf4j" % "slf4j-api" % "1.6.1"
   val slf4jJDK = "org.slf4j" % "slf4j-log4j12" % "1.6.1"
