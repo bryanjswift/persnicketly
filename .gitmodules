@@ -1,0 +1,3 @@
+[submodule "simple-velocity"]
+	path = simple-velocity
+	url = git@github.com:bryanjswift/simple-velocity.git
