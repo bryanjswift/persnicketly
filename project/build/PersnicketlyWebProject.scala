@@ -39,8 +39,7 @@ class PersnicketlyWebProject(info: ProjectInfo) extends DefaultWebProject(info)
   val slf4j = "org.slf4j" % "slf4j-api" % "1.6.1"
   val slf4jJDK = "org.slf4j" % "slf4j-log4j12" % "1.6.1"
   // Velocity
-  val velocity = "org.apache.velocity" % "velocity" % "1.6.4"
-  val simpleVelocity = "bryanjswift" %% "simple-velocity" % "0.3.4"
+  val simpleVelocity = "bryanjswift" %% "simple-velocity" % "0.3.5"
   // oauth
   val oauth = "net.databinder" %% "dispatch-oauth" % "0.8.0"
   val nio = "net.databinder" %% "dispatch-nio" % "0.8.0"
