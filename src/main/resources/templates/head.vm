@@ -6,7 +6,7 @@
     <meta property="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0" />
     #if ($ogTitle && $ogDescription)
     <!-- Facebook stuff -->
-    <meta property="og:image" content="http://persnicketly.com/apple-touch-icon.png" />
+    <meta property="og:image" content="http://persnicketly.com/img/open-graph-icon.png" />
     <meta property="og:title" content="${ogTitle}" />
     <meta property="og:description" content="${ogDescription}" />
     <meta property="og:site_name" content="Persnicketly" />
