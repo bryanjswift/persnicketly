@@ -7,6 +7,8 @@
   <head>
     #set( $title = "Be Persnicketly" )
     #set( $description = "Collecting your favorite articles on Readability." )
+    #set( $ogTitle = "Persnicketly" )
+    #set( $ogDescription = "Collecting Readability stars since 2011" )
     #parse("templates/head.vm")
   </head>
   <body>

@@ -4,6 +4,14 @@
     <meta name="description" content="${description}" />
     <meta name="author" content="Rachel Diesel & Bryan J Swift" />
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0" />
+    #if ($ogTitle && $ogDescription)
+    <!-- Facebook stuff -->
+    <meta name="og:image" content="http://persnicketly.com/apple-touch-icon.png" />
+    <meta name="og:title" content="${ogTitle}" />
+    <meta name="og:description" content="${ogDescription}" />
+    <meta name="og:site_name" content="Persnicketly" />
+    <meta name="og:type" content="persnicketly:webapp" />
+    #end
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
     <link rel="shortcut icon" href="favicon.ico" />
     <link href="/humans.txt" rel="author" />

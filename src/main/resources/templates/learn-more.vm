@@ -7,6 +7,8 @@
   <head>
     #set( $title = "Learn more about Persnicketly" )
     #set( $description = "Learn more about what Persnicketly is trying to do." )
+    #set( $ogTitle = "About Persnicketly" )
+    #set( $ogDescription = "We're collecting and curating the most favorited Readability bookmarks and serving them to you when you want them, where you want them." )
     #parse("templates/head.vm")
   </head>
   <body>
