@@ -1,16 +1,16 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>${title}</title>
-    <meta name="description" content="${description}" />
-    <meta name="author" content="Rachel Diesel & Bryan J Swift" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0" />
+    <meta property="description" content="${description}" />
+    <meta property="author" content="Rachel Diesel & Bryan J Swift" />
+    <meta property="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0" />
     #if ($ogTitle && $ogDescription)
     <!-- Facebook stuff -->
-    <meta name="og:image" content="http://persnicketly.com/apple-touch-icon.png" />
-    <meta name="og:title" content="${ogTitle}" />
-    <meta name="og:description" content="${ogDescription}" />
-    <meta name="og:site_name" content="Persnicketly" />
-    <meta name="og:type" content="persnicketly:webapp" />
+    <meta property="og:image" content="http://persnicketly.com/apple-touch-icon.png" />
+    <meta property="og:title" content="${ogTitle}" />
+    <meta property="og:description" content="${ogDescription}" />
+    <meta property="og:site_name" content="Persnicketly" />
+    <meta property="og:type" content="persnicketly:webapp" />
     #end
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
     <link rel="shortcut icon" href="favicon.ico" />
