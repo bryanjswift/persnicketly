@@ -8,7 +8,6 @@ import com.sun.jersey.api.core.PackagesResourceConfig
 import scala.collection.JavaConversions.asJavaMap
 import com.persnicketly.web.servlet.{RootServlet, TemplateServlet}
 import com.persnicketly.web.servlet.readability.{CallbackServlet, LoginServlet}
-import com.persnicketly.StdLogRedirect
 
 class PersnicketlyServletConfig extends GuiceServletContextListener {
   private val log = LoggerFactory.getLogger(classOf[PersnicketlyServletConfig])
@@ -18,7 +17,6 @@ class PersnicketlyServletConfig extends GuiceServletContextListener {
 private class PersnicketlyServletModule extends ServletModule {
   private val log = LoggerFactory.getLogger(classOf[PersnicketlyServletModule])
   override protected def configureServlets(): Unit = {
-    StdLogRedirect.redirectLogs
     val jerseyParams = Map(PackagesResourceConfig.PROPERTY_PACKAGES -> "com.persnicketly.web.resource,com.codahale.jersey.providers,com.codahale.jersey.providers,com.codahale.jersey.inject")
     serve("/", "/index.html").`with`(classOf[RootServlet])
     serve("/readability/login").`with`(classOf[LoginServlet])
