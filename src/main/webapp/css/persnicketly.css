@@ -57,7 +57,7 @@ section p { font-size: 1em; line-height: 1.375; }
 #learnMore { background-color: #683686; }
 #learnMore img { top: 2px; }
 footer {
-  position: relative; padding: 16px 0 0 2%; height: 28px; font-size: 0.70em; font-weight: normal;
+  position: relative; padding: 16px 0 0 2%; height: 26px; font-size: 0.70em; font-weight: normal;
   background: url(/img/bg_footer.png) repeat-x left top;
 }
 footer p {
