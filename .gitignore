@@ -10,6 +10,7 @@ tags
 target
 # config files
 src/main/resources/velocity/velocity.properties
-config.json
+/config.json
+/log4j.properties
 nginx.local.conf
 mongod.local.conf
