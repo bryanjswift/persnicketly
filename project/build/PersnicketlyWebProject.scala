@@ -3,10 +3,13 @@ import assembly._
 import maven._
 
 class PersnicketlyWebProject(info: ProjectInfo) extends DefaultWebProject(info)
-                                                        with MavenDependencies
                                                         with IdeaProject
-                                                        with AssemblyBuilder {
+                                                        with MavenDependencies
+                                                        with AssemblyBuilder
+                                                        with AkkaProject {
 
+  // for Akka
+  val akkaRepo = AkkaRepositories.Akka_Repository
   // for Jersey
   val JavaNet2Repository = "Java.net Repository for Maven" at "http://download.java.net/maven/2/"
   // for metrics and fig and jersey-guice-nogrizzly and jersey-scala
@@ -27,10 +30,10 @@ class PersnicketlyWebProject(info: ProjectInfo) extends DefaultWebProject(info)
   val guice = "com.google.inject" % "guice" % "3.0"
   val guiceServlet = "com.google.inject.extensions" % "guice-servlet" % "3.0"
   // Jersey
-  val jerseyScala = "com.codahale" %% "jersey-scala" % "0.1.4"
   // TODO: 05/01/11 <bryanjswift> -- Change back to regular packaging once
   // http://java.net/jira/browse/JERSEY-697 is resolved.
   val jerseyGuice = "com.sun.jersey.contribs" % "jersey-guice-nogrizzly" % "1.6"
+  val jerseyScala = "com.codahale" %% "jersey-scala" % "0.1.5"
   // configuration with JSON files
   val fig = "com.codahale" %% "fig" % "1.1.3"
   // SLF4J for a nicer logging interface
