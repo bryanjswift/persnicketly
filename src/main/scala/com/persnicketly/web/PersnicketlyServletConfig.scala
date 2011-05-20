@@ -17,6 +17,7 @@ class PersnicketlyServletConfig extends GuiceServletContextListener {
 private class PersnicketlyServletModule extends ServletModule {
   private val log = LoggerFactory.getLogger(classOf[PersnicketlyServletModule])
   override protected def configureServlets(): Unit = {
+    val conf = Persnicketly.Config // Really just to read configs on startup
     val jerseyParams = Map(PackagesResourceConfig.PROPERTY_PACKAGES -> "com.persnicketly.web.resource,com.codahale.jersey.providers,com.codahale.jersey.providers,com.codahale.jersey.inject")
     serve("/", "/index.html").`with`(classOf[RootServlet])
     serve("/readability/login").`with`(classOf[LoginServlet])

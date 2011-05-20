@@ -15,8 +15,16 @@ import velocity.VelocityHelper
 object Persnicketly {
   private val log = LoggerFactory.getLogger(getClass)
 
-  private var confResource = new WatchedResource[Configuration]("config.json")
-  private var log4jResource = new WatchedResource[Unit]("log4j.properties")
+  private val confProducer = { path: String =>
+    log.info("Reading updated config -- {}", path)
+    Some(new Configuration(path))
+  }
+  private val log4jProducer = { path: String =>
+    log.info("Reading updated log4j -- {}", path)
+    Some(PropertyConfigurator.configure(path))
+  }
+  private var confResource = new WatchedResource("config.json")(confProducer)
+  private var log4jResource = new WatchedResource("log4j.properties")(log4jProducer)
   lazy val oauthConsumer = new Consumer("Persnicketly", "ynbCCZ5q7ggBGAkaAGFngRDAChg4pbYm")
   lazy val oauthCallback = String.format("http://%s/readability/callback", Config("http.domain").or("persnicketly.com"))
 
@@ -28,14 +36,8 @@ object Persnicketly {
   private val parser = new GnuParser
 
   def Config: Configuration = {
-    if (confResource.isUpdated) {
-      log.info("Reading updated config -- {}", confResource.path)
-      confResource.update(Some(new Configuration(confResource.path)))
-    }
-    if (log4jResource.isUpdated) {
-      log.info("Reading updated log4j -- {}", log4jResource.path)
-      log4jResource.update(Some(PropertyConfigurator.configure(log4jResource.path)))
-    }
+    log.info("Reading config files")
+    log4jResource.update
     confResource.value.get
   }
 
@@ -43,13 +45,13 @@ object Persnicketly {
     log.info("Persnicketly args -- {}", args)
     val options = parser.parse(opts, args)
     if (options.hasOption("config")) {
-      confResource = new WatchedResource[Configuration](options.getOptionValue("config"))
+      confResource = new WatchedResource(options.getOptionValue("config"))(confProducer)
     }
     if (options.hasOption("velocity")) {
       VelocityHelper.load(options.getOptionValue("velocity"))
     }
     if (options.hasOption("log4j")) {
-      log4jResource = new WatchedResource[Unit](options.getOptionValue("log4j"))
+      log4jResource = new WatchedResource(options.getOptionValue("log4j"))(log4jProducer)
     }
     val server = new Server(Config("http.port").as[Int]);
     server.setHandler(new ServletContextHandler())
@@ -70,20 +72,24 @@ object Persnicketly {
   }
 }
 
-class WatchedResource[T](val path: String) {
+class WatchedResource[T](val path: String)(producer: String => Option[T]) {
   private val log = LoggerFactory.getLogger(getClass)
   private var lastAccess = 0L
   private var _product: Option[T] = None
   private def file = new File(path)
-  def isUpdated: Boolean = {
+  private def isUpdated: Boolean = {
     val f = file
     f.exists && f.lastModified > lastAccess
   }
-  def update(p: Option[T]) = {
+  private def updateWith(p: Option[T]): Unit = {
     val now = (new DateTime).getMillis
     lastAccess = (new DateTime).getMillis
     _product = p
   }
-  def value: Option[T] = _product
+  def value: Option[T] = {
+    if (isUpdated) { updateWith(producer(path)) }
+    _product
+  }
+  def update: Unit = value
 }
 
