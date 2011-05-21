@@ -58,6 +58,8 @@ class PersnicketlyWebProject(info: ProjectInfo) extends DefaultWebProject(info)
   // for specs via ScalaTest
   val scalatest = "org.scalatest" % "scalatest" % "1.2" % "test"
 
+  // produce a jar
+  override protected def defaultMainArtifact = Artifact(artifactID, "jar", "jar")
   // override looking for jars in ./lib
   override def dependencyPath = sourceDirectoryName / mainDirectoryName / "lib"
   // override path to managed dependency cache
