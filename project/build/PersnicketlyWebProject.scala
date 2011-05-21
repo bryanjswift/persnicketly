@@ -5,11 +5,8 @@ import maven._
 class PersnicketlyWebProject(info: ProjectInfo) extends DefaultWebProject(info)
                                                         with IdeaProject
                                                         with MavenDependencies
-                                                        with AssemblyBuilder
-                                                        with AkkaProject {
+                                                        with AssemblyBuilder {
 
-  // for Akka
-  val akkaRepo = AkkaRepositories.Akka_Repository
   // for Jersey
   val JavaNet2Repository = "Java.net Repository for Maven" at "http://download.java.net/maven/2/"
   // for metrics and fig and jersey-guice-nogrizzly and jersey-scala
