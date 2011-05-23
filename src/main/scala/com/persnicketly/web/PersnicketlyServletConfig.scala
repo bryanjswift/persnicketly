@@ -6,6 +6,7 @@ import com.google.inject.{Guice, Injector, Singleton}
 import com.sun.jersey.spi.container.servlet.ServletContainer
 import com.sun.jersey.api.core.PackagesResourceConfig
 import scala.collection.JavaConversions.asJavaMap
+import com.persnicketly.Persnicketly
 import com.persnicketly.web.servlet.{RootServlet, TemplateServlet}
 import com.persnicketly.web.servlet.readability.{CallbackServlet, LoginServlet}
 

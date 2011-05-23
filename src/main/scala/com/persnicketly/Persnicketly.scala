@@ -1,4 +1,4 @@
-package com.persnicketly.web
+package com.persnicketly
 
 import java.io.File
 import com.codahale.fig.Configuration

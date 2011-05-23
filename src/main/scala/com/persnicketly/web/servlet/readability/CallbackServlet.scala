@@ -6,7 +6,8 @@ import dispatch.json.Js.obj
 import dispatch.json.JsHttp.requestToJsHandlers
 import com.google.inject.Singleton
 import com.persnicketly.readability.{Api, Auth}
-import com.persnicketly.web.{Persnicketly, Servlet}
+import com.persnicketly.Persnicketly
+import com.persnicketly.web.Servlet
 import com.persnicketly.persistence.UserDao
 import org.slf4j.LoggerFactory
 import velocity.VelocityView

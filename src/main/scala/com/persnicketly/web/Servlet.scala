@@ -1,7 +1,8 @@
 package com.persnicketly.web
 
-import scala.util.matching.Regex
+import com.persnicketly.Persnicketly
 import javax.servlet.http.{Cookie, HttpServlet, HttpServletRequest => Request, HttpServletResponse => Response}
+import scala.util.matching.Regex
 
 trait Servlet extends HttpServlet {
   override def doGet(request:Request, response:Response) = doGet(new HttpHelper(request, response))

@@ -4,7 +4,8 @@ import com.google.inject.Singleton
 import com.persnicketly.persistence.UserDao
 import com.persnicketly.readability.Auth
 import com.persnicketly.readability.model.User
-import com.persnicketly.web.{Persnicketly, Servlet}
+import com.persnicketly.Persnicketly
+import com.persnicketly.web.Servlet
 import org.slf4j.LoggerFactory
 import dispatch.oauth.Token
 import scala.collection.mutable

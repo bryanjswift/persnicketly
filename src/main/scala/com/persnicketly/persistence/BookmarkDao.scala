@@ -2,7 +2,7 @@ package com.persnicketly.persistence
 
 import com.mongodb.casbah.Imports._
 import com.mongodb.casbah.commons.conversions.scala._
-import com.persnicketly.web.Persnicketly
+import com.persnicketly.Persnicketly
 import com.persnicketly.readability.model.Bookmark
 import org.bson.types.ObjectId
 
