@@ -32,7 +32,7 @@ class PersnicketlyWebProject(info: ProjectInfo) extends DefaultWebProject(info)
   val jerseyGuice = "com.sun.jersey.contribs" % "jersey-guice-nogrizzly" % "1.6"
   val jerseyScala = "com.codahale" %% "jersey-scala" % "0.1.5"
   // configuration with JSON files
-  val fig = "com.codahale" %% "fig" % "1.1.3"
+  val fig = "com.codahale" %% "fig" % "1.1.4-SNAPSHOT"
   // SLF4J for a nicer logging interface
   val slf4j = "org.slf4j" % "slf4j-api" % "1.6.1"
   val slf4jJDK = "org.slf4j" % "slf4j-log4j12" % "1.6.1"
@@ -51,6 +51,8 @@ class PersnicketlyWebProject(info: ProjectInfo) extends DefaultWebProject(info)
   val casbahCore = "com.mongodb.casbah" %% "casbah-core" % "2.1.2"
   val casbahCommons = "com.mongodb.casbah" %% "casbah-commons" % "2.1.2"
   val casbahGridFs = "com.mongodb.casbah" %% "casbah-gridfs" % "2.1.2"
+  // RabbitMQ
+  val rabbitmq = "com.rabbitmq" % "amqp-client" % "2.4.1"
 
   // for specs via ScalaTest
   val scalatest = "org.scalatest" % "scalatest" % "1.2" % "test"
