@@ -1,4 +1,4 @@
-package com.persnicketly.queue
+package com.persnicketly.mill
 
 import com.persnicketly.{Logging,Persnicketly}
 import com.rabbitmq.client.{Channel,ConnectionFactory}

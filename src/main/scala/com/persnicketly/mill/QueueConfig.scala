@@ -1,4 +1,4 @@
-package com.persnicketly.queue
+package com.persnicketly.mill
 
 import com.rabbitmq.client.AMQP
 

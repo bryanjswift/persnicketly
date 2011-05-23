@@ -1,0 +1,9 @@
+# Persnicketly Mill #
+
+The mill is the queue processor. It harvests reader information and credentials
+from the MongoDB connection and uses them to queue up Readability API reads. It
+will then process the queued API reads and add the bookmark records to MongoDB.
+
+## Dependencies ##
+
+Depends on the Readability API project.
