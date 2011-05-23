@@ -36,7 +36,6 @@ object Persnicketly {
   private val parser = new GnuParser
 
   def Config: Configuration = {
-    log.info("Reading config files")
     log4jResource.update
     confResource.value.get
   }
