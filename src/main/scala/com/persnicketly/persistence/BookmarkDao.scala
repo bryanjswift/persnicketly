@@ -3,8 +3,9 @@ package com.persnicketly.persistence
 import com.mongodb.casbah.Imports._
 import com.mongodb.casbah.commons.conversions.scala._
 import com.persnicketly.Persnicketly
-import com.persnicketly.readability.model.Bookmark
+import com.persnicketly.readability.model.{Article, Bookmark}
 import org.bson.types.ObjectId
+import org.joda.time.DateTime
 
 class BookmarkDao {
   import BookmarkDao._
@@ -12,9 +13,27 @@ class BookmarkDao {
   RegisterJodaTimeConversionHelpers()
   val connection = MongoConnection(Config("db.host").or("localhost"), Config("db.port").or(27017))
   val bookmarks = connection(Config("db.name").or("persnicketly_test"))("bookmarks")
-  def save(bookmark: Bookmark): Option[ObjectId] = {
-    bookmarks.save(bookmark)
-    bookmarks.findOne(MongoDBObject("bookmark_id" -> bookmark.bookmarkId)).get._id
+
+  /**
+   * Save bookmark data by updating existing record or inserting new
+   * @param bookmark data to save
+   * @return Bookmark as it now exists in database
+   */
+  def save(bookmark: Bookmark): Bookmark = {
+    val query = bookmark.id match {
+      case Some(id) => MongoDBObject("_id" -> id)
+      case None => MongoDBObject("bookmark_id" -> bookmark.bookmarkId)
+    }
+    bookmarks.update(query, bookmark, upsert = true, multi = false)
+    bookmarks.findOne(query).get
+  }
+
+  /**
+   * Before letting this object get collected make sure the connection is closed
+   */
+  override def finalize() = {
+    super.finalize()
+    connection.close
   }
 }
 
@@ -33,6 +52,24 @@ object BookmarkDao {
     builder += "article_url" -> bookmark.article.url
     builder += "article_excert" -> bookmark.article.excerpt
     builder.result
+  }
+  implicit def dbobject2bookmark(o: DBObject): Bookmark = {
+    Bookmark(
+      o._id,
+      o.getAs[Int]("bookmark_id").getOrElse(0),
+      o.getAs[Int]("user_id").getOrElse(0),
+      o.getAs[Boolean]("favorite").getOrElse(false),
+      o.getAs[Boolean]("archive").getOrElse(false),
+      Article(
+        o.getAs[String]("article_id").getOrElse(""),
+        o.getAs[String]("article_title").getOrElse(""),
+        o.getAs[String]("article_url").getOrElse(""),
+        o.getAs[String]("article_excerpt")
+      ),
+      o.getAs[DateTime]("archive_date"),
+      o.getAs[DateTime]("favorite_date"),
+      o.getAs[DateTime]("update_date")
+    )
   }
   def dao = { new BookmarkDao }
   def save(bookmark: Bookmark) = { dao.save(bookmark) }
