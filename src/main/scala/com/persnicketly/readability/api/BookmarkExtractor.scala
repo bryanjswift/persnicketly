@@ -15,6 +15,7 @@ object BookmarkExtractor extends Extract[Bookmark] {
         // can safely extract data
         Some(
           Bookmark(
+            None,
             BookmarkJson.bookmarkId(js).toInt,
             BookmarkJson.userId(js).toInt,
             BookmarkJson.isFavorite(js),
