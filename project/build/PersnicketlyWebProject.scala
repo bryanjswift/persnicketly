@@ -32,7 +32,7 @@ class PersnicketlyWebProject(info: ProjectInfo) extends DefaultWebProject(info)
   val jerseyGuice = "com.sun.jersey.contribs" % "jersey-guice-nogrizzly" % "1.6"
   val jerseyScala = "com.codahale" %% "jersey-scala" % "0.1.5"
   // configuration with JSON files
-  val fig = "com.codahale" %% "fig" % "1.1.4-SNAPSHOT"
+  val fig = "com.codahale" %% "fig" % "1.1.4"
   // SLF4J for a nicer logging interface
   val slf4j = "org.slf4j" % "slf4j-api" % "1.6.1"
   val slf4jJDK = "org.slf4j" % "slf4j-log4j12" % "1.6.1"
