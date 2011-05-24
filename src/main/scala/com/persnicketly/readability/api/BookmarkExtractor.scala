@@ -3,11 +3,12 @@ package com.persnicketly.readability.api
 import dispatch.json.Js._
 import dispatch.json.{Js, JsString, Obj}
 import dispatch.json.{Extract, JsValue, JsObject}
+import com.persnicketly.readability.Api
 import com.persnicketly.readability.model.{Article, Bookmark}
 import org.joda.time.format.DateTimeFormat
 
 object BookmarkExtractor extends Extract[Bookmark] {
-  private val format = DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss")
+  private val format = DateTimeFormat.forPattern(Api.datePattern)
   def unapply(js: JsValue) = js match {
     case JsObject(m) => 
       if (BookmarkJson.keys.forall(k => m.contains(k))) {

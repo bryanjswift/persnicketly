@@ -13,6 +13,7 @@ object Api {
   private val bookmarksUrl = url("https://www.readability.com/api/rest/v1/bookmarks")
   private val userUrl = url("https://www.readability.com/api/rest/v1/users/_current")
   private val statusCodes = { code: Int => List(200, 201, 202, 203, 204, 400, 401, 403, 404, 409, 500) contains code }
+  val datePattern = "YYYY-MM-dd HH:mm:ss"
   def bookmarks(consumer: Consumer, user: User): List[Bookmark] = {
     val http = new Log4jHttp
     val request = bookmarksUrl <@ (consumer, user.accessToken.get)
