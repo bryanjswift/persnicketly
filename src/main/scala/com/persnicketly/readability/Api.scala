@@ -7,21 +7,24 @@ import dispatch.json.JsHttp.requestToJsHandlers
 import dispatch.oauth.Consumer
 import dispatch.oauth.OAuth.Request2RequestSigner
 import com.persnicketly.readability.model.{Bookmark, Meta, User, UserData}
-import com.persnicketly.readability.api.{BookmarkExtractor, MetaExtractor, UserDataExtractor}
+import com.persnicketly.readability.api.{BookmarkExtractor, BookmarkRequestConditions, MetaExtractor, UserDataExtractor}
+import org.joda.time.DateTime
 
 object Api {
   private val bookmarksUrl = url("https://www.readability.com/api/rest/v1/bookmarks")
   private val userUrl = url("https://www.readability.com/api/rest/v1/users/_current")
   private val statusCodes = { code: Int => List(200, 201, 202, 203, 204, 400, 401, 403, 404, 409, 500) contains code }
   val datePattern = "YYYY-MM-dd HH:mm:ss"
-  def bookmarks(consumer: Consumer, user: User): List[Bookmark] = {
-    request(bookmarksUrl, consumer, user) { response =>
+  def bookmarks(consumer: Consumer, conditions: BookmarkRequestConditions): List[Bookmark] = {
+    var url = bookmarksUrl <<? conditions.map
+    request(bookmarksUrl, consumer, conditions.user) { response =>
       val bookmarkObjects = ('bookmarks ! (list ! obj))(response)
       bookmarkObjects map BookmarkExtractor
     }
   }
-  def bookmarksMeta(consumer: Consumer, user: User): Meta = {
-    val url = bookmarksUrl <<? Map("per_page" -> "1")
+  def bookmarksMeta(consumer: Consumer, user: User, since: Option[DateTime] = None): Meta = {
+    var url = bookmarksUrl <<? Map("per_page" -> "1")
+    since.foreach(s => url = url <<? Map("updated_since" -> s.toString(datePattern)))
     request(url, consumer, user) { response =>
       val metaObject = ('meta ! obj)(response)
       MetaExtractor(metaObject)
