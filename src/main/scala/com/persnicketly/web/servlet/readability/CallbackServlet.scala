@@ -9,6 +9,7 @@ import com.persnicketly.readability.{Api, Auth}
 import com.persnicketly.Persnicketly
 import com.persnicketly.web.Servlet
 import com.persnicketly.persistence.UserDao
+import com.persnicketly.mill.UserQueue
 import org.slf4j.LoggerFactory
 import velocity.VelocityView
 import javax.ws.rs.core.MediaType
@@ -31,6 +32,7 @@ class CallbackServlet extends Servlet {
     val dbUser = UserDao.save(updatedUser)
     log.info("setting _user cookie to {}", dbUser.id.get.toString)
     helper.cookie("_user", dbUser.id.get.toString)
+    UserQueue.add(dbUser)
     val view = new VelocityView("/templates/readability/callback.vm")
     helper.response.setContentType(MediaType.TEXT_HTML)
     view.render(Map[String,Any]("personalInfo" -> dbUser.personalInfo), helper.response)
