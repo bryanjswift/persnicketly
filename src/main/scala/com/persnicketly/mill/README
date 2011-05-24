@@ -9,3 +9,4 @@ will then process the queued API reads and add the bookmark records to MongoDB.
 Depends on:
 * Core
 * Readability API
+* Persistence
