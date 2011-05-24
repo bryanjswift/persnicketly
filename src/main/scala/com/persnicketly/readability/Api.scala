@@ -34,9 +34,9 @@ object Api {
   }
   private def request[T](url: Request, consumer: Consumer, user: User)(thunk: JsObject => T) = {
     val http = new Log4jHttp
-    val request = userUrl <@ (consumer, user.accessToken.get)
+    val request = url <@ (consumer, user.accessToken.get)
     val response = http.when(statusCodes)(request ># obj)()
-    val result = thunk(response)
+    val result = thunk(response) // if this throws an exception we never shutdown http
     http.shutdown
     result
   }
