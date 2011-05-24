@@ -6,4 +6,6 @@ will then process the queued API reads and add the bookmark records to MongoDB.
 
 ## Dependencies ##
 
-Depends on the Readability API project.
+Depends on:
+* Core
+* Readability API
