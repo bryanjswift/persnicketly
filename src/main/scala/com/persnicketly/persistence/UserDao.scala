@@ -42,6 +42,14 @@ class UserDao {
    */
   def get(requestToken: String): Option[User] =
     users.findOne(MongoDBObject("request_token_value" -> requestToken)).map(o => dbobject2user(o))
+
+  /**
+   * Before letting this object get collected make sure the connection is closed
+   */
+  override def finalize() = {
+    super.finalize()
+    connection.close
+  }
 }
 
 object UserDao {
