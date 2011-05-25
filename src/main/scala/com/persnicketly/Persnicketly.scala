@@ -2,11 +2,10 @@ package com.persnicketly
 
 import java.io.File
 import com.codahale.fig.Configuration
+import com.persnicketly.mill.Foreman
+import com.persnicketly.web.Spider
 import org.apache.commons.cli.{Options => CliOptions, GnuParser}
 import org.apache.log4j.PropertyConfigurator
-import org.eclipse.jetty.server.Server
-import org.eclipse.jetty.webapp.WebAppContext
-import org.eclipse.jetty.servlet.ServletContextHandler
 import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
 import dispatch.oauth.Consumer
@@ -52,22 +51,13 @@ object Persnicketly {
     if (options.hasOption("log4j")) {
       log4jResource = new WatchedResource(options.getOptionValue("log4j"))(log4jProducer)
     }
-    val server = new Server(Config("http.port").as[Int]);
-    server.setHandler(new ServletContextHandler())
-    // create the context for the webapp
-    val webapp = Config("webapp.path").or("src/main/webapp")
-    log.info("Starting server on port {} with path {}", Config("http.port").as[Int], webapp)
-    val context = new WebAppContext()
-    context.setDescriptor(webapp + "/WEB-INF/web.xml")
-    context.setResourceBase(webapp)
-    context.setContextPath(Config("webapp.context").or("/"))
-    context.setParentLoaderPriority(true)
-
-    // set the webapp context as the handler
-    server.setHandler(context)
-    // start the server
-    server.start()
-    server.join()
+    var threads: List[Thread] = Nil
+    // start the mill
+    Foreman.start ::: threads
+    // start the web
+    Spider.start ::: threads
+    // join all threads
+    threads.foreach(_.join)
   }
 }
 
