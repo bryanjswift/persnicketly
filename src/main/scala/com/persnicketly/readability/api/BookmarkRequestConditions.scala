@@ -10,6 +10,8 @@ case class BookmarkRequestConditions(
       count: Option[Int], since: Option[DateTime],
       user: User) extends Serializer {
 
+  val serialVersionUID = 147389180L
+
   val map = Map(
     "page" -> page.getOrElse(1).toString,
     "per_page" -> count.getOrElse(20).toString,

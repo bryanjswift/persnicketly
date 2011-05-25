@@ -1,6 +1,8 @@
 package com.persnicketly
 
 trait Serializer {
+  def serialVersionUID: Long
+
   def toByteArray: Array[Byte] = {
     val bos = new java.io.ByteArrayOutputStream()
     val out = new java.io.ObjectOutputStream(bos)
