@@ -64,6 +64,7 @@ object UserDao {
     })
     user.verifier.foreach(v => builder += ("verifier" -> v))
     user.personalInfo.foreach(info => {
+      builder += "user_id" -> info.userId
       builder += "username" -> info.username
       builder += "first_name" -> info.firstName
       builder += "last_name" -> info.lastName
@@ -75,9 +76,18 @@ object UserDao {
     val rts = o.getAs[String]("request_token_secret")
     val atv = o.getAs[String]("access_token_value")
     val ats = o.getAs[String]("access_token_secret")
-    val v = o.getAs[String]("verifier")
-    val ud = UserData(o.getAs[String]("username"), o.getAs[String]("first_name"), o.getAs[String]("last_name"))
-    User(o._id, TokenHelper(rtv, rts).get, TokenHelper(atv, ats), v, ud)
+    User(
+      o._id,
+      TokenHelper(rtv, rts).get,
+      TokenHelper(atv, ats),
+      o.getAs[String]("verifier"),
+      UserData(
+        o.getAs[Int]("user_id"),
+        o.getAs[String]("username"),
+        o.getAs[String]("first_name"),
+        o.getAs[String]("last_name")
+      )
+    )
   }
 
   /**

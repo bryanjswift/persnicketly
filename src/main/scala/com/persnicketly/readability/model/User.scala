@@ -26,6 +26,13 @@ object UserData {
   def apply(username: String, firstName: String, lastName: String): UserData = {
     UserData(None, username, firstName, lastName)
   }
+  def apply(userId: Option[Int], username: Option[String], firstName:Option[String], lastName: Option[String]): Option[UserData] = {
+    if (userId.isDefined && username.isDefined && firstName.isDefined && lastName.isDefined) {
+      Some(UserData(userId, username.get, firstName.get, lastName.get))
+    } else {
+      None
+    }
+  }
   def apply(username: Option[String], firstName:Option[String], lastName: Option[String]): Option[UserData] = {
     if (username.isDefined && firstName.isDefined && lastName.isDefined) {
       Some(UserData(None, username.get, firstName.get, lastName.get))
