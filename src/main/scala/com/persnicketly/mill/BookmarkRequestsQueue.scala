@@ -9,6 +9,7 @@ import org.joda.time.DateTime
 
 object BookmarkRequestsQueue extends Queue {
   val queueName = "bookmarks-requests";
+
   def addAll(meta: Meta, user: User, since: Option[DateTime] = None): Option[Seq[BookmarkRequestConditions]] = {
     val pageSize = Persnicketly.Config("queue." + queueName + ".perpage").or(25)
     val numPages = scala.math.ceil(meta.totalCount / pageSize).toInt
@@ -21,12 +22,19 @@ object BookmarkRequestsQueue extends Queue {
       conditions
     }
   }
+
   def add(since: DateTime, user: User): Option[Seq[BookmarkRequestConditions]] = {
     val meta = Api.bookmarksMeta(Persnicketly.oauthConsumer, user, Some(since))
     addAll(meta, user, Some(since))
   }
-  def process(conditions: BookmarkRequestConditions): Unit = {
+
+  def processDelivery(delivery: Delivery): Boolean = {
+    process(BookmarkRequestConditions(delivery.getBody))
+  }
+
+  def process(conditions: BookmarkRequestConditions): Boolean = {
     val bookmarks = Api.bookmarks(Persnicketly.oauthConsumer, conditions)
-    bookmarks.foreach(BookmarkDao.save(_))
+    val saved = bookmarks.map(mark => BookmarkDao.save(mark))
+    saved.forall(_.id.isDefined)
   }
 }
