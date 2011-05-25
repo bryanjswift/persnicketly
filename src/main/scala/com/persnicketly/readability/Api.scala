@@ -17,7 +17,7 @@ object Api {
   val datePattern = "YYYY-MM-dd HH:mm:ss"
   def bookmarks(consumer: Consumer, conditions: BookmarkRequestConditions): List[Bookmark] = {
     var url = bookmarksUrl <<? conditions.map
-    request(bookmarksUrl, consumer, conditions.user) { response =>
+    request(url, consumer, conditions.user) { response =>
       val bookmarkObjects = ('bookmarks ! (list ! obj))(response)
       bookmarkObjects map BookmarkExtractor
     }
