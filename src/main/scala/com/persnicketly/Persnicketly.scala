@@ -31,6 +31,8 @@ object Persnicketly {
   opts.addOption("v", "velocity", true, "Path to velocity configuration file (velocity.properties)")
   opts.addOption("l", "log4j", true, "Path to log4j configuration file (log4j.properties)")
   opts.addOption("c", "config", true, "Path json configuration file (config.json)")
+  opts.addOption("m", "mill", false, "Start the queue processing mill")
+  opts.addOption("w", "web", false, "Start the web server")
 
   private val parser = new GnuParser
 
@@ -53,9 +55,13 @@ object Persnicketly {
     }
     var threads: List[Thread] = Nil
     // start the mill
-    Foreman.start ::: threads
+    if (options.hasOption("mill")) {
+      Foreman.start ::: threads
+    }
     // start the web
-    Spider.start ::: threads
+    if (options.hasOption("web")) {
+      Spider.start ::: threads
+    }
     // join all threads
     threads.foreach(_.join)
   }
