@@ -15,18 +15,11 @@ class UserDao {
   val users = connection(Config("db.name").or("persnicketly_test"))("users")
 
   /**
-   * Save user data by updating existing record or inserting new
-   * @param user data to save
-   * @return User as it now exists in database
+   * Provide a way to get all the verified users in the DB
+   * @return an Iterator of Users
    */
-  def save(user: User): User = {
-    val query = user.id match {
-      case Some(id) => MongoDBObject("_id" -> id)
-      case None => MongoDBObject("request_token_value" -> user.requestToken.value)
-    }
-    users.update(query, user, upsert = true, multi = false)
-    get(user.requestToken.value).get
-  }
+  def all(): Iterator[User] =
+    users.find("username" $exists true).map(o => dbobject2user(o))
 
   /**
    * Get a User by object id
@@ -43,6 +36,20 @@ class UserDao {
    */
   def get(requestToken: String): Option[User] =
     users.findOne(MongoDBObject("request_token_value" -> requestToken)).map(o => dbobject2user(o))
+
+  /**
+   * Save user data by updating existing record or inserting new
+   * @param user data to save
+   * @return User as it now exists in database
+   */
+  def save(user: User): User = {
+    val query = user.id match {
+      case Some(id) => MongoDBObject("_id" -> id)
+      case None => MongoDBObject("request_token_value" -> user.requestToken.value)
+    }
+    users.update(query, user, upsert = true, multi = false)
+    get(user.requestToken.value).get
+  }
 
   /**
    * Before letting this object get collected make sure the connection is closed
@@ -100,11 +107,10 @@ object UserDao {
   private def dao = { new UserDao }
 
   /**
-   * Proxy to a UserDao object to save data
-   * @param user to save
-   * @return saved User
+   * Proxy to UserDao instance to get data
+   * @return Iterator of verified users in DB
    */
-  def save(user: User) = { dao.save(user) }
+  def all() = dao.all()
 
   /**
    * Proxy to UserDao instance to get data
@@ -119,5 +125,12 @@ object UserDao {
    * @return Some(User) if requestToken exists, None otherwise
    */
   def get(requestToken: String) = dao.get(requestToken)
+
+  /**
+   * Proxy to a UserDao object to save data
+   * @param user to save
+   * @return saved User
+   */
+  def save(user: User) = { dao.save(user) }
 }
 
