@@ -5,6 +5,7 @@ import com.persnicketly.persistence.UserDao
 import com.persnicketly.readability.Api
 import com.persnicketly.readability.model.User
 import org.bson.types.ObjectId
+import org.joda.time.DateTime
 
 object UserQueue extends Queue {
   val queueName = "new-users";
@@ -28,6 +29,7 @@ object UserQueue extends Queue {
   def process(user: User): Boolean = {
     val meta = Api.bookmarksMeta(Persnicketly.oauthConsumer, user)
     val added = BookmarkRequestsQueue.addAll(meta, user)
+    UserDao.save(user.copy(lastProcessed = Some(new DateTime)))
     added.isDefined
   }
 }

@@ -5,6 +5,7 @@ import com.mongodb.casbah.commons.conversions.scala._
 import com.persnicketly.Persnicketly
 import com.persnicketly.readability.model.{TokenHelper, User, UserData}
 import org.bson.types.ObjectId
+import org.joda.time.DateTime
 
 class UserDao {
   import UserDao._
@@ -69,6 +70,7 @@ object UserDao {
       builder += "first_name" -> info.firstName
       builder += "last_name" -> info.lastName
     })
+    user.lastProcessed.foreach(d => builder += ("last_processed" -> d))
     builder.result
   }
   implicit def dbobject2user(o: DBObject): User = {
@@ -81,6 +83,7 @@ object UserDao {
       TokenHelper(rtv, rts).get,
       TokenHelper(atv, ats),
       o.getAs[String]("verifier"),
+      o.getAs[DateTime]("last_processed"),
       UserData(
         o.getAs[Int]("user_id"),
         o.getAs[String]("username"),

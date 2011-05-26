@@ -1,6 +1,7 @@
 package com.persnicketly.readability.model
 
 import org.bson.types.ObjectId
+import org.joda.time.DateTime
 import dispatch.oauth.Token
 
 case class User(
@@ -8,6 +9,7 @@ case class User(
   requestToken: Token,
   accessToken: Option[Token],
   verifier: Option[String],
+  lastProcessed: Option[DateTime],
   personalInfo: Option[UserData])
 
 object TokenHelper {

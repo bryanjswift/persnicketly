@@ -16,7 +16,7 @@ class LoginServlet extends Servlet {
   override def doGet(helper: HttpHelper) {
     val token = Auth.request_token(Persnicketly.oauthConsumer, Persnicketly.oauthCallback)
     // save user
-    val user = UserDao.save(User(None, token, None, None, None))
+    val user = UserDao.save(User(None, token, None, None, None, None))
     // set cookie to ObjectId of User
     log.info("auth_token = {}", token)
     val authorizeUrl = Auth.authorize_url(token).to_uri.toString
