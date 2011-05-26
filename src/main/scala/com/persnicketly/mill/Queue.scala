@@ -64,7 +64,7 @@ abstract class Queue extends Logging {
           continue = false
         }
       }
-      log.info("Consumer quitting after processing {} deliveries", counter.get)
+      log.warn("Consumer quitting after processing {} deliveries", counter.get)
       counter.get
     }
   }
