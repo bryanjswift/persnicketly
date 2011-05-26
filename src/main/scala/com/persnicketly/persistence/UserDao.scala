@@ -18,8 +18,8 @@ class UserDao {
    * Provide a way to get all the verified users in the DB
    * @return an Iterator of Users
    */
-  def all(): Iterator[User] =
-    users.find("username" $exists true).map(o => dbobject2user(o))
+  def all(): List[User] =
+    users.find("username" $exists true).map(o => dbobject2user(o)).toList
 
   /**
    * Get a User by object id
