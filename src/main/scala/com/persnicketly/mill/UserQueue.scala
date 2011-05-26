@@ -23,6 +23,7 @@ object UserQueue extends Queue {
   def processDelivery(delivery: Delivery): Boolean = {
     val id = new ObjectId(delivery.getBody)
     val user = UserDao.get(id)
+    log.info("Processing delivery of {}", id)
     user.map(process).getOrElse(false)
   }
 
