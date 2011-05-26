@@ -3,7 +3,7 @@ package com.persnicketly.mill
 import com.persnicketly.Persnicketly
 import com.persnicketly.readability.Api
 import com.persnicketly.readability.api.BookmarkRequestConditions
-import com.persnicketly.readability.model.{Meta,User}
+import com.persnicketly.readability.model.{Meta,User,UserData}
 import com.persnicketly.persistence.BookmarkDao
 import org.joda.time.DateTime
 
@@ -29,7 +29,10 @@ object BookmarkRequestsQueue extends Queue {
   }
 
   def processDelivery(delivery: Delivery): Boolean = {
-    process(BookmarkRequestConditions(delivery.getBody))
+    val conditions = BookmarkRequestConditions(delivery.getBody)
+    val personalInfo = conditions.user.personalInfo.getOrElse(UserData.Empty)
+    log.info("Processing page {} for {}", conditions.page.getOrElse(0), personalInfo.username)
+    process(conditions)
   }
 
   def process(conditions: BookmarkRequestConditions): Boolean = {
