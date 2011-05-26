@@ -25,11 +25,12 @@ object TokenHelper {
 case class UserData(userId: Option[Int], username: String, firstName: String, lastName: String)
 
 object UserData {
+  val Empty = new UserData(None, "", "", "")
   def apply(username: String, firstName: String, lastName: String): UserData = {
     UserData(None, username, firstName, lastName)
   }
   def apply(userId: Option[Int], username: Option[String], firstName:Option[String], lastName: Option[String]): Option[UserData] = {
-    if (userId.isDefined && username.isDefined && firstName.isDefined && lastName.isDefined) {
+    if (username.isDefined && firstName.isDefined && lastName.isDefined) {
       Some(UserData(userId, username.get, firstName.get, lastName.get))
     } else {
       None
