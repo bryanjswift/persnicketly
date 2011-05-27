@@ -29,7 +29,7 @@ object UserQueue extends Queue {
 
   def process(user: User): Boolean = {
     val meta = Api.bookmarksMeta(Persnicketly.oauthConsumer, user)
-    val added = BookmarkRequestsQueue.addAll(meta, user, user.lastProcessed)
+    val added = meta.flatMap(m => BookmarkRequestsQueue.addAll(m, user, user.lastProcessed))
     UserDao.save(user.copy(lastProcessed = Some(new DateTime)))
     added.isDefined
   }

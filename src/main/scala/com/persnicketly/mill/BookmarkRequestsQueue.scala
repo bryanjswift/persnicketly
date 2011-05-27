@@ -25,7 +25,7 @@ object BookmarkRequestsQueue extends Queue {
 
   def add(since: DateTime, user: User): Option[Seq[BookmarkRequestConditions]] = {
     val meta = Api.bookmarksMeta(Persnicketly.oauthConsumer, user, Some(since))
-    addAll(meta, user, Some(since))
+    meta.flatMap(m => addAll(m, user, Some(since)))
   }
 
   def processDelivery(delivery: Delivery): Boolean = {
@@ -37,7 +37,7 @@ object BookmarkRequestsQueue extends Queue {
 
   def process(conditions: BookmarkRequestConditions): Boolean = {
     val bookmarks = Api.bookmarks(Persnicketly.oauthConsumer, conditions)
-    val saved = bookmarks.map(mark => BookmarkDao.save(mark))
+    val saved = bookmarks.map(_.map(mark => BookmarkDao.save(mark))).getOrElse(List())
     saved.forall(_.id.isDefined)
   }
 }
