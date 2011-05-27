@@ -3,6 +3,7 @@ package com.persnicketly.mill
 import com.persnicketly.{Logging,Persnicketly}
 import com.rabbitmq.client.{Channel,ConnectionFactory,QueueingConsumer}
 import java.util.concurrent.atomic.AtomicInteger
+import scala.collection.mutable.Set
 
 abstract class Queue extends Logging {
   type Delivery = QueueingConsumer.Delivery
@@ -11,6 +12,7 @@ abstract class Queue extends Logging {
   val exchange = ""
   def config = Persnicketly.Config("queue." + queueName).as[QueueConfig]
   def processDelivery(delivery: QueueingConsumer.Delivery): Boolean
+  private val rejectedDeliveries = Set[Long]()
 
   /** Process something within a try/catch/finally with a Channel
     * @param queue configuration used when declaring the channel
@@ -61,7 +63,10 @@ abstract class Queue extends Logging {
           counter.incrementAndGet
           channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false)
         } else {
-          continue = false
+          val tag = delivery.getEnvelope().getDeliveryTag()
+          log.warn("Rejected delivery of {}", tag)
+          channel.basicNack(tag, false, rejectedDeliveries.contains(tag))
+          rejectedDeliveries += tag
         }
       }
       log.warn("Consumer quitting after processing {} deliveries", counter.get)
