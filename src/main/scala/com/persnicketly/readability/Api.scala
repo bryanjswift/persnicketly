@@ -36,7 +36,7 @@ object Api extends Logging {
     import scala.actors.Futures.future
     val marks = future { bookmarks(consumer, BookmarkRequestConditions(user)) }
     request(userUrl, consumer, user) { response =>
-      UserDataExtractor(response).copy(userId = Some(marks().get.head.userId))
+      UserDataExtractor(response).copy(userId = marks().map(_.head.userId))
     }
   }
   private def request[T](url: Request, consumer: Consumer, user: User)(thunk: JsObject => T): Option[T] = {
