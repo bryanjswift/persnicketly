@@ -4,6 +4,7 @@ import com.persnicketly.{Logging,Persnicketly}
 import com.rabbitmq.client.{Channel,ConnectionFactory,QueueingConsumer}
 import java.util.concurrent.atomic.AtomicInteger
 import scala.collection.mutable.Set
+import scala.util.control.Exception.catching
 
 abstract class Queue extends Logging {
   type Delivery = QueueingConsumer.Delivery
@@ -24,24 +25,28 @@ abstract class Queue extends Logging {
     val factory = new ConnectionFactory()
     factory.setHost(Persnicketly.Config("queue.host").or("localhost"))
     factory.setPort(Persnicketly.Config("queue.port").or(5672))
-    val connection = factory.newConnection()
-    val channel = connection.createChannel()
-    try {
-      channel.queueDeclare(config.name, config.durable, config.exclusive, config.autodelete, args)
-      channel.basicQos(config.prefetch)
-      Some(thunk(channel))
-    } catch {
-      case ioe: java.io.IOException => {
-        log.error("Unable to open connection or channel to declare queue", ioe)
+    // result is immediately matched as Either[Exception, T]
+    catching(classOf[java.net.ConnectException], classOf[java.io.IOException], classOf[Exception]).either {
+      val connection = factory.newConnection()
+      val channel = connection.createChannel()
+      try {
+        channel.queueDeclare(config.name, config.durable, config.exclusive, config.autodelete, args)
+        channel.basicQos(config.prefetch)
+        thunk(channel)
+      } finally {
+        connection.close
+        channel.close
+      }
+    } match {
+      case Left(e) => {
+        e match {
+          case ce: java.net.ConnectException => log.error("Unable to connect to AMQP", ce)
+          case ioe: java.io.IOException => log.error("Unable to open connection or channel to declare queue", ioe)
+          case _ => log.error("Unexpected error occured during processing", e)
+        }
         None
       }
-      case e: Exception => {
-        log.error("Error occurred in processing", e)
-        None
-      }
-    } finally {
-      channel.close
-      connection.close
+      case Right(t) => Some(t)
     }
   }
 
