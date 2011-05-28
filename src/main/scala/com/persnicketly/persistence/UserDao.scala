@@ -80,6 +80,7 @@ object UserDao {
     user.lastProcessed.foreach(d => builder += ("last_processed" -> d))
     builder.result
   }
+
   implicit def dbobject2user(o: DBObject): User = {
     val rtv = o.getAs[String]("request_token_value")
     val rts = o.getAs[String]("request_token_secret")
