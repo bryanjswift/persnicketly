@@ -24,4 +24,5 @@ object BookmarkRequestConditions {
   def apply(page: Int, count: Int, since: Option[DateTime], user: User) = {
     new BookmarkRequestConditions(Some(page), Some(count), since, user)
   }
+  def apply(user: User) = new BookmarkRequestConditions(None, None, None, user)
 }
