@@ -34,8 +34,6 @@ object Persnicketly {
   opts.addOption("m", "mill", false, "Start the queue processing mill")
   opts.addOption("w", "web", false, "Start the web server")
 
-  private val parser = new GnuParser
-
   def Config: Configuration = {
     log4jResource.update
     confResource.value.get
@@ -43,6 +41,7 @@ object Persnicketly {
 
   def main(args:Array[String]): Unit = {
     log.info("Persnicketly args -- {}", args)
+    val parser = new GnuParser
     val options = parser.parse(opts, args)
     if (options.hasOption("config")) {
       confResource = new WatchedResource(options.getOptionValue("config"))(confProducer)
