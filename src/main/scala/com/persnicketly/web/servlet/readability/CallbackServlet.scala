@@ -20,16 +20,19 @@ class CallbackServlet extends Servlet {
 
   override def doGet(helper: HttpHelper) {
     val verifier = helper("oauth_verifier").get
-    val user = UserDao.get(helper("oauth_token").get)
-    val token = user.get.requestToken
+
+    // get user based on request token
+    val user = UserDao.get(helper("oauth_token").get).get
+    val token = user.requestToken
     log.info("auth_token - {} :: verifier - {}", token, verifier)
+
+    // Request an access token
     val accessToken = Auth.access_token(Persnicketly.oauthConsumer, token, verifier)
-    val consumer = Persnicketly.oauthConsumer
     log.info("access_token - {}", accessToken)
-    var updatedUser = user.get.copy(accessToken = Some(accessToken), verifier = Some(verifier))
-    val userInfo = Api.currentUser(consumer, updatedUser)
-    updatedUser = updatedUser.copy(personalInfo = userInfo)
-    val dbUser = UserDao.save(updatedUser)
+
+    // Get username, first name, last name and userId
+    var updatedUser = user.copy(accessToken = Some(accessToken), verifier = Some(verifier))
+    val dbUser = UserDao.save(updatedUser.copy(personalInfo = Api.currentUser(Persnicketly.oauthConsumer, updatedUser)))
     log.info("setting _user cookie to {}", dbUser.id.get.toString)
     helper.cookie("_user", dbUser.id.get.toString)
     UserQueue.add(dbUser)
