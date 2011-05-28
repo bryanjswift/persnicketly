@@ -6,11 +6,12 @@ import dispatch.json.Js._
 import dispatch.json.JsHttp.requestToJsHandlers
 import dispatch.oauth.Consumer
 import dispatch.oauth.OAuth.Request2RequestSigner
+import com.persnicketly.Logging
 import com.persnicketly.readability.model.{Bookmark, Meta, User, UserData}
 import com.persnicketly.readability.api.{BookmarkExtractor, BookmarkRequestConditions, MetaExtractor, UserDataExtractor}
 import org.joda.time.DateTime
 
-object Api {
+object Api extends Logging {
   private val bookmarksUrl = url("https://www.readability.com/api/rest/v1/bookmarks")
   private val userUrl = url("https://www.readability.com/api/rest/v1/users/_current")
   private val statusCodes = { code: Int => List(200, 201, 202, 203, 204, 400, 401, 403, 404, 409, 500) contains code }
@@ -40,6 +41,7 @@ object Api {
     val http = new Log4jHttp
     val request = url <@ (consumer, user.accessToken.get)
     val response = http.when(statusCodes)(request ># obj)()
+    log.debug("Request to '{}' responded with '{}'", request.path, response.toString)
     // if this throws an exception we never shutdown http
     val result = if (isError(response)) { None } else { Some(thunk(response)) }
     http.shutdown
