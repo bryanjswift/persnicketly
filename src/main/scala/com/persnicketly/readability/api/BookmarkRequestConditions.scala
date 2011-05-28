@@ -7,7 +7,8 @@ import org.joda.time.DateTime
 
 case class BookmarkRequestConditions(
       page: Option[Int],
-      count: Option[Int], since: Option[DateTime],
+      count: Option[Int],
+      since: Option[DateTime],
       user: User) extends Serializer {
 
   val serialVersionUID = 147389180L
@@ -24,5 +25,5 @@ object BookmarkRequestConditions {
   def apply(page: Int, count: Int, since: Option[DateTime], user: User) = {
     new BookmarkRequestConditions(Some(page), Some(count), since, user)
   }
-  def apply(user: User) = new BookmarkRequestConditions(None, None, None, user)
+  def apply(count: Int, user: User) = new BookmarkRequestConditions(None, Some(count), None, user)
 }
