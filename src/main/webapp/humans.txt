@@ -13,13 +13,13 @@
   Location: New York, NY
 
 /* THANKS */
-
   Readability: http://www.readability.com
   Favrd: http://favrd.textism.com
 
 /* SITE */
   Standards: HTML5, CSS3
-  Components: MongoDB, Databinder Dispatch, Jetty, Google Guice, Jersey, Fig, Velocity, Metrics
+  Components: SBT, Casbah, Databinder Dispatch, Jetty, Google Guice, Jersey, Fig, Velocity, Metrics
+  Server: MongoDB, RabbitMQ, Nginx, OpenJDK
   Software: HTML5 Boilerplate, MacVim, Photoshop CS5, IntelliJ IDEA
   Hardware: Coded on an 11" MacBook Air
   
