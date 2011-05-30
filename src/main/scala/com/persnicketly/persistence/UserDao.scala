@@ -39,6 +39,14 @@ class UserDao {
     users.findOne(MongoDBObject("request_token_value" -> requestToken)).map(o => dbobject2user(o))
 
   /**
+   * Get a User by user_id
+   * @param userId - unique id provided by Readability API
+   * @return Some(User) if found None otherwise
+   */
+  def get(userId: Int): Option[User] =
+    users.findOne(MongoDBObject("user_id" -> userId)).map(o => dbobject2user(o))
+
+  /**
    * Save user data by updating existing record or inserting new
    * @param user data to save
    * @return User as it now exists in database
