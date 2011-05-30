@@ -12,7 +12,7 @@ class BookmarkDao {
   import Persnicketly.Config
   RegisterJodaTimeConversionHelpers()
   private val addresses = Config("db.hosts").or(List(ServerAddress("localhost", 27017)))
-  val connection = MongoConnection(addresses.map(_.mongo))
+  val connection = Connection(addresses.map(_.mongo))
   val bookmarks = connection(Config("db.name").or("persnicketly_test"))("bookmarks")
 
   /**
