@@ -87,6 +87,7 @@ object UserDao {
       builder += "last_name" -> info.lastName
     })
     user.lastProcessed.foreach(d => builder += ("last_processed" -> d))
+    builder += ("last_updated" -> new DateTime)
     builder.result
   }
 
