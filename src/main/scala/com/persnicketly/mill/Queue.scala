@@ -34,8 +34,8 @@ abstract class Queue extends Logging {
         channel.basicQos(config.prefetch)
         thunk(channel)
       } finally {
-        connection.close
         channel.close
+        connection.close
       }
     } match {
       case Left(e) => {
