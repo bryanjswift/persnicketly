@@ -1,0 +1,9 @@
+66.228.40.182      web1.persnicketly.com          web1
+66.228.40.182      mongo1.persnicketly.com        mongo1        persnicketly.com
+66.228.50.7        web2.persnicketly.com          web2
+66.228.50.7        mongo2.persnicketly.com        mongo2
+173.45.242.45      mongo3.persnicketly.com        mongo3        bryanjswift.com
+66.228.40.182      persnicketly.com
+66.228.40.182      munin.persnicketly.com
+66.228.50.7        db.persnicketly.com
+66.228.50.7        mint.persnicketly.com
