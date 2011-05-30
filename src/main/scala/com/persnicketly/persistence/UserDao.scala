@@ -24,11 +24,11 @@ class UserDao {
 
   /**
    * Get a User by object id
-   * @param userId - identifier assigned to User object when stored
+   * @param _id - identifier assigned to User object when stored
    * @return Some(User) if found None otherwise
    */
-  def get(userId: ObjectId): Option[User] =
-    users.findOneByID(userId).map(o => dbobject2user(o))
+  def get(_id: ObjectId): Option[User] =
+    users.findOneByID(_id).map(o => dbobject2user(o))
 
   /**
    * Get a User by request token
