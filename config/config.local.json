@@ -56,9 +56,8 @@
   },
 
   "db": {
-    "host": "127.0.0.1",
-    "name": "persnicketly",
-    "port": 27017
+    "hosts": [{ "host": "127.0.0.1", "port": 27017 }],
+    "name": "persnicketly"
   },
 
   "webapp": {

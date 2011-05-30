@@ -11,7 +11,8 @@ class UserDao {
   import UserDao._
   import Persnicketly.Config
   RegisterJodaTimeConversionHelpers()
-  val connection = MongoConnection(Config("db.host").or("localhost"), Config("db.port").or(27017))
+  private val addresses = Config("db.hosts").or(List(ServerAddress("localhost", 27017)))
+  val connection = MongoConnection(addresses.map(_.mongo))
   val users = connection(Config("db.name").or("persnicketly_test"))("users")
 
   /**
