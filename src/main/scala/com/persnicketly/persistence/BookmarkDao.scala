@@ -57,14 +57,14 @@ object BookmarkDao {
   implicit def dbobject2bookmark(o: DBObject): Bookmark = {
     Bookmark(
       o._id,
-      o.getAs[Int]("bookmark_id").getOrElse(0),
-      o.getAs[Int]("user_id").getOrElse(0),
-      o.getAs[Boolean]("favorite").getOrElse(false),
-      o.getAs[Boolean]("archive").getOrElse(false),
+      o.getAsOrElse("bookmark_id", 0),
+      o.getAsOrElse("user_id", 0),
+      o.getAsOrElse("favorite", false),
+      o.getAsOrElse("archive", false),
       Article(
-        o.getAs[String]("article_id").getOrElse(""),
-        o.getAs[String]("article_title").getOrElse(""),
-        o.getAs[String]("article_url").getOrElse(""),
+        o.getAsOrElse("article_id", ""),
+        o.getAsOrElse("article_title", ""),
+        o.getAsOrElse("article_url", ""),
         o.getAs[String]("article_excerpt")
       ),
       o.getAs[DateTime]("archive_date"),
