@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger
 import scala.collection.mutable.Set
 import scala.util.control.Exception.catching
 
-abstract class Queue extends Logging {
+trait Queue extends Logging {
   type Delivery = QueueingConsumer.Delivery
   def queueName: String
   val args: java.util.Map[String, Object] = null
