@@ -12,14 +12,18 @@ class ScoredArticleDao extends Dao {
   val collectionName = "articles"
 
   // DBObject types for getting aggregate data
-  private val key = MongoDBObject("article_id" -> 1, "favorite" -> 1, "article_title" -> 1, "article_url" -> 1, "article_excerpt" -> 1)
+  private val key = MongoDBObject("article_id" -> 1, "article_title" -> 1, "article_url" -> 1, "article_excerpt" -> 1)
   private val cond = MongoDBObject()
-  private val initial = MongoDBObject("score" -> 0)
-  private val reduce = "function(o,p) { if (o.favorite) { p.score += 2; } else { p.score += 1; } }"
+  private val initial = MongoDBObject("count" -> 0, "favorite_count" -> 0)
+  private val reduce = """function(o,p) {
+                            if (o.favorite) { p.favorite_count++; }
+                            p.count++;
+                          }"""
+  private val finalizefcn = """function(out) { out.score = out.favorite_count + out.count; }"""
 
   def all(): List[ScoredArticle] = {
     val bookmarkDao = new BookmarkDao
-    val articles = bookmarkDao.collection.group(key, cond, initial, reduce)
+    val articles = bookmarkDao.collection.group(key, cond, initial, reduce, finalizefcn)
     articles.map(dbobject2article).toList
   }
 
@@ -41,6 +45,8 @@ object ScoredArticleDao {
     builder += "article_title" -> scored.article.title
     builder += "article_url" -> scored.article.url
     scored.article.excerpt.foreach(ex => builder += ("article_excerpt" -> ex))
+    builder += "favorite_count" -> scored.favoriteCount
+    builder += "count" -> scored.count
     builder += "score" -> scored.score
     builder.result
   }
@@ -54,6 +60,8 @@ object ScoredArticleDao {
         o.getAsOrElse("article_url", ""),
         o.getAs[String]("article_excerpt")
       ),
+      o.getAsOrElse("favoriteCount", 0),
+      o.getAsOrElse("count", 0),
       o.getAsOrElse("score", 0.0)
     )
   }
