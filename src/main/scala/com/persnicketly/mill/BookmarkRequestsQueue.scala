@@ -12,7 +12,8 @@ object BookmarkRequestsQueue extends Queue {
 
   def addAll(meta: Meta, user: User, since: Option[DateTime] = None): Option[Seq[BookmarkRequestConditions]] = {
     val pageSize = Persnicketly.Config("queue." + queueName + ".perpage").or(25)
-    val numPages = scala.math.ceil(meta.totalCount / pageSize).toInt
+    val numPages = scala.math.ceil(meta.totalCount.toDouble / pageSize).toInt
+    log.debug("Found {} pages and {} total bookmarks to fetch", numPages, meta.totalCount)
     val conditions = for (i <- 1 to numPages) yield BookmarkRequestConditions(i, pageSize, since, user)
     withChannel(config) { channel =>
       conditions.foreach(condition => {
