@@ -57,4 +57,10 @@ object ScoredArticleDao {
       o.getAsOrElse("score", 0.0)
     )
   }
+
+  private def dao = { new ScoredArticleDao }
+
+  def all() = { dao.all() }
+
+  def save(scored: ScoredArticle) = { dao.save(scored) }
 }
