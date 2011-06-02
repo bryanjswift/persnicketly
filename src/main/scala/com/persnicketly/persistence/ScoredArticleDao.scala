@@ -7,12 +7,9 @@ import com.persnicketly.model.ScoredArticle
 import com.persnicketly.readability.model.Article
 import org.bson.types.ObjectId
 
-class ScoredArticleDao extends Logging {
+class ScoredArticleDao extends Dao {
   import ScoredArticleDao._
-  import Persnicketly.Config
-  private val addresses = Config("db.hosts").or(List(ServerAddress("localhost", 27017)))
-  val connection = Connection(addresses.map(_.mongo))
-  val collection = connection(Config("db.name").or("persnicketly_test"))("articles")
+  val collectionName = "articles"
 
   // DBObject types for getting aggregate data
   private val key = MongoDBObject("article_id" -> 1, "favorite" -> 1, "article_title" -> 1, "article_url" -> 1, "article_excerpt" -> 1)

@@ -7,13 +7,9 @@ import com.persnicketly.readability.model.{TokenHelper, User, UserData}
 import org.bson.types.ObjectId
 import org.joda.time.DateTime
 
-class UserDao {
+class UserDao extends Dao {
   import UserDao._
-  import Persnicketly.Config
-  RegisterJodaTimeConversionHelpers()
-  private val addresses = Config("db.hosts").or(List(ServerAddress("localhost", 27017)))
-  val connection = Connection(addresses.map(_.mongo))
-  val collection = connection(Config("db.name").or("persnicketly_test"))("users")
+  val collectionName = "users"
 
   /**
    * Provide a way to get all the verified users in the DB

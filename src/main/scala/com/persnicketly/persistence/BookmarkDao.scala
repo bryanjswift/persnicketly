@@ -7,13 +7,9 @@ import com.persnicketly.readability.model.{Article, Bookmark}
 import org.bson.types.ObjectId
 import org.joda.time.DateTime
 
-class BookmarkDao {
+class BookmarkDao extends Dao {
   import BookmarkDao._
-  import Persnicketly.Config
-  RegisterJodaTimeConversionHelpers()
-  private val addresses = Config("db.hosts").or(List(ServerAddress("localhost", 27017)))
-  val connection = Connection(addresses.map(_.mongo))
-  val collection = connection(Config("db.name").or("persnicketly_test"))("bookmarks")
+  val collectionName = "bookmarks"
 
   /**
    * Save bookmark data by updating existing record or inserting new
