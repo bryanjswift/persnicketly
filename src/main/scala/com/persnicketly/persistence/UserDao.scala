@@ -13,14 +13,14 @@ class UserDao {
   RegisterJodaTimeConversionHelpers()
   private val addresses = Config("db.hosts").or(List(ServerAddress("localhost", 27017)))
   val connection = Connection(addresses.map(_.mongo))
-  val users = connection(Config("db.name").or("persnicketly_test"))("users")
+  val collection = connection(Config("db.name").or("persnicketly_test"))("users")
 
   /**
    * Provide a way to get all the verified users in the DB
    * @return an Iterator of Users
    */
   def all(): List[User] =
-    users.find("username" $exists true).map(o => dbobject2user(o)).toList
+    collection.find("username" $exists true).map(o => dbobject2user(o)).toList
 
   /**
    * Get a User by object id
@@ -28,7 +28,7 @@ class UserDao {
    * @return Some(User) if found None otherwise
    */
   def get(_id: ObjectId): Option[User] =
-    users.findOneByID(_id).map(o => dbobject2user(o))
+    collection.findOneByID(_id).map(o => dbobject2user(o))
 
   /**
    * Get a User by request token
@@ -36,7 +36,7 @@ class UserDao {
    * @return Some(User) if found None otherwise
    */
   def get(requestToken: String): Option[User] =
-    users.findOne(MongoDBObject("request_token_value" -> requestToken)).map(o => dbobject2user(o))
+    collection.findOne(MongoDBObject("request_token_value" -> requestToken)).map(o => dbobject2user(o))
 
   /**
    * Get a User by user_id
@@ -44,7 +44,7 @@ class UserDao {
    * @return Some(User) if found None otherwise
    */
   def get(userId: Int): Option[User] =
-    users.findOne(MongoDBObject("user_id" -> userId)).map(o => dbobject2user(o))
+    collection.findOne(MongoDBObject("user_id" -> userId)).map(o => dbobject2user(o))
 
   /**
    * Save user data by updating existing record or inserting new
@@ -56,7 +56,7 @@ class UserDao {
       case Some(id) => MongoDBObject("_id" -> id)
       case None => MongoDBObject("request_token_value" -> user.requestToken.value)
     }
-    users.update(query, user, upsert = true, multi = false)
+    collection.update(query, user, upsert = true, multi = false)
     get(user.requestToken.value).get
   }
 

@@ -12,8 +12,7 @@ class ScoredArticleDao extends Logging {
   import Persnicketly.Config
   private val addresses = Config("db.hosts").or(List(ServerAddress("localhost", 27017)))
   val connection = Connection(addresses.map(_.mongo))
-  val articles = connection(Config("db.name").or("persnicketly_test"))("articles")
-  val bookmarks = connection(Config("db.name").or("persnicketly_test"))("bookmarks")
+  val collection = connection(Config("db.name").or("persnicketly_test"))("articles")
 
   // DBObject types for getting aggregate data
   private val key = MongoDBObject("article_id" -> 1, "favorite" -> 1, "article_title" -> 1, "article_url" -> 1, "article_excerpt" -> 1)
@@ -22,7 +21,8 @@ class ScoredArticleDao extends Logging {
   private val reduce = "function(o,p) { if (o.favorite) { p.score += 2; } else { p.score += 1; } }"
 
   def all(): List[ScoredArticle] = {
-    val articles = bookmarks.group(key, cond, initial, reduce)
+    val bookmarkDao = new BookmarkDao
+    val articles = bookmarkDao.collection.group(key, cond, initial, reduce)
     articles.map(dbobject2article).toList
   }
 
@@ -31,8 +31,8 @@ class ScoredArticleDao extends Logging {
       case Some(id) => MongoDBObject("_id" -> id)
       case None => MongoDBObject("article_id" -> scored.article.articleId)
     }
-    articles.update(query, scored, upsert = true, multi = false)
-    articles.findOne(query).get
+    collection.update(query, scored, upsert = true, multi = false)
+    collection.findOne(query).get
   }
 }
 

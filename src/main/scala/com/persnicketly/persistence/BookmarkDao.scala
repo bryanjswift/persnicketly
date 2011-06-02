@@ -13,7 +13,7 @@ class BookmarkDao {
   RegisterJodaTimeConversionHelpers()
   private val addresses = Config("db.hosts").or(List(ServerAddress("localhost", 27017)))
   val connection = Connection(addresses.map(_.mongo))
-  val bookmarks = connection(Config("db.name").or("persnicketly_test"))("bookmarks")
+  val collection = connection(Config("db.name").or("persnicketly_test"))("bookmarks")
 
   /**
    * Save bookmark data by updating existing record or inserting new
@@ -25,8 +25,8 @@ class BookmarkDao {
       case Some(id) => MongoDBObject("_id" -> id)
       case None => MongoDBObject("bookmark_id" -> bookmark.bookmarkId)
     }
-    bookmarks.update(query, bookmark, upsert = true, multi = false)
-    bookmarks.findOne(query).get
+    collection.update(query, bookmark, upsert = true, multi = false)
+    collection.findOne(query).get
   }
 
   /**
