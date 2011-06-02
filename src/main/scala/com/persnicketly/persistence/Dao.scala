@@ -11,6 +11,6 @@ trait Dao extends Logging {
   def collectionName: String
 
   private val addresses = Config("db.hosts").or(List(ServerAddress("localhost", 27017)))
-  val connection = Connection(addresses.map(_.mongo))
-  val collection = connection(Config("db.name").or("persnicketly_test"))(collectionName)
+  lazy val connection = Connection(addresses.map(_.mongo))
+  lazy val collection = connection(Config("db.name").or("persnicketly_test"))(collectionName)
 }
