@@ -44,6 +44,7 @@ object ScoredArticleDao {
     builder += "score" -> scored.score
     builder.result
   }
+
   implicit def dbobject2article(o: DBObject): ScoredArticle = {
     ScoredArticle(
       o._id,

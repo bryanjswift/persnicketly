@@ -50,6 +50,7 @@ object BookmarkDao {
     builder += "article_excerpt" -> bookmark.article.excerpt
     builder.result
   }
+
   implicit def dbobject2bookmark(o: DBObject): Bookmark = {
     Bookmark(
       o._id,
