@@ -12,7 +12,7 @@ class ArticlesServlet extends Servlet with Logging {
 
   override def doGet(helper: HttpHelper) {
     val userId = helper.cookie("_user")
-    val articles = ScoredArticleDao.all()
+    val articles = Nil // ScoredArticleDao.find(10)
     val view = new VelocityView("/templates/articleList.vm")
     helper.response.setContentType(MediaType.TEXT_HTML)
     view.render(Map[String,Any]("articles" -> articles, "user" -> userId), helper.response)
