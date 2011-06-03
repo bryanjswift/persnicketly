@@ -55,14 +55,6 @@ class UserDao extends Dao {
     collection.update(query, user, upsert = true, multi = false)
     get(user.requestToken.value).get
   }
-
-  /**
-   * Before letting this object get collected make sure the connection is closed
-   */
-  override def finalize() = {
-    super.finalize()
-    connection.close
-  }
 }
 
 object UserDao {

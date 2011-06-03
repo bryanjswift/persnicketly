@@ -24,14 +24,6 @@ class BookmarkDao extends Dao {
     collection.update(query, bookmark, upsert = true, multi = false)
     collection.findOne(query).get
   }
-
-  /**
-   * Before letting this object get collected make sure the connection is closed
-   */
-  override def finalize() = {
-    super.finalize()
-    connection.close
-  }
 }
 
 object BookmarkDao {
