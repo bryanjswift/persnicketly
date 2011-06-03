@@ -21,7 +21,8 @@ class ScoredArticleDao extends Dao {
   collection.ensureIndex(MongoDBObject("score" -> -1))
 
   def find(limit: Int): List[ScoredArticle] = {
-    Nil
+    val articles = collection.find("score" $gt 2, MongoDBObject.empty, 0, limit)
+    (articles $orderby MongoDBObject("score" -> -1)).map(dbobject2article).toList
   }
 
   def compute(): List[ScoredArticle] = {
