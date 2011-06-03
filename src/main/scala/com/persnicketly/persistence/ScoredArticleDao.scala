@@ -15,10 +15,7 @@ class ScoredArticleDao extends Dao {
   private val key = MongoDBObject("article_id" -> 1, "article_title" -> 1, "article_url" -> 1, "article_excerpt" -> 1)
   private val cond = MongoDBObject()
   private val initial = MongoDBObject("count" -> 0, "favorite_count" -> 0)
-  private val reduce = """function(o,p) {
-                            if (o.favorite) { p.favorite_count++; }
-                            p.count++;
-                          }"""
+  private val reduce = """function(o,p) { if (o.favorite) { p.favorite_count++; } p.count++; }"""
   private val finalizefcn = """function(out) { out.score = out.favorite_count + out.count; }"""
 
   def all(): List[ScoredArticle] = {
