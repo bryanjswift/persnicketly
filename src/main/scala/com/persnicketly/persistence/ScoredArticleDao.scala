@@ -19,6 +19,11 @@ class ScoredArticleDao extends Dao {
   // Initialize indexes
   collection.ensureIndex(MongoDBObject("article_id" -> 1))
   collection.ensureIndex(MongoDBObject("score" -> 1))
+
+  def find(limit: Int): List[ScoredArticle] = {
+    Nil
+  }
+
   def compute(): List[ScoredArticle] = {
     val bookmarks = new BookmarkDao
     val articles = bookmarks.collection.group(key, cond, initial, reduce)
