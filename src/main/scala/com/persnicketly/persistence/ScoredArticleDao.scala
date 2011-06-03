@@ -13,16 +13,15 @@ class ScoredArticleDao extends Dao {
   // DBObject types for getting aggregate data
   private val key = MongoDBObject("article_id" -> 1, "article_title" -> 1, "article_url" -> 1, "article_excerpt" -> 1)
   private val cond = MongoDBObject()
-  private val initial = MongoDBObject("count" -> 0, "favorite_count" -> 0)
-  private val reduce = """function(o,p) { if (o.favorite) { p.favorite_count++; } p.count++; }"""
-  private val finalizefcn = """function(out) { out.score = out.favorite_count + out.count; }"""
+  private val initial = MongoDBObject("count" -> 0, "favorite_count" -> 0, "score" -> 0)
+  private val reduce = """function(o,p) { if (o.favorite) { p.favorite_count++; p.score++; } p.count++; p.score++; }"""
 
   // Initialize indexes
   collection.ensureIndex(MongoDBObject("article_id" -> 1))
   collection.ensureIndex(MongoDBObject("score" -> 1))
-  def all(): List[ScoredArticle] = {
-    val bookmarkDao = new BookmarkDao
-    val articles = bookmarkDao.collection.group(key, cond, initial, reduce, finalizefcn)
+  def compute(): List[ScoredArticle] = {
+    val bookmarks = new BookmarkDao
+    val articles = bookmarks.collection.group(key, cond, initial, reduce)
     articles.map(dbobject2article).toList
   }
 
@@ -59,15 +58,15 @@ object ScoredArticleDao {
         o.getAsOrElse("article_url", ""),
         o.getAs[String]("article_excerpt")
       ),
-      o.getAsOrElse("favoriteCount", 0),
-      o.getAsOrElse("count", 0),
+      o.getAsOrElse("favoriteCount", 0.0).toInt,
+      o.getAsOrElse("count", 0.0).toInt,
       o.getAsOrElse("score", 0.0)
     )
   }
 
   private def dao = { new ScoredArticleDao }
 
-  def all() = { dao.all() }
+  def compute() = { dao.compute() }
 
   def save(scored: ScoredArticle) = { dao.save(scored) }
 }
