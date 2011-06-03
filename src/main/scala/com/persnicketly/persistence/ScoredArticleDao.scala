@@ -1,7 +1,6 @@
 package com.persnicketly.persistence
 
 import com.mongodb.casbah.Imports._
-import com.mongodb.casbah.commons.conversions.scala._
 import com.persnicketly.{Logging, Persnicketly}
 import com.persnicketly.model.ScoredArticle
 import com.persnicketly.readability.model.Article
