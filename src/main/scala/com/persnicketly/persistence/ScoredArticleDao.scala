@@ -17,6 +17,9 @@ class ScoredArticleDao extends Dao {
   private val reduce = """function(o,p) { if (o.favorite) { p.favorite_count++; } p.count++; }"""
   private val finalizefcn = """function(out) { out.score = out.favorite_count + out.count; }"""
 
+  // Initialize indexes
+  collection.ensureIndex(MongoDBObject("article_id" -> 1))
+  collection.ensureIndex(MongoDBObject("score" -> 1))
   def all(): List[ScoredArticle] = {
     val bookmarkDao = new BookmarkDao
     val articles = bookmarkDao.collection.group(key, cond, initial, reduce, finalizefcn)
