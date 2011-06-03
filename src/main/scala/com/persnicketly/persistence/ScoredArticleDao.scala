@@ -63,8 +63,8 @@ object ScoredArticleDao {
         o.getAsOrElse("article_url", ""),
         o.getAs[String]("article_excerpt")
       ),
-      o.getAsOrElse("favoriteCount", 0.0).toInt,
-      o.getAsOrElse("count", 0.0).toInt,
+      o.getAsOrElse("favorite_count", 0.0),
+      o.getAsOrElse("count", 0.0),
       o.getAsOrElse("score", 0.0)
     )
   }
