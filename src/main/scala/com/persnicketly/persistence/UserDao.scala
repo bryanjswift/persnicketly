@@ -11,6 +11,10 @@ class UserDao extends Dao {
   import UserDao._
   val collectionName = "users"
 
+  // Initialize indexes
+  collection.ensureIndex(MongoDBObject("user_id" -> 1))
+  collection.ensureIndex(MongoDBObject("request_token_value" -> 1))
+
   /**
    * Provide a way to get all the verified users in the DB
    * @return an Iterator of Users

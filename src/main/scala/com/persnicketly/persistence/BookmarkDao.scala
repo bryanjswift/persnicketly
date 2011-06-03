@@ -11,6 +11,10 @@ class BookmarkDao extends Dao {
   import BookmarkDao._
   val collectionName = "bookmarks"
 
+  // Initialize indexes
+  collection.ensureIndex(MongoDBObject("article_id" -> 1, "user_id" -> 1))
+  collection.ensureIndex(MongoDBObject("bookmark_id" -> 1))
+
   /**
    * Save bookmark data by updating existing record or inserting new
    * @param bookmark data to save
