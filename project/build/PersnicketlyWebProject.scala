@@ -47,10 +47,10 @@ class PersnicketlyWebProject(info: ProjectInfo) extends DefaultWebProject(info)
   // Command line argument processing
   val cli = "commons-cli" % "commons-cli" % "1.2"
   // MongoDB
-  val casbahQuery = "com.mongodb.casbah" %% "casbah-query" % "2.1.5.0"
-  val casbahCore = "com.mongodb.casbah" %% "casbah-core" % "2.1.5.0"
-  val casbahCommons = "com.mongodb.casbah" %% "casbah-commons" % "2.1.5.0"
-  val casbahGridFs = "com.mongodb.casbah" %% "casbah-gridfs" % "2.1.5.0"
+  val casbahQuery = "com.mongodb.casbah" %% "casbah-query" % "2.1.5-1"
+  val casbahCore = "com.mongodb.casbah" %% "casbah-core" % "2.1.5-1"
+  val casbahCommons = "com.mongodb.casbah" %% "casbah-commons" % "2.1.5-1"
+  val casbahGridFs = "com.mongodb.casbah" %% "casbah-gridfs" % "2.1.5-1"
   // RabbitMQ
   val rabbitmq = "com.rabbitmq" % "amqp-client" % "2.4.1"
 
