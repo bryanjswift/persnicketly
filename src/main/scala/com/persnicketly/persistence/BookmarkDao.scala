@@ -61,7 +61,9 @@ object BookmarkDao {
       o.getAs[DateTime]("update_date")
     )
   }
-  def dao = { new BookmarkDao }
+
+  private def dao = { new BookmarkDao }
+
   def save(bookmark: Bookmark) = { dao.save(bookmark) }
 }
 
