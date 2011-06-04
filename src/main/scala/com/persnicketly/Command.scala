@@ -21,6 +21,4 @@ trait Command extends Logging {
     t.start
     t
   }
-
-  implicit def unitfcn2runnable(work: => Unit): Runnable = new Runnable() { override def run() = work }
 }
