@@ -61,6 +61,7 @@ object ScoredArticleDao {
       Article(
         o.getAsOrElse("article_id", ""),
         o.getAsOrElse("article_title", ""),
+        o.getAsOrElse("article_domain", ""),
         o.getAsOrElse("article_url", ""),
         o.getAs[String]("article_excerpt")
       ),

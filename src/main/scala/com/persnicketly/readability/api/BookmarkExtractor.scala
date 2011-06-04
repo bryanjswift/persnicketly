@@ -23,6 +23,7 @@ object BookmarkExtractor extends Extract[Bookmark] {
             Article(
               BookmarkJson.ArticleJson.articleId(js),
               BookmarkJson.ArticleJson.title(js),
+              BookmarkJson.ArticleJson.domain(js),
               BookmarkJson.ArticleJson.url(js),
               BookmarkJson.ArticleJson.excerpt.unapply(js)
             ),
@@ -48,6 +49,7 @@ object BookmarkJson extends Js {
     val title = 'title ? str
     val url = 'url ? str
     val excerpt = 'excerpt ? str
+    val domain = 'domain ? str
     val articleId = 'id ? str
     val keys = List(JsString('title), JsString('url), JsString('excerpt), JsString('id))
   }

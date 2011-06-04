@@ -42,6 +42,7 @@ object BookmarkDao {
     if (bookmark.updatedDate.isDefined) { builder += "update_date" -> bookmark.updatedDate.get }
     builder += "article_id" -> bookmark.article.articleId
     builder += "article_title" -> bookmark.article.title
+    builder += "article_domain" -> bookmark.article.domain
     builder += "article_url" -> bookmark.article.url
     builder += "article_excerpt" -> bookmark.article.excerpt
     builder.result
@@ -57,6 +58,7 @@ object BookmarkDao {
       Article(
         o.getAsOrElse("article_id", ""),
         o.getAsOrElse("article_title", ""),
+        o.getAsOrElse("article_domain", ""),
         o.getAsOrElse("article_url", ""),
         o.getAs[String]("article_excerpt")
       ),
