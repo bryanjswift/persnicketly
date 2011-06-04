@@ -83,7 +83,7 @@ object ScoredArticleDao {
 
   def save(scored: ScoredArticle) = { dao.save(scored) }
 
-  def update() = {
+  def update(): Unit = {
     val instance = dao
     val articles = instance.compute
     articles.map(instance.save)
