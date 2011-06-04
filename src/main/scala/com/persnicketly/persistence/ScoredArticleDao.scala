@@ -12,7 +12,7 @@ class ScoredArticleDao extends Dao {
 
   // DBObject types for getting aggregate data
   private val key = MongoDBObject("article_id" -> 1, "article_title" -> 1, "article_domain" -> 1, "article_url" -> 1, "article_excerpt" -> 1)
-  private val cond = MongoDBObject()
+  private val cond = MongoDBObject("processed" -> true)
   private val initial = MongoDBObject("count" -> 0, "favorite_count" -> 0, "score" -> 0)
   private val reduce = """function(o,p) { if (o.favorite) { p.favorite_count++; p.score++; } p.count++; p.score++; }"""
 
@@ -50,6 +50,7 @@ object ScoredArticleDao {
     builder += "article_title" -> scored.article.title
     builder += "article_domain" -> scored.article.domain
     builder += "article_url" -> scored.article.url
+    builder += "article_processed" -> scored.article.processed
     scored.article.excerpt.foreach(ex => builder += ("article_excerpt" -> ex))
     builder += "favorite_count" -> scored.favoriteCount
     builder += "count" -> scored.count
@@ -65,7 +66,8 @@ object ScoredArticleDao {
         o.getAsOrElse("article_title", ""),
         o.getAsOrElse("article_domain", ""),
         o.getAsOrElse("article_url", ""),
-        o.getAs[String]("article_excerpt")
+        o.getAs[String]("article_excerpt"),
+        o.getAsOrElse("article_processed", false)
       ),
       o.getAsOrElse("favorite_count", 0.0),
       o.getAsOrElse("count", 0.0),
@@ -80,4 +82,10 @@ object ScoredArticleDao {
   def find(limit: Int) = { dao.find(limit) }
 
   def save(scored: ScoredArticle) = { dao.save(scored) }
+
+  def update() = {
+    val instance = dao
+    val articles = instance.compute
+    articles.map(instance.save)
+  }
 }

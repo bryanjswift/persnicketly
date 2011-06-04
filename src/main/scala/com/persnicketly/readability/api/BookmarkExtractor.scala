@@ -25,7 +25,8 @@ object BookmarkExtractor extends Extract[Bookmark] {
               BookmarkJson.ArticleJson.title(js),
               BookmarkJson.ArticleJson.domain(js),
               BookmarkJson.ArticleJson.url(js),
-              BookmarkJson.ArticleJson.excerpt.unapply(js)
+              BookmarkJson.ArticleJson.excerpt.unapply(js),
+              BookmarkJson.ArticleJson.processed(js)
             ),
             BookmarkJson.archivedDate.unapply(js).map(format.parseDateTime),
             BookmarkJson.favoritedDate.unapply(js).map(format.parseDateTime),
@@ -51,7 +52,8 @@ object BookmarkJson extends Js {
     val excerpt = 'excerpt ? str
     val domain = 'domain ? str
     val articleId = 'id ? str
-    val keys = List(JsString('title), JsString('url), JsString('excerpt), JsString('id))
+    val processed = 'processed ? bool
+    val keys = List(JsString('title), JsString('domain), JsString('url), JsString('id))
   }
   val favoritedDate = 'date_favorited ? str
   val archivedDate = 'date_archived ? str

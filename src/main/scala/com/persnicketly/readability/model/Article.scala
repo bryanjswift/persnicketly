@@ -5,5 +5,6 @@ case class Article(
   title: String,
   domain: String,
   url: String,
-  excerpt: Option[String])
+  excerpt: Option[String],
+  processed: Boolean)
 

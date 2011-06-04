@@ -45,6 +45,7 @@ object BookmarkDao {
     builder += "article_domain" -> bookmark.article.domain
     builder += "article_url" -> bookmark.article.url
     builder += "article_excerpt" -> bookmark.article.excerpt
+    builder += "article_processed" -> bookmark.article.processed
     builder.result
   }
 
@@ -60,7 +61,8 @@ object BookmarkDao {
         o.getAsOrElse("article_title", ""),
         o.getAsOrElse("article_domain", ""),
         o.getAsOrElse("article_url", ""),
-        o.getAs[String]("article_excerpt")
+        o.getAs[String]("article_excerpt"),
+        o.getAsOrElse("article_processed", false)
       ),
       o.getAs[DateTime]("archive_date"),
       o.getAs[DateTime]("favorite_date"),
