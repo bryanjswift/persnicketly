@@ -20,18 +20,19 @@
         <h2>Top Bookmarks</h2>
         <ul class="articles">
           #foreach( $scored in $articles )
+          #set( $article = $scored.article() )
           <li>
-            <h3><a href="/article/${scored.article().articleId()}/read">${scored.article().title()}</a></h3>
-            #if (${scored.article().excerpt().isDefined()})
-            <p>${scored.article().excerpt().get()}</p>
+            <h3><a href="/article/${article.articleId()}/read">${article.title()}</a></h3>
+            #if (${article.excerpt().isDefined()})
+            <p>${article.excerpt().get()}</p>
             #end
-            #if (${scored.article().domain()})
-            <a href="${scored.article().url()}">
-              <img src="http://${scored.article().domain()}/favicon.ico" alt="${scored.article().domain()}" width="16" height="16" />
-              <span>${scored.article().domain()}</span>
+            #if (${article.domain()})
+            <a href="${article.url()}">
+              <img src="http://${article.domain()}/favicon.ico" alt="${article.domain()}" width="16" height="16" />
+              <span>${article.domain()}</span>
             </a>
             #end
-            <a href="/article/${scored.article().articleId()}/add">Add</a>
+            <a href="/article/${article.articleId()}/add">Add</a>
           </li>
           #end
         </ul>
