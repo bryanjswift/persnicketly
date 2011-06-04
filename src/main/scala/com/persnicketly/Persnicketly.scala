@@ -27,22 +27,23 @@ object Persnicketly {
   lazy val oauthConsumer = new Consumer("Persnicketly", "ynbCCZ5q7ggBGAkaAGFngRDAChg4pbYm")
   lazy val oauthCallback = String.format("http://%s/readability/callback", Config("http.domain").or("persnicketly.com"))
 
-  private val opts = new CliOptions
-  opts.addOption("v", "velocity", true, "Path to velocity configuration file (velocity.properties)")
-  opts.addOption("l", "log4j", true, "Path to log4j configuration file (log4j.properties)")
-  opts.addOption("c", "config", true, "Path json configuration file (config.json)")
-  opts.addOption("m", "mill", false, "Start the queue processing mill")
-  opts.addOption("w", "web", false, "Start the web server")
+  val cliOpts = new CliOptions
+  cliOpts.addOption("v", "velocity", true, "Path to velocity configuration file (velocity.properties)")
+  cliOpts.addOption("l", "log4j", true, "Path to log4j configuration file (log4j.properties)")
+  cliOpts.addOption("c", "config", true, "Path json configuration file (config.json)")
+  cliOpts.addOption("m", "mill", false, "Start the queue processing mill")
+  cliOpts.addOption("w", "web", false, "Start the web server")
+  cliOpts.addOption("s", "scheduled", false, "Schedule periodic mill updates")
 
   def Config: Configuration = {
     log4jResource.update
     confResource.value.get
   }
 
-  def main(args:Array[String]): Unit = {
+  def main(args: Array[String]): Unit = {
     log.info("Persnicketly args -- {}", args)
     val parser = new GnuParser
-    val options = parser.parse(opts, args)
+    val options = parser.parse(cliOpts, args)
     if (options.hasOption("config")) {
       confResource = new WatchedResource(options.getOptionValue("config"))(confProducer)
     }
@@ -55,11 +56,11 @@ object Persnicketly {
     var threads: List[Thread] = Nil
     // start the mill
     if (options.hasOption("mill")) {
-      Foreman.start ::: threads
+      Foreman.start(args) ::: threads
     }
     // start the web
     if (options.hasOption("web")) {
-      Spider.start ::: threads
+      Spider.start(args) ::: threads
     }
     // join all threads
     threads.foreach(_.join)

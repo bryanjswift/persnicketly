@@ -8,7 +8,7 @@ import org.joda.time.DateTime
 object Foreman extends Command {
   val group = new ThreadGroup("Mill")
 
-  def start(): List[Thread] = {
+  def start(options: CliOpts): List[Thread] = {
     val config = Persnicketly.Config
     // start up consumers
     val userConsumer = async("User Consumer", UserQueue.startConsumer)

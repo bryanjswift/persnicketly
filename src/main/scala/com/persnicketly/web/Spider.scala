@@ -8,7 +8,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler
 object Spider extends Command {
   val group = new ThreadGroup("Web")
 
-  def start(): List[Thread] = {
+  def start(options: CliOpts): List[Thread] = {
     List(async("jetty", startServer))
   }
 
