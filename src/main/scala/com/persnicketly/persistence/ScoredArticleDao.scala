@@ -20,9 +20,10 @@ class ScoredArticleDao extends Dao {
   collection.ensureIndex(MongoDBObject("article_id" -> 1))
   collection.ensureIndex(MongoDBObject("score" -> -1))
 
-  def find(limit: Int): List[ScoredArticle] = {
-    val articles = collection.find("score" $gt 2, MongoDBObject.empty, 0, limit)
-    (articles $orderby MongoDBObject("score" -> -1)).map(dbobject2article).toList
+  def find(count: Int): List[ScoredArticle] = {
+    log.debug("Fetching the top {} articles", count)
+    val articles = collection.find("score" $gt 2).limit(count).sort(MongoDBObject("score" -> -1))
+    articles.map(dbobject2article).toList
   }
 
   def compute(): List[ScoredArticle] = {
@@ -74,6 +75,8 @@ object ScoredArticleDao {
   private def dao = { new ScoredArticleDao }
 
   def compute() = { dao.compute() }
+
+  def find(limit: Int) = { dao.find(limit) }
 
   def save(scored: ScoredArticle) = { dao.save(scored) }
 }
