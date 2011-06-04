@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<html>
+  <head>
+    #set( $title = "Top Articles on Persnicketly" )
+    #set( $description = "Higest rated recent articles according to our Readability users." )
+    #set( $ogTitle = "Persnicketly" )
+    #set( $ogDescription = "Collecting Readability stars since 2011" )
+    #parse("templates/head.vm")
+  </head>
+  <body>
+    <div id="wrapper">
+      <header>
+        <h1>Persnicketly<span class="headerCurl"></span></h1>
+      </header>
+      <section>
+        <h2>Top Bookmarks</h2>
+        <ul class="articles">
+          #foreach( $scored in $articles )
+          <li>
+            <h3>${scored.article().title()}</h3>
+            #if (${scored.article().excerpt().isDefined()})
+            <p>${scored.article().excerpt().get()}</p>
+            #end
+            #if (${scored.article().domain()})
+            <a href="${scored.article().url()}">
+              <img src="http://${scored.article().domain()}/favicon.ico" alt="${scored.article().domain()}" />
+              <span>${scored.article().domain()}</span>
+            </a>
+            #end
+            <a href="/article/${scored.article().articleId()}/add">Add</a>
+          </li>
+          #end
+        </ul>
+      </section>
+    </div>
+  </body>
+</html>
+
