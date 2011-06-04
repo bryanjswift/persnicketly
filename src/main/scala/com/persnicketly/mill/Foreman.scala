@@ -8,7 +8,7 @@ import java.util.concurrent.{ScheduledThreadPoolExecutor, TimeUnit}
 
 object Foreman extends Command {
   val group = new ThreadGroup("Mill")
-  val executor = new ScheduledThreadPoolExecutor(4)
+  val executor = new ScheduledThreadPoolExecutor(2)
 
   def start(options: CliOpts): List[Thread] = {
     val config = Persnicketly.Config
