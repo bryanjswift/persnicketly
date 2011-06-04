@@ -12,6 +12,6 @@ target
 src/main/resources/velocity/velocity.properties
 /config.json
 /log4j.properties
-/proguard.pro
+/velocity.properties
 nginx.local.conf
 mongod.local.conf
