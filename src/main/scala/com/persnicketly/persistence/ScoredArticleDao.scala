@@ -11,7 +11,7 @@ class ScoredArticleDao extends Dao {
   val collectionName = "articles"
 
   // DBObject types for getting aggregate data
-  private val key = MongoDBObject("article_id" -> 1, "article_title" -> 1, "article_url" -> 1, "article_excerpt" -> 1)
+  private val key = MongoDBObject("article_id" -> 1, "article_title" -> 1, "article_domain" -> 1, "article_url" -> 1, "article_excerpt" -> 1)
   private val cond = MongoDBObject()
   private val initial = MongoDBObject("count" -> 0, "favorite_count" -> 0, "score" -> 0)
   private val reduce = """function(o,p) { if (o.favorite) { p.favorite_count++; p.score++; } p.count++; p.score++; }"""
@@ -48,6 +48,7 @@ object ScoredArticleDao {
     scored.id.foreach(id => builder += ("_id" -> id))
     builder += "article_id" -> scored.article.articleId
     builder += "article_title" -> scored.article.title
+    builder += "article_domain" -> scored.article.domain
     builder += "article_url" -> scored.article.url
     scored.article.excerpt.foreach(ex => builder += ("article_excerpt" -> ex))
     builder += "favorite_count" -> scored.favoriteCount
