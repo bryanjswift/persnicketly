@@ -27,8 +27,8 @@ object BookmarkExtractor extends Extract[Bookmark] {
               BookmarkJson.ArticleJson.url(js),
               BookmarkJson.ArticleJson.excerpt.unapply(js)
             ),
-            BookmarkJson.favoritedDate.unapply(js).map(format.parseDateTime),
             BookmarkJson.archivedDate.unapply(js).map(format.parseDateTime),
+            BookmarkJson.favoritedDate.unapply(js).map(format.parseDateTime),
             BookmarkJson.updatedDate.unapply(js).map(format.parseDateTime)
           )
         )

@@ -37,9 +37,9 @@ object BookmarkDao {
     builder += "user_id" -> bookmark.userId
     builder += "favorite" -> bookmark.isFavorite
     builder += "archive" -> bookmark.isArchived
-    if (bookmark.archivedDate.isDefined) { builder += "archive_date" -> bookmark.archivedDate.get }
-    if (bookmark.favoritedDate.isDefined) { builder += "favorite_date" -> bookmark.favoritedDate.get }
-    if (bookmark.updatedDate.isDefined) { builder += "update_date" -> bookmark.updatedDate.get }
+    bookmark.archivedDate.foreach(date => builder += "archive_date" -> date)
+    bookmark.favoritedDate.foreach(date => builder += "favorite_date" -> date)
+    bookmark.updatedDate.foreach(date => builder += "update_date" -> date)
     builder += "article_id" -> bookmark.article.articleId
     builder += "article_title" -> bookmark.article.title
     builder += "article_domain" -> bookmark.article.domain
