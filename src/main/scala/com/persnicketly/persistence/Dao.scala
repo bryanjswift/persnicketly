@@ -8,9 +8,10 @@ import Persnicketly.Config
 
 trait Dao extends Logging {
   import Connection.mongo
-  RegisterJodaTimeConversionHelpers()
 
   def collectionName: String
 
   lazy val collection = mongo(Config("db.name").or("persnicketly_test"))(collectionName)
+
+  RegisterJodaTimeConversionHelpers()
 }
