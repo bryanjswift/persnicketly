@@ -27,8 +27,8 @@ class UserDao extends Dao {
    * @param _id - identifier assigned to User object when stored
    * @return Some(User) if found None otherwise
    */
-  def get(_id: ObjectId): Option[User] =
-    collection.findOneByID(_id).map(o => dbobject2user(o))
+  def get(id: ObjectId): Option[User] =
+    collection.findOneByID(id).map(o => dbobject2user(o))
 
   /**
    * Get a User by request token
