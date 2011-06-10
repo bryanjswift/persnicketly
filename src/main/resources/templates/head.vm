@@ -15,7 +15,11 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
     <link rel="shortcut icon" href="favicon.ico" />
     <link href="/humans.txt" rel="author" />
+    #if ($css)
+    <link href="${css}" rel="stylesheet" type="text/css" />
+    #else
     <link href="/css/persnicketly.css" rel="stylesheet" type="text/css" />
+    #end
     <script src="/js/libs/modernizr-custom.js"></script>
     <script src="http://use.typekit.com/rxz7gnq.js"></script>
     <script>

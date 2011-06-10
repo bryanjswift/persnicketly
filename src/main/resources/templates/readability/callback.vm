@@ -7,6 +7,7 @@
   <head>
     #set( $title = "Thanks!" )
     #set( $description = "You authorized us to read your reading list on Readability. Thanks!" )
+    #set( $css = "/css/prelaunch.css" )
     #parse("templates/head.vm")
   </head>
   <body>

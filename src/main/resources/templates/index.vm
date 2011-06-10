@@ -9,6 +9,7 @@
     #set( $description = "Collecting your favorite articles on Readability." )
     #set( $ogTitle = "Persnicketly" )
     #set( $ogDescription = "Collecting Readability stars since 2011" )
+    #set( $css = "/css/prelaunch.css" )
     #parse("templates/head.vm")
   </head>
   <body>

@@ -16,7 +16,7 @@
       <header>
         <h1>Persnicketly<span class="headerCurl"></span></h1>
       </header>
-      <section>
+      <section class="list">
         <h2>Top Bookmarks</h2>
         <ul class="articles">
           #foreach( $scored in $articles )
