@@ -1,14 +1,14 @@
 package com.persnicketly.web.servlet
 
 import com.google.inject.Singleton
+import com.persnicketly.Logging
 import com.persnicketly.web.Servlet
 import velocity.VelocityView
 import org.slf4j.LoggerFactory
 import javax.ws.rs.core.MediaType
 
 @Singleton
-class RootServlet extends Servlet {
-  private val log = LoggerFactory.getLogger(classOf[RootServlet])
+class HomeServlet extends Servlet with Logging {
 
   override def doGet(helper: HttpHelper) {
     log.info("Rendering view - /templates/index.vm")

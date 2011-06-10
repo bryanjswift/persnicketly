@@ -7,7 +7,7 @@ import com.sun.jersey.spi.container.servlet.ServletContainer
 import com.sun.jersey.api.core.PackagesResourceConfig
 import scala.collection.JavaConversions.asJavaMap
 import com.persnicketly.Persnicketly
-import com.persnicketly.web.servlet.{RootServlet, ArticlesServlet, TemplateServlet}
+import com.persnicketly.web.servlet.{HomeServlet, ArticlesServlet, TemplateServlet}
 import com.persnicketly.web.servlet.readability.{CallbackServlet, LoginServlet}
 
 class PersnicketlyServletConfig extends GuiceServletContextListener {
@@ -20,11 +20,11 @@ private class PersnicketlyServletModule extends ServletModule {
   override protected def configureServlets(): Unit = {
     val conf = Persnicketly.Config // Really just to read configs on startup
     val jerseyParams = Map(PackagesResourceConfig.PROPERTY_PACKAGES -> "com.persnicketly.web.resource,com.codahale.jersey.providers,com.codahale.jersey.providers,com.codahale.jersey.inject")
-    serve("/", "/index.html").`with`(classOf[RootServlet])
+    serve("/home").`with`(classOf[HomeServlet])
     serve("/readability/login").`with`(classOf[LoginServlet])
     serve("/readability/callback").`with`(classOf[CallbackServlet])
     serve("/learn-more").`with`(classOf[TemplateServlet])
-    serve("/articles/list").`with`(classOf[ArticlesServlet])
+    serve("/", "/articles/list").`with`(classOf[ArticlesServlet])
     serve("/d/*").`with`(classOf[JerseyServletContainer], jerseyParams)
   }
 }

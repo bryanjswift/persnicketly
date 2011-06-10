@@ -27,7 +27,7 @@
   </error-page>
   <!-- list of default paths -->
   <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
+    <welcome-file>articles/list</welcome-file>
   </welcome-file-list>
 </web-app>
 
