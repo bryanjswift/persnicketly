@@ -22,17 +22,26 @@
           #foreach( $scored in $articles )
           #set( $article = $scored.article() )
           <li>
+            <p class="meta">
+              #if (${article.publishedDisplay().isDefined()})
+              <span class="published">${article.publishedDisplay().get()}</span>
+              #end
+              <span class="favorited"><span>Times Favorited:</span> ${scored.numFavorites()}</span>
+              <span class="bookmarked"><span>Times Bookmarked:</span> ${scored.numBookmarks()}</span>
+            </p>
             <h3><a href="/article/${article.articleId()}/read">${article.title()}</a></h3>
             #if (${article.excerpt().isDefined()})
-            <p>${article.excerpt().get()}</p>
+            <p class="excerpt">${article.excerpt().get()}</p>
             #end
             #if (${article.domain()})
-            <a href="${article.url()}">
-              <img src="http://${article.domain()}/favicon.ico" alt="${article.domain()}" width="16" height="16" />
-              <span>${article.domain()}</span>
-            </a>
+            <p class="original">
+              <a href="${article.url()}" rel="canonical">
+                <img src="http://${article.domain()}/favicon.ico" alt="${article.domain()}" width="16" height="16" />
+                <span>${article.domain()}</span>
+              </a>
+            </p>
             #end
-            <a href="/article/${article.articleId()}/add">Add</a>
+            <a class="add" href="/article/${article.articleId()}/add">Add</a>
           </li>
           #end
         </ul>

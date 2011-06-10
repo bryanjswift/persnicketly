@@ -5,9 +5,10 @@ html, body, div, span, a, img, p, ul, ol, li, h1, h2, h3, h4, h5 {
 ul, ol { list-style: none; }
 body {
   font-size: 100%; font-family: "museo-slab-1", "museo-slab-2", "Helvetica Neue", "Helvetica", Arial, sans-serif;
-  font-weight: 700; line-height: 1; color: #646157; background: #fff;
+  font-weight: 700; line-height: 1; color: #41403a; background: #fff;
 }
 a { text-decoration: none; }
+p { font-weight: normal; line-height: 1.375; }
 header, nav, footer, section { display: block; }
 #wrapper { background: url(/img/background.png) left top; }
 header {
@@ -16,11 +17,66 @@ header {
   -moz-box-shadow: rgba(0,0,0,0.6) 1px 1px 4px; -ms-box-shadow: rgba(0,0,0,0.6) 1px 1px 4px;
 }
 header h1 {
-  padding: 10px 2%; color: #868378; font-size: 1.6875em; font-weight: 500;
+  padding: 10px 2.857142857%; color: #868378; font-size: 1.6875em; font-weight: 500;
   text-shadow: rgba(255,255,255,0.75) 0px 0px 5px, #46443f -1px -1px 0px;
-  text-indent: -9999px; background: url(/img/logo.png) no-repeat left center;
+  text-indent: -9999px; background: url(/img/logo.png) no-repeat 3.095% center;
 }
 header h1 a { color: #868378; }
-/* Article list */
+/* Article List */
 .list h2 {
+  margin: 10px 2.507836991% 15px 0; padding: 11px 2.903225806% 9px;
+  font-size: 1.125em; font-weight: 700; color: #fff; background: #fbbd12; line-height: 1; text-transform: uppercase;
+  text-shadow: rgba(0,0,0,0.20) 1px 1px 1px;
+  box-shadow: rgba(0,0,0,0.33) 1px 1px 1px; -webkit-box-shadow: rgba(0,0,0,0.33) 1px 1px 1px;
+  -moz-box-shadow: rgba(0,0,0,0.33) 1px 1px 1px; -ms-box-shadow: rgba(0,0,0,0.33) 1px 1px 1px;
+}
+.list li {
+  position: relative; margin: 0 2.507836991% 0.75em; padding: 5px 3.322259136% 10px; background: #fafaf9;
+  box-shadow: rgba(0,0,0,0.63) 0 0 4px; -webkit-box-shadow: rgba(0,0,0,0.63) 0 0 4px;
+  -moz-box-shadow: rgba(0,0,0,0.63) 0 0 4px; -ms-box-shadow: rgba(0,0,0,0.63) 0 0 4px;
+}
+.list h3 { padding: 0 0; font-size: 0.9375em; font-weight: 500; line-height: 1.133333333; }
+.list h3 a { color: #41403a; }
+.list h3:before {
+  content: ' '; display: block; position: absolute; top: 0; left: 0; width: 82%; height: 5px;
+  background: #fbbd12 url(/img/strip_slant.png) no-repeat right top;
+}
+.list p { font-size: 0.6875em; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+.list .meta { position: relative; padding: 10px 0; height: 1em; font-size: 0.625em; }
+.meta .favorited, .meta .bookmarked {
+  float: left; display: block; position: relative; top: -4px; padding: 4px 3px 3px; min-width: 34px; background: #ededed;
+}
+.meta span span { display: inline-block; width: 12px; height: 12px; background: no-repeat center; text-indent: -9999px; }
+.meta .favorited span { background-image: url(/img/stars.png); }
+.meta .bookmarked { margin: 0 0 0 5px; }
+.meta .bookmarked span { background-image: url(/img/bookmark.png); }
+p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6; text-transform: uppercase; }
+.original a { color: #7a7a7a; }
+.original span { position: relative; top: -4px; }
+.add {
+  display: block; position: absolute; bottom: 0; right: 0; width: 50px; height: 50px;
+  background: url(/img/add.png) no-repeat left top; text-indent: -9999px;
+}
+/* Footer */
+footer {
+  position: relative; padding: 16px 0 0 2.507836991%; height: 26px; font-size: 0.70em; font-weight: normal;
+  background: url(/img/bg_footer.png) repeat-x left top;
+}
+footer p {
+  color: #aaa9a3; color: rgba(255,255,255,0.52); text-transform: uppercase;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+footer a {
+  display: block; position: absolute; top: 2px; right: 2.507836991%; padding: 13px 0 0 18px; height: 25px;
+  color: #fff; color: rgba(255,255,255,0.95); background: url(/img/bg_about.png) no-repeat left top;
+}
+@media screen and (-webkit-min-device-pixel-ratio: 2) {
+  header {
+    background-image: url(/img/x2/bg_header.png);
+    -o-background-size: auto 59px; -webkit-background-size: auto 59px; -moz-background-size: auto 59px;
+  }
+  footer {
+    background: url(/img/x2/bg_footer.png) repeat-x left top;
+    -o-background-size: auto 42px; -webkit-background-size: auto 42px; -moz-background-size: auto 42px;
+  }
 }
