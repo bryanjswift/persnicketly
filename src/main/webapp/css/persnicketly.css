@@ -73,13 +73,3 @@ footer a {
   display: block; position: absolute; top: 2px; right: 2.507836991%; padding: 13px 0 0 18px; height: 25px;
   color: #fff; color: rgba(255,255,255,0.95); background: url(/img/bg_about.png) no-repeat left top;
 }
-@media screen and (-webkit-min-device-pixel-ratio: 2) {
-  header {
-    background-image: url(/img/x2/bg_header.png);
-    -o-background-size: auto 59px; -webkit-background-size: auto 59px; -moz-background-size: auto 59px;
-  }
-  footer {
-    background: url(/img/x2/bg_footer.png) repeat-x left top;
-    -o-background-size: auto 42px; -webkit-background-size: auto 42px; -moz-background-size: auto 42px;
-  }
-}
