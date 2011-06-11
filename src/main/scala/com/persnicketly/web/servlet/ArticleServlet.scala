@@ -8,7 +8,7 @@ import velocity.VelocityView
 import javax.ws.rs.core.MediaType
 
 @Singleton
-class ArticlesServlet extends Servlet with Logging {
+class ArticleServlet extends Servlet with Logging {
 
   override def doGet(helper: HttpHelper) {
     val userId = helper.cookie("_user")

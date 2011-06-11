@@ -7,7 +7,7 @@ import com.sun.jersey.spi.container.servlet.ServletContainer
 import com.sun.jersey.api.core.PackagesResourceConfig
 import scala.collection.JavaConversions.asJavaMap
 import com.persnicketly.Persnicketly
-import com.persnicketly.web.servlet.{HomeServlet, ArticlesServlet, TemplateServlet}
+import com.persnicketly.web.servlet.{HomeServlet, ArticleServlet, TemplateServlet}
 import com.persnicketly.web.servlet.readability.{CallbackServlet, LoginServlet}
 
 class PersnicketlyServletConfig extends GuiceServletContextListener {
@@ -24,7 +24,7 @@ private class PersnicketlyServletModule extends ServletModule {
     serve("/readability/login").`with`(classOf[LoginServlet])
     serve("/readability/callback").`with`(classOf[CallbackServlet])
     serve("/learn-more").`with`(classOf[TemplateServlet])
-    serve("/", "/articles/list").`with`(classOf[ArticlesServlet])
+    serve("/", "/article/list").`with`(classOf[ArticleServlet])
     serve("/d/*").`with`(classOf[JerseyServletContainer], jerseyParams)
   }
 }
