@@ -20,12 +20,12 @@ private class PersnicketlyServletModule extends ServletModule {
   override protected def configureServlets(): Unit = {
     val conf = Persnicketly.Config // Really just to read configs on startup
     val jerseyParams = Map(PackagesResourceConfig.PROPERTY_PACKAGES -> "com.persnicketly.web.resource,com.codahale.jersey.providers,com.codahale.jersey.providers,com.codahale.jersey.inject")
-    serve("/home").`with`(classOf[HomeServlet])
+    serve("/", "/home").`with`(classOf[HomeServlet])
     serve("/readability/login").`with`(classOf[LoginServlet])
     serve("/readability/sign-out").`with`(classOf[LogoutServlet])
     serve("/readability/callback").`with`(classOf[CallbackServlet])
     serve("/learn-more").`with`(classOf[TemplateServlet])
-    serve("/", "/article/list").`with`(classOf[ArticleServlet])
+    serve("/article/list").`with`(classOf[ArticleServlet])
     serve("/d/*").`with`(classOf[JerseyServletContainer], jerseyParams)
   }
 }
