@@ -12,11 +12,11 @@
     #parse("templates/head.vm")
   </head>
   <body>
-    <div id="wrapper">
+    <div id="wrapper" class="list">
       <header>
         <h1>Persnicketly<span class="headerCurl"></span></h1>
       </header>
-      <section class="list">
+      <section>
         <h2>Top Bookmarks</h2>
         <ul class="articles">
           #foreach( $scored in $articles )
