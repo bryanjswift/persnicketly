@@ -49,7 +49,7 @@
         <section id="contact">
           <h2>Contact Us</h2>
           <p class="tagline">We're people pleasers at heart.</p>
-          <p>We love people and people's opinions. So if you have something to say about Persnicketly you should definitely let us know. Want to see a new feature? Love or hate our color scheme? Find a bug in our code? Drop us a line and let us know what’s on your mind.</p>
+          <p>We love people and people's opinions. So if you have something to say about Persnicketly you should definitely let us know. Want to see a new feature? Love or hate our color scheme? Find a bug in our code? Drop us a line and let us know what's on your mind.</p>
           <h4>Have something to say?</h4>
           <a id="emailUs" class="cta" href="/readability/login">
             <img src="/img/orange_bubble.png" alt="" height="30" />
