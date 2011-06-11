@@ -78,6 +78,11 @@ footer a {
     background-image: url(/img/x2/logo.png);
     -o-background-size: auto 37px; -webkit-background-size: auto 37px; -moz-background-size: auto 37px;
   }
+  .meta .favorited span { background-image: url(/img/x2/stars.png); }
+  .meta .bookmarked span { background-image: url(/img/x2/bookmark.png); }
+  .meta .favorited span, .meta .bookmarked span {
+    -o-background-size: auto 12px; -webkit-background-size: auto 12px; -moz-background-size: auto 12px;
+  }
   footer {
     background: url(/img/x2/bg_footer.png) repeat-x left top;
     -o-background-size: auto 42px; -webkit-background-size: auto 42px; -moz-background-size: auto 42px;
