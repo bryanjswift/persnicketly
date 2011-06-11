@@ -25,7 +25,6 @@
     <script>
     (function(d,t) {
       try{Typekit.load();}catch(e){}
-      if (location.host 
       var isLive = (location.host || location.hostname).match(/.*persnicket(ly|lyapp|yapp).com/i)
         , el = d.createElement(t)
         , sib = d.getElementsByTagName(t)[0];
