@@ -17,54 +17,58 @@
         <h1><a href="/">Persnicketly<span class="headerCurl"></span></a></h1>
       </header>
       <div id="content">
-        <section id="about">
-          <h2>About Persnicketly</h2>
-          <p class="tagline">The best of Readability's bookmarks at your desk or on-the-go.</p>
-          <p>We're collecting and curating the most favorited Readability bookmarks and serving them to you when you want them where you want them.</p>
-          <h3>How it works...</h3>
-          <ol>
-            <li><em>Login</em> to Readability</li>
-            <li><em>Allow</em> Persnicketly to access your Readability account</li>
-            <li><em>Enjoy</em> great articles on Persnicketly!</li>
-          </ol>
-          #if (${user.isEmpty()})
-          <h4>Get started with Persnicketly</h4>
-          <a id="signIn" class="cta" href="/readability/login">
-            <img src="/img/blue_chair.png" alt="" height="29" />
-            <span>Sign in to Readability</span>
-          </a>
-          #end
-        </section>
-        <section id="more">
-          <h2>More on Readability</h2>
-          <p>Readability allows any web page to become more readable by stripping out the distractions that make reading content on the web challenging. While there is a small membership fee 70% of that fee goes directly to publishers and content creators in your reading list. What about the other 30%? Well that goes to improving the tools and services offered to you by Readability. Pretty cool, huh?</p>
-          #if (${user.isEmpty()})
-          <h4>No Readability account?</h4>
-          <a id="signUp" class="cta" href="/readability/login">
-            <img src="/img/pink_chair.png" alt="" height="29" />
-            <span>Sign up for Readability</span>
-          </a>
-          #end
-        </section>
-        <section id="contact">
-          <h2>Contact Us</h2>
-          <p class="tagline">We're people pleasers at heart.</p>
-          <p>We love people and people's opinions. So if you have something to say about Persnicketly you should definitely let us know. Want to see a new feature? Love or hate our color scheme? Find a bug in our code? Drop us a line and let us know what's on your mind.</p>
-          <h4>Have something to say?</h4>
-          <a id="emailUs" class="cta" href="/readability/login">
-            <img src="/img/orange_bubble.png" alt="" height="30" />
-            <span>Send us an email</span>
-          </a>
-          <h4>Have a conversation</h4>
-          <a id="followUs" class="cta" href="http://twitter.com/persnicketly">
-            <img src="/img/yellow_bird.png" alt="" height="30" />
-            <span>Follow us on Twitter</span>
-          </a>
-          <div id="who">
-            <p>Persnicketly was created by</p>
-            <p><span id="bryan">Bryan J Swift</span> &amp; <span id="diesel">Rachel Diesel</span></p>
-          </div>
-        </section>
+        <div class="col">
+          <section id="about">
+            <h2>About Persnicketly</h2>
+            <p class="tagline">The best of Readability's bookmarks at your desk or on-the-go.</p>
+            <p>We're collecting and curating the most favorited Readability bookmarks and serving them to you when you want them where you want them.</p>
+            <h3>How it works...</h3>
+            <ol>
+              <li><em>Login</em> to Readability</li>
+              <li><em>Allow</em> Persnicketly to access your Readability account</li>
+              <li><em>Enjoy</em> great articles on Persnicketly!</li>
+            </ol>
+            #if (${user.isEmpty()})
+            <h4>Get started with Persnicketly</h4>
+            <a id="signIn" class="cta" href="/readability/login">
+              <img src="/img/blue_chair.png" alt="" height="29" />
+              <span>Sign in to Readability</span>
+            </a>
+            #end
+          </section>
+        </div>
+        <div class="col last">
+          <section id="more">
+            <h2>More on Readability</h2>
+            <p>Readability allows any web page to become more readable by stripping out the distractions that make reading content on the web challenging. While there is a small membership fee 70% of that fee goes directly to publishers and content creators in your reading list. What about the other 30%? Well that goes to improving the tools and services offered to you by Readability. Pretty cool, huh?</p>
+            #if (${user.isEmpty()})
+            <h4>No Readability account?</h4>
+            <a id="signUp" class="cta" href="/readability/login">
+              <img src="/img/pink_chair.png" alt="" height="29" />
+              <span>Sign up for Readability</span>
+            </a>
+            #end
+          </section>
+          <section id="contact">
+            <h2>Contact Us</h2>
+            <p class="tagline">We're people pleasers at heart.</p>
+            <p>We love people and people's opinions. So if you have something to say about Persnicketly you should definitely let us know. Want to see a new feature? Love or hate our color scheme? Find a bug in our code? Drop us a line and let us know what's on your mind.</p>
+            <h4>Have something to say?</h4>
+            <a id="emailUs" class="cta" href="/readability/login">
+              <img src="/img/orange_bubble.png" alt="" height="30" />
+              <span>Send us an email</span>
+            </a>
+            <h4>Have a conversation</h4>
+            <a id="followUs" class="cta" href="http://twitter.com/persnicketly">
+              <img src="/img/yellow_bird.png" alt="" height="30" />
+              <span>Follow us on Twitter</span>
+            </a>
+          </section>
+        </div>
+        <div id="who">
+          <p>Persnicketly was created by</p>
+          <p><span id="bryan">Bryan J Swift</span> &amp; <span id="diesel">Rachel Diesel</span></p>
+        </div>
       </div>
       <footer>
         <p>Persnicketly &copy; 2011</p>
