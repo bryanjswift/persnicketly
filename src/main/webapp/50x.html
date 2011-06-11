@@ -17,15 +17,15 @@
     <link href="/css/persnicketly.css" rel="stylesheet" type="text/css" />
     <script src="/js/libs/modernizr-custom.js"></script>
     <script src="http://use.typekit.com/rxz7gnq.js"></script>
-    <script src="http://mint.persnicketly.com/?js" type="text/javascript"></script>
     <script>
     (function(d,t) {
       try{Typekit.load();}catch(e){}
-      var el = d.createElement(t)
+      var isLive = (location.host || location.hostname).match(/.*persnicket(ly|lyapp|yapp).com/i)
+        , el = d.createElement(t)
         , sib = d.getElementsByTagName(t)[0];
-      el.src = '/js/tracking.js';
+      el.src = 'http://mint.persnicketly.com/?js';
       el.async = 1;
-      sib.parentNode.insertBefore(el, sib);
+      if (isLive) { sib.parentNode.insertBefore(el, sib); }
     })(document, 'script');
     </script>
   </head>
