@@ -8,7 +8,7 @@ import com.sun.jersey.api.core.PackagesResourceConfig
 import scala.collection.JavaConversions.asJavaMap
 import com.persnicketly.Persnicketly
 import com.persnicketly.web.servlet.{HomeServlet, ArticleServlet, TemplateServlet}
-import com.persnicketly.web.servlet.readability.{CallbackServlet, LoginServlet}
+import com.persnicketly.web.servlet.readability.{CallbackServlet, LoginServlet, LogoutServlet}
 
 class PersnicketlyServletConfig extends GuiceServletContextListener {
   private val log = LoggerFactory.getLogger(classOf[PersnicketlyServletConfig])
@@ -22,6 +22,7 @@ private class PersnicketlyServletModule extends ServletModule {
     val jerseyParams = Map(PackagesResourceConfig.PROPERTY_PACKAGES -> "com.persnicketly.web.resource,com.codahale.jersey.providers,com.codahale.jersey.providers,com.codahale.jersey.inject")
     serve("/home").`with`(classOf[HomeServlet])
     serve("/readability/login").`with`(classOf[LoginServlet])
+    serve("/readability/sign-out").`with`(classOf[LogoutServlet])
     serve("/readability/callback").`with`(classOf[CallbackServlet])
     serve("/learn-more").`with`(classOf[TemplateServlet])
     serve("/", "/article/list").`with`(classOf[ArticleServlet])
