@@ -17,13 +17,13 @@
       <header>
         <h1>Persnicketly<span class="headerCurl"></span></h1>
       </header>
-      <section>
-        <div id="what">
+      <section id="content">
+        <div id="what" class="col">
           <h2>The best of Readability's bookmarks at your desk or on-the-go.</h2>
           <p class="description">We're collecting and curating the most favorited Readability bookmarks and serving them to you when you want them, where you want them.</p>
           <img class="hero" src="/img/chair_stars.png" alt="" />
         </div>
-        <div id="when">
+        <div id="when" class="col last">
           #if (${user.isEmpty()})
           <h3>We're going to launch soon,</h3>
           <p class="please">but until then <strong><a href="/readability/login">sign in to Readability</a></strong> and help us get started collecting favorites.</p>
