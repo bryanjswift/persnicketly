@@ -34,7 +34,7 @@ class CallbackServlet extends Servlet {
     var updatedUser = user.copy(accessToken = Some(accessToken), verifier = Some(verifier))
     val dbUser = UserDao.save(updatedUser.copy(personalInfo = Api.currentUser(Persnicketly.oauthConsumer, updatedUser)))
     log.info("setting _user cookie to {}", dbUser.id.get.toString)
-    helper.cookie("_user", dbUser.id.get.toString)
+    helper.cookies + ("_user", dbUser.id.get.toString)
     UserQueue.add(dbUser)
     val view = new VelocityView("/templates/readability/callback.vm")
     helper.response.setContentType(MediaType.TEXT_HTML)

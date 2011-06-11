@@ -10,7 +10,7 @@ trait Servlet extends HttpServlet {
   def doGet(http:HttpHelper) { }
   def doPost(http:HttpHelper) { }
 
-  class HttpHelper(val request:Request, val response:Response) {
+  class HttpHelper(val request: Request, val response: Response) {
     // pretty impossible to not match this RE
     private val uriMatch = Servlet.uriRE.findFirstMatchIn(request.getRequestURI).get
     val uri = uriMatch.group("uri")
@@ -32,13 +32,7 @@ trait Servlet extends HttpServlet {
         cookies.find(c => c.getName == key).map(c => c.getValue)
       }
     }
-    def cookie(key: String, value: String): Unit = {
-      val c = new Cookie(key, value)
-      c.setDomain(Persnicketly.Config("http.cookie").or(".persnicketly.com"))
-      c.setMaxAge(60 * 60 * 24 * 365)
-      c.setPath("/")
-      response.addCookie(c)
-    }
+    def cookies = new Cookies(request, response)
     def header(name: String): Option[String] = {
       val headerNames = request.getHeaderNames.asInstanceOf[java.util.Enumeration[String]]
       if (headerNames == null) {
@@ -59,6 +53,28 @@ trait Servlet extends HttpServlet {
 
   private implicit def enumerationToRichEnumeration[T](enumeration: java.util.Enumeration[T]): RichEnumeration[T] = {
     new RichEnumeration(enumeration)
+  }
+}
+
+class Cookies(private val request: Request, private val response: Response) {
+  def -(key: String): Cookies = {
+    val c = new Cookie(key, "")
+    c.setDomain(Persnicketly.Config("http.cookie").or(".persnicketly.com"))
+    c.setMaxAge(0)
+    c.setPath("/")
+    response.addCookie(c)
+    this
+  }
+  def +(key: String, value: String): Cookies = {
+    this + (key, value, 60 * 60 * 24 * 365)
+  }
+  def +(key: String, value: String, age: Int): Cookies = {
+    val c = new Cookie(key, value)
+    c.setDomain(Persnicketly.Config("http.cookie").or(".persnicketly.com"))
+    c.setMaxAge(age)
+    c.setPath("/")
+    response.addCookie(c)
+    this
   }
 }
 
