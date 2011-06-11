@@ -31,7 +31,7 @@ header h1 a { color: #868378; }
   -moz-box-shadow: rgba(0,0,0,0.33) 1px 1px 1px; -ms-box-shadow: rgba(0,0,0,0.33) 1px 1px 1px;
 }
 .list li {
-  position: relative; margin: 0 2.507836991% 0.75em; padding: 5px 3.322259136% 10px; background: #fafaf9;
+  position: relative; margin: 0 2.507836991% 0.75em; padding: 5px 10px 10px; background: #fafaf9;
   box-shadow: rgba(0,0,0,0.63) 0 0 4px; -webkit-box-shadow: rgba(0,0,0,0.63) 0 0 4px;
   -moz-box-shadow: rgba(0,0,0,0.63) 0 0 4px; -ms-box-shadow: rgba(0,0,0,0.63) 0 0 4px;
 }
