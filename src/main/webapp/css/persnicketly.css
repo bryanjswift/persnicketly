@@ -24,7 +24,7 @@ header h1 {
   text-shadow: rgba(255,255,255,0.75) 0px 0px 5px, #46443f -1px -1px 0px;
   text-indent: -9999px; background: url(/img/logo.png) no-repeat 3.095% center;
 }
-header h1 a { color: #868378; }
+header h1 a { display: block; color: #868378; }
 /* Article List */
 .list h2 {
   margin: 10px 2.507836991% 15px 0; padding: 11px 2.903225806% 9px;
