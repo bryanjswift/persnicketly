@@ -25,11 +25,13 @@
     <script>
     (function(d,t) {
       try{Typekit.load();}catch(e){}
-      var el = d.createElement(t)
+      if (location.host 
+      var isLive = (location.host || location.hostname).match(/.*persnicket(ly|lyapp|yapp).com/i)
+        , el = d.createElement(t)
         , sib = d.getElementsByTagName(t)[0];
       el.src = 'http://mint.persnicketly.com/?js';
       el.async = 1;
-      sib.parentNode.insertBefore(el, sib);
+      if (isLive) { sib.parentNode.insertBefore(el, sib); }
     })(document, 'script');
     </script>
 
