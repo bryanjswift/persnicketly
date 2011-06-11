@@ -5,10 +5,13 @@ html, body, div, span, a, img, p, ul, ol, li, h1, h2, h3, h4, h5 {
 ul, ol { list-style: none; }
 body {
   font-size: 100%; font-family: "museo-slab-1", "museo-slab-2", "Helvetica Neue", "Helvetica", Arial, sans-serif;
-  font-weight: 700; line-height: 1; color: #41403a; background: #fff;
+  font-weight: 700; line-height: 1; color: #4d4b44; background: #fff;
 }
 a { text-decoration: none; }
-p { font-weight: normal; line-height: 1.375; }
+p { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight: normal; line-height: 1.375; }
+p[class] {
+  font-family: "museo-slab-1", "museo-slab-2", "Helvetica Neue", "Helvetica", Arial, sans-serif; font-weight: 500;
+}
 header, nav, footer, section { display: block; }
 #wrapper { background: url(/img/background.png) left top; }
 header {
@@ -36,13 +39,14 @@ header h1 a { color: #868378; }
   -moz-box-shadow: rgba(0,0,0,0.63) 0 0 4px; -ms-box-shadow: rgba(0,0,0,0.63) 0 0 4px;
 }
 .list h3 { padding: 0 0; font-size: 0.9375em; font-weight: 500; line-height: 1.133333333; }
-.list h3 a { color: #41403a; }
+.list h3 a { color: #4d4b44; }
 .list h3 a:hover { text-decoration: underline; }
 .list h3:before {
   content: ' '; display: block; position: absolute; top: 0; left: 0; width: 82%; height: 5px;
   background: #fbbd12 url(/img/strip_slant.png) no-repeat right top;
 }
 .list p { font-size: 0.6875em; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+.list .excerpt { color: #41403a; }
 .list .meta { position: relative; padding: 10px 0; height: 1em; font-size: 0.625em; }
 .meta .favorited, .meta .bookmarked {
   float: left; display: block; position: relative; top: -4px; padding: 4px 3px 3px; min-width: 34px; background: #ededed;
@@ -60,6 +64,45 @@ p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6
   display: block; position: absolute; bottom: 0; right: 0; width: 50px; height: 50px;
   background: url(/img/add.png) no-repeat left top; text-indent: -9999px;
 }
+/* About */
+#content {
+  position: relative; margin: 0 2% 20px; padding: 10px 15% 10px 0; font-size: 0.9375em; background: #fafaf9;
+  box-shadow: rgba(0,0,0,0.6) 1px 1px 4px; -webkit-box-shadow: rgba(0,0,0,0.6) 1px 1px 4px;
+  -moz-box-shadow: rgba(0,0,0,0.6) 1px 1px 4px; -ms-box-shadow: rgba(0,0,0,0.6) 1px 1px 4px;
+}
+.about h2, .about h3, .about h4, .about p { padding: 0 0 0 10px; }
+.about h2 { font-size: 1.1875em; text-transform: uppercase; }
+.about h3 { font-size: 1.25em; font-weight: 500; }
+.about h4 { font-size: 0.8125em; font-weight: 500; text-transform: uppercase; -webkit-font-smoothing: antialiased; }
+#about h2 { color: #47abcb; }
+#more h2 { color: #bd1c9d; }
+#contact h2 { color: #f66e24; }
+.about .tagline { font-size: 1em; line-height: 1.25; -webkit-font-smoothing: antialiased; }
+.about p { font-size: 0.8125em; line-height: 1.384615385; }
+.about li { font-weight: 500; -webkit-font-smoothing: antialiased; }
+.about em { font-style: normal; font-weight: 700; color: #119337; }
+.about .cta { margin: 0 0 0 10px; }
+/* Calls to Action */
+.cta {
+  display: block; position: relative; padding: 13px 0 10px 0; width: 75%; min-width: 280px;
+  color: #fff; font-size: 0.95em; text-transform: uppercase; line-height: 1; text-shadow: rgba(0,0,0,0.2) 1px 1px 0;
+  background: url(/img/bg_arrow.png) no-repeat right center;
+  background: url(/img/bg_arrow.png) no-repeat right center, url(/img/cta_curl.png) no-repeat right bottom;
+}
+.cta img { position: absolute; top: 3px; left: 3px; }
+.cta span { position: relative; top: -2px; left: 30px; z-index: 3; }
+#signIn { background-color: #4eacca; }
+#signUp { background-color: #ba239c; }
+#emailUs { background-color: #f66e24; }
+#followUs { background-color: #fbbd12; }
+/* Who */
+#who { clear: both; margin: 20px 0; font-weight: 500; text-align: center; color: #5d5d5d; }
+#who p {
+  font-family: "museo-slab-1", "museo-slab-2", "Helvetica Neue", "Helvetica", Arial, sans-serif; font-weight: 500;
+}
+#who span { padding: 0 4px; color: #fff; }
+#bryan { background: #683686; }
+#diesel { background: #4eacca; }
 /* Footer */
 footer {
   position: relative; padding: 16px 0 0 2.507836991%; height: 26px; font-size: 0.70em; font-weight: normal;
