@@ -1,7 +1,7 @@
 package com.persnicketly.web.servlet
 
 import com.google.inject.Singleton
-import com.persnicketly.Logging
+import com.persnicketly.{Constants, Logging}
 import com.persnicketly.persistence.ScoredArticleDao
 import com.persnicketly.web.Servlet
 import com.persnicketly.web.controller.ArticleController
@@ -23,13 +23,13 @@ class ArticleServlet extends Servlet with Logging {
   }
 
   def add(helper: HttpHelper, articleId: String): Unit = {
-    ArticleController.addArticleForUser(articleId, helper.cookie("_user"))
+    ArticleController.addArticleForUser(articleId, helper.cookie(Constants.UserCookie))
     // it would be nice to say an article wasn't found or you're not logged in
-    helper.response.sendRedirect("/article/list")
+    helper.response.sendRedirect(ArticleServlet.listUrl)
   }
 
   def list(helper: HttpHelper): Unit = {
-    val userId = helper.cookie("_user")
+    val userId = helper.cookie(Constants.UserCookie)
     val articles = ScoredArticleDao.find(10)
     val view = new VelocityView("/templates/articleList.vm")
     helper.response.setContentType(MediaType.TEXT_HTML)
@@ -37,9 +37,14 @@ class ArticleServlet extends Servlet with Logging {
   }
 
   def read(helper: HttpHelper, articleId: String): Unit = {
-    ArticleController.addArticleForUser(articleId, helper.cookie("_user"))
+    ArticleController.addArticleForUser(articleId, helper.cookie(Constants.UserCookie))
     // it would be nice to say an article wasn't found or you're not logged in
     val url = "http://www.readability.com/articles/%s".format(articleId)
     helper.response.sendRedirect(url)
   }
+}
+
+object ArticleServlet {
+  val listParts = Array("article", "list")
+  val listUrl = listParts.mkString("/", "/", "")
 }

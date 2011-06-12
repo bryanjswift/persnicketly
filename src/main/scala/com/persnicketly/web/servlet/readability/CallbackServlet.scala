@@ -6,7 +6,7 @@ import dispatch.json.Js.obj
 import dispatch.json.JsHttp.requestToJsHandlers
 import com.google.inject.Singleton
 import com.persnicketly.readability.{Api, Auth}
-import com.persnicketly.Persnicketly
+import com.persnicketly.{Constants, Logging, Persnicketly}
 import com.persnicketly.web.Servlet
 import com.persnicketly.persistence.UserDao
 import com.persnicketly.mill.UserQueue
@@ -15,8 +15,7 @@ import velocity.VelocityView
 import javax.ws.rs.core.MediaType
 
 @Singleton
-class CallbackServlet extends Servlet {
-  private val log = LoggerFactory.getLogger(classOf[CallbackServlet])
+class CallbackServlet extends Servlet with Logging {
 
   override def doGet(helper: HttpHelper) {
     val verifier = helper("oauth_verifier").get
@@ -34,7 +33,7 @@ class CallbackServlet extends Servlet {
     var updatedUser = user.copy(accessToken = Some(accessToken), verifier = Some(verifier))
     val dbUser = UserDao.save(updatedUser.copy(personalInfo = Api.currentUser(Persnicketly.oauthConsumer, updatedUser)))
     log.info("setting _user cookie to {}", dbUser.id.get.toString)
-    helper.cookies + ("_user", dbUser.id.get.toString)
+    helper.cookies + (Constants.UserCookie, dbUser.id.get.toString)
     UserQueue.add(dbUser)
     val view = new VelocityView("/templates/readability/callback.vm")
     helper.response.setContentType(MediaType.TEXT_HTML)
