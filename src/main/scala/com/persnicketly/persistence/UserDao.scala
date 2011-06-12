@@ -123,6 +123,13 @@ object UserDao {
   def get(id: ObjectId) = dao.get(id)
 
   /**
+   * Create an ObjectId for id and send it to UserDao#get(org.bson.types.ObjectId)
+   * @param id to convert to ObjectId
+   * @return Some(User) if id exists, None otherwise
+   */
+  def getById(id: String) = dao.get(new ObjectId(id))
+
+  /**
    * Proxy to UserDao instance to get data
    * @param requestToken to retrieve user for
    * @return Some(User) if requestToken exists, None otherwise
