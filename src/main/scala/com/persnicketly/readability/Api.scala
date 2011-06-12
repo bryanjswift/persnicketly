@@ -43,11 +43,14 @@ object Api extends Logging {
     val http = new Log4jHttp
     val request = url <@ (consumer, user.accessToken.get)
     val response = http.when(statusCodes)(request ># obj)()
-    log.debug("Request to '{}' responded with '{}'", request.path, response.toString)
-    // if this throws an exception we never shutdown http
-    val result = if (isError(response)) { None } else { Some(thunk(response)) }
-    http.shutdown
-    result
+    val responseStr = if (response == null) { "null" } else { response.toString }
+    log.debug("Request to '{}' responded with '{}'", request.path, responseStr)
+    try {
+      val result = if (isError(response)) { None } else { Some(thunk(response)) }
+      result
+    } finally {
+      http.shutdown
+    }
   }
   private def isError(response: JsObject): Boolean = errorExtractor(response).getOrElse(false)
 }
