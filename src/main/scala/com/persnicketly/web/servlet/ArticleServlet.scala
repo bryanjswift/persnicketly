@@ -5,6 +5,7 @@ import com.persnicketly.Logging
 import com.persnicketly.persistence.ScoredArticleDao
 import com.persnicketly.web.Servlet
 import com.persnicketly.web.controller.ArticleController
+import org.apache.http.HttpStatus
 import velocity.VelocityView
 import javax.ws.rs.core.MediaType
 
@@ -17,13 +18,14 @@ class ArticleServlet extends Servlet with Logging {
       case Array("article", "list") => list(helper)
       case Array("article", "read", articleId) => read(helper, articleId)
       case Array("article", "add", articleId) => add(helper, articleId)
-      case _ => helper.response.sendRedirect("/")
+      case _ => helper.response.sendError(HttpStatus.SC_NOT_FOUND)
     }
   }
 
   def add(helper: HttpHelper, articleId: String): Unit = {
     ArticleController.addArticleForUser(articleId, helper.cookie("_user"))
-    list(helper)
+    // it would be nice to say an article wasn't found or you're not logged in
+    helper.response.sendRedirect("/article/list")
   }
 
   def list(helper: HttpHelper): Unit = {
@@ -36,6 +38,7 @@ class ArticleServlet extends Servlet with Logging {
 
   def read(helper: HttpHelper, articleId: String): Unit = {
     ArticleController.addArticleForUser(articleId, helper.cookie("_user"))
+    // it would be nice to say an article wasn't found or you're not logged in
     val url = "http://www.readability.com/articles/%s".format(articleId)
     helper.response.sendRedirect(url)
   }

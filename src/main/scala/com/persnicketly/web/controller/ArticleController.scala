@@ -6,7 +6,7 @@ import com.persnicketly.persistence.{ScoredArticleDao, UserDao}
 import com.persnicketly.readability.Api
 
 object ArticleController extends Logging {
-  def addArticleForUser(articleId: String, userId: Option[String]) = {
+  def addArticleForUser(articleId: String, userId: Option[String]): Unit = {
     UserDao.getById(userId.getOrElse("")) match {
       case Some(user) =>
         ScoredArticleDao.get(articleId) match {
