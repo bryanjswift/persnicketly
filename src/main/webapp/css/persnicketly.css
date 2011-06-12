@@ -8,7 +8,8 @@ body {
   font-weight: 700; line-height: 1; color: #4d4b44; background: #fff;
 }
 /* General */
-a { text-decoration: none; }
+a { color: #6a3387; text-decoration: none; }
+a:hover { text-decoration: underline; }
 p { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight: normal; line-height: 1.375; }
 p[class] {
   font-family: "museo-slab-1", "museo-slab-2", "Helvetica Neue", "Helvetica", Arial, sans-serif; font-weight: 500;
@@ -26,27 +27,22 @@ header h1 {
   text-indent: -9999px; background: url(/img/logo.png) no-repeat 3.095% center;
 }
 header h1 a { display: block; color: #868378; }
-h2 { font-size: 1.1875em; }
-h3 { font-size: 1.25em; font-weight: 500; }
+h2, h3, h4, p { padding: 0 10px; }
+h2, h3 { text-shadow: rgba(0, 0, 0, 0.199219) 1px 1px 0px; }
+h2 { position: relative; margin: 0 0 10px; padding-top: 10px; font-size: 1.1875em; color: #6a3387; }
+h3 { font-size: 1.25em; font-weight: 500; margin: 15px 0 4px; color: #119337; }
 h4 {
   margin: 13px 0 0; font-size: 0.8125em; font-weight: 500;
   text-transform: uppercase; -webkit-font-smoothing: antialiased;
 }
 /* Home */
-.home h2, .home h3, .home h4, .home p, .thanks h2, .thanks h3, .thanks h4, .thanks p { padding: 0 10px; }
-.home h2, .home h3, .thanks h2, .thanks h3 { text-shadow: rgba(0, 0, 0, 0.199219) 1px 1px 0px; }
-.home h2, .thanks h2 { position: relative; margin: 0 0 10px; padding-top: 10px; font-size: 1.1875em; color: #6a3387; }
-.home h3, .thanks h3 { margin: 15px 0 4px; color: #119337; }
 .home .col, .thanks .col { position: relative; }
 .home .hero, .thanks .hero { margin: 9px 0 0 6px; max-width: 92.8825623%; }
 .home p, .thanks p { font-size: 0.8125em; line-height: 1.384615385; }
-.home p a, .thanks p a { color: #6a3387; }
-.home p a:hover, .thanks p a:hover { text-decoration: underline; }
 /* Article List */
 .list h2 {
   margin: 10px 2.507836991% 15px 0; padding: 11px 2.903225806% 9px;
   font-size: 1.125em; font-weight: 700; color: #fff; background: #fbbd12; line-height: 1; text-transform: uppercase;
-  text-shadow: rgba(0,0,0,0.20) 1px 1px 1px;
   box-shadow: rgba(0,0,0,0.33) 1px 1px 1px; -webkit-box-shadow: rgba(0,0,0,0.33) 1px 1px 1px;
   -moz-box-shadow: rgba(0,0,0,0.33) 1px 1px 1px; -ms-box-shadow: rgba(0,0,0,0.33) 1px 1px 1px;
 }
@@ -55,14 +51,14 @@ h4 {
   box-shadow: rgba(0,0,0,0.63) 0 0 4px; -webkit-box-shadow: rgba(0,0,0,0.63) 0 0 4px;
   -moz-box-shadow: rgba(0,0,0,0.63) 0 0 4px; -ms-box-shadow: rgba(0,0,0,0.63) 0 0 4px;
 }
-.list h3 { padding: 0 0; font-size: 0.9375em; font-weight: 500; line-height: 1.133333333; }
+.list h3 { padding: 0; margin: 0; font-size: 0.9375em; font-weight: 500; line-height: 1.133333333; }
 .list h3 a { color: #4d4b44; }
 .list h3 a:hover { text-decoration: underline; }
 .list h3:before {
   content: ' '; display: block; position: absolute; top: 0; left: 0; width: 82%; height: 5px;
   background: #fbbd12 url(/img/strip_slant.png) no-repeat right top;
 }
-.list p { font-size: 0.6875em; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+.list p { padding: 0; font-size: 0.6875em; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
 .list .excerpt { color: #41403a; }
 .list .meta { position: relative; padding: 10px 0; height: 1em; font-size: 0.625em; }
 .meta .favorited, .meta .bookmarked {
@@ -83,13 +79,12 @@ p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6
 }
 /* About */
 #content {
-  position: relative; margin: 0 2% 20px; padding: 12px 15% 10px 0; background: #fafaf9;
+  position: relative; margin: 0 2.507836991% 20px; padding: 12px 15% 10px 0; background: #fafaf9;
   box-shadow: rgba(0,0,0,0.6) 1px 1px 4px; -webkit-box-shadow: rgba(0,0,0,0.6) 1px 1px 4px;
   -moz-box-shadow: rgba(0,0,0,0.6) 1px 1px 4px; -ms-box-shadow: rgba(0,0,0,0.6) 1px 1px 4px;
 }
 .about section { padding: 24px 0 0; }
-.about h2, .about h3, .about h4, .about p { padding: 0 0 0 10px; }
-.about h2 { position: relative; margin: 0 0 10px; padding-top: 10px; text-transform: uppercase; }
+.about h2 { text-transform: uppercase; }
 .about h2:before {
   content: ' '; display: block; position: absolute; top: 0; left: 0; width: 82%; height: 5px;
   background: #fbbd12 url(/img/strip_slant.png) no-repeat right top;
@@ -115,6 +110,7 @@ p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6
   content: counter(li); counter-increment: li; font-weight: 700; background: url(/img/bg_li.png) no-repeat -1px top;
 }
 .about em { font-style: normal; font-weight: 700; color: #119337; }
+.about footer p { font-size: 1em; }
 /* Calls to Action */
 .cta {
   display: block; position: relative; margin: 2px 0 0 10px; padding: 13px 0 10px 0; width: 75%; min-width: 280px;
@@ -138,13 +134,16 @@ p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6
 #who span { padding: 0 4px; color: #fff; }
 #bryan { background: #683686; }
 #diesel { background: #4eacca; }
+/* 404 */
+.placekitten { position: relative; margin: 8px 0 0; }
+.placekitten img { max-width: 100%; }
 /* Footer */
 footer {
   position: relative; padding: 16px 0 0 2.507836991%; height: 26px; font-size: 0.70em; font-weight: normal;
   background: url(/img/bg_footer.png) repeat-x left top;
 }
 footer p {
-  color: #aaa9a3; color: rgba(255,255,255,0.52); text-transform: uppercase;
+  padding: 0; color: #aaa9a3; color: rgba(255,255,255,0.52); text-transform: uppercase;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 footer a {
@@ -189,11 +188,16 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
   }
 }
 @media screen and (min-width: 850px) {
-  #content { padding-right: 0; overflow: hidden; }
+  header h1 { padding-right: 5%; padding-left: 5%; background-position: 5.5% center; }
+  #content { margin: 0 5% 20px; padding-right: 0; overflow: hidden; }
+  .list li { margin-right: 5%; margin-left: 5%; }
+  .list h2 { margin-right: 5%; padding-left: 5%; }
   #who { clear: both; margin-top: 0; padding: 15px 0 0; }
   .col { float: left; width: 49%; }
   .col.last { margin: 0 0 0 5.5%; width: 44.5%; }
   .home .hero, .thanks .hero { max-width: 135%; }
   #when { clear: left; float: right; }
   .col .cta { margin-right: 10px; width: auto; }
+  footer { padding-left: 5%; }
+  footer a { right: 5%; }
 }
