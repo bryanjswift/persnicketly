@@ -25,7 +25,7 @@ private class PersnicketlyServletModule extends ServletModule {
     serve("/readability/sign-out").`with`(classOf[LogoutServlet])
     serve("/readability/callback").`with`(classOf[CallbackServlet])
     serve("/learn-more", "/about").`with`(classOf[TemplateServlet])
-    serve("/article/list").`with`(classOf[ArticleServlet])
+    serve("/article/*").`with`(classOf[ArticleServlet])
     serve("/d/*").`with`(classOf[JerseyServletContainer], jerseyParams)
   }
 }
