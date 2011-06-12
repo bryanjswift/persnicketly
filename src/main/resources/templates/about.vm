@@ -3,7 +3,6 @@
 <!--[if IE 7]>    <html class="no-js ie7" lang="en"> <![endif]-->
 <!--[if IE 8]>    <html class="no-js ie8" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
-<html>
   <head>
     #set( $title = "All About Persnicketly" )
     #set( $description = "Learn about Persnicketly and Readability and how they work together." )
@@ -14,7 +13,11 @@
   <body>
     <div id="wrapper" class="about">
       <header>
+        #if (${user.isEmpty()})
         <h1><a href="/">Persnicketly<span class="headerCurl"></span></a></h1>
+        #else
+        <h1><a href="/article/list">Persnicketly<span class="headerCurl"></span></a></h1>
+        #end
       </header>
       <div id="content">
         <div class="col">
@@ -26,7 +29,7 @@
             <ol>
               <li><em>Login</em> to Readability</li>
               <li><em>Allow</em> Persnicketly to access your Readability account</li>
-              <li><em>Enjoy</em> great articles on Persnicketly!</li>
+              <li><em>Discover</em> great articles via Persnicketly!</li>
             </ol>
             #if (${user.isEmpty()})
             <h4>Get started with Persnicketly</h4>

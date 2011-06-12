@@ -7,6 +7,7 @@ body {
   font-size: 100%; font-family: "museo-slab-1", "museo-slab-2", "Helvetica Neue", "Helvetica", Arial, sans-serif;
   font-weight: 700; line-height: 1; color: #4d4b44; background: #fff;
 }
+/* General */
 a { text-decoration: none; }
 p { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight: normal; line-height: 1.375; }
 p[class] {
@@ -25,6 +26,22 @@ header h1 {
   text-indent: -9999px; background: url(/img/logo.png) no-repeat 3.095% center;
 }
 header h1 a { display: block; color: #868378; }
+h2 { font-size: 1.1875em; }
+h3 { font-size: 1.25em; font-weight: 500; }
+h4 {
+  margin: 13px 0 0; font-size: 0.8125em; font-weight: 500;
+  text-transform: uppercase; -webkit-font-smoothing: antialiased;
+}
+/* Home */
+.home h2, .home h3, .home h4, .home p, .thanks h2, .thanks h3, .thanks h4, .thanks p { padding: 0 10px; }
+.home h2, .home h3, .thanks h2, .thanks h3 { text-shadow: rgba(0, 0, 0, 0.199219) 1px 1px 0px; }
+.home h2, .thanks h2 { position: relative; margin: 0 0 10px; padding-top: 10px; font-size: 1.1875em; color: #6a3387; }
+.home h3, .thanks h3 { margin: 15px 0 4px; color: #119337; }
+.home .col, .thanks .col { position: relative; }
+.home .hero, .thanks .hero { margin: 9px 0 0 6px; max-width: 92.8825623%; }
+.home p, .thanks p { font-size: 0.8125em; line-height: 1.384615385; }
+.home p a, .thanks p a { color: #6a3387; }
+.home p a:hover, .thanks p a:hover { text-decoration: underline; }
 /* Article List */
 .list h2 {
   margin: 10px 2.507836991% 15px 0; padding: 11px 2.903225806% 9px;
@@ -72,16 +89,12 @@ p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6
 }
 .about section { padding: 24px 0 0; }
 .about h2, .about h3, .about h4, .about p { padding: 0 0 0 10px; }
-.about h2 { position: relative; margin: 0 0 10px; padding-top: 10px; font-size: 1.1875em; text-transform: uppercase; }
+.about h2 { position: relative; margin: 0 0 10px; padding-top: 10px; text-transform: uppercase; }
 .about h2:before {
   content: ' '; display: block; position: absolute; top: 0; left: 0; width: 82%; height: 5px;
   background: #fbbd12 url(/img/strip_slant.png) no-repeat right top;
 }
-.about h3 { padding: 29px 0 10px 10px; font-size: 1.25em; font-weight: 500; color: #119337; }
-.about h4 {
-  margin: 13px 0 0; font-size: 0.8125em; font-weight: 500;
-  text-transform: uppercase; -webkit-font-smoothing: antialiased;
-}
+.about h3 { padding: 29px 0 10px 10px; color: #119337; }
 #about h2 { color: #47abcb; }
 #about h2:before { background-color: #47abcb; }
 #more h2 { color: #bd1c9d; }
@@ -102,10 +115,9 @@ p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6
   content: counter(li); counter-increment: li; font-weight: 700; background: url(/img/bg_li.png) no-repeat -1px top;
 }
 .about em { font-style: normal; font-weight: 700; color: #119337; }
-.about .cta { margin-left: 10px; }
 /* Calls to Action */
 .cta {
-  display: block; position: relative; margin: 2px 0 0; padding: 13px 0 10px 0; width: 75%; min-width: 280px;
+  display: block; position: relative; margin: 2px 0 0 10px; padding: 13px 0 10px 0; width: 75%; min-width: 280px;
   color: #fff; font-size: 0.95em; text-transform: uppercase; line-height: 1; text-shadow: rgba(0,0,0,0.2) 1px 1px 0;
   background: url(/img/bg_arrow.png) no-repeat right center;
   box-shadow: rgba(0,0,0,0.33) 1px 1px 1px; -webkit-box-shadow: rgba(0,0,0,0.33) 1px 1px 1px;
@@ -177,8 +189,11 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
   }
 }
 @media screen and (min-width: 850px) {
-  #content { padding-right: 0; }
+  #content { padding-right: 0; overflow: hidden; }
   #who { clear: both; margin-top: 0; padding: 15px 0 0; }
   .col { float: left; width: 49%; }
   .col.last { margin: 0 0 0 5.5%; width: 44.5%; }
+  .home .hero, .thanks .hero { max-width: 135%; }
+  #when { clear: left; float: right; }
+  .col .cta { margin-right: 10px; width: auto; }
 }

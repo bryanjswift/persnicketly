@@ -3,44 +3,49 @@
 <!--[if IE 7]>    <html class="no-js ie7" lang="en"> <![endif]-->
 <!--[if IE 8]>    <html class="no-js ie8" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
-<html>
   <head>
     #set( $title = "Be Persnicketly" )
-    #set( $description = "Collecting your favorite articles on Readability." )
+    #set( $description = "Collecting your favorite articles from Readability." )
     #set( $ogTitle = "Persnicketly" )
     #set( $ogDescription = "Collecting Readability stars since 2011" )
-    #set( $css = "/css/prelaunch.css" )
     #parse("templates/head.vm")
+    #if (!${user.isEmpty()})
+    <meta http-equiv="refresh" content="5;url=/article/list" />
+    #end
   </head>
   <body>
     <div id="wrapper">
       <header>
+        #if (${user.isEmpty()})
         <h1>Persnicketly<span class="headerCurl"></span></h1>
+        #else
+        <h1><a href="/article/list">Persnicketly<span class="headerCurl"></span></a></h1>
+        #end
       </header>
-      <section id="content">
+      <section id="content" class="home">
         <div id="what" class="col">
           <h2>The best of Readability's bookmarks at your desk or on-the-go.</h2>
-          <p class="description">We're collecting and curating the most favorited Readability bookmarks and serving them to you when you want them, where you want them.</p>
+          <p>We're collecting and curating the most favorited Readability bookmarks and serving them to you when you want them, where you want them.</p>
           <img class="hero" src="/img/chair_stars.png" alt="" />
         </div>
         <div id="when" class="col last">
           #if (${user.isEmpty()})
-          <h3>We're going to launch soon,</h3>
-          <p class="please">but until then <strong><a href="/readability/login">sign in to Readability</a></strong> and help us get started collecting favorites.</p>
+          <h3>We're live,</h3>
+          <p>but a little data starved. If you have a Readability account please help make Persnicketly better. If you'd rather not you can just go <a href="/article/list">see the top articles</a>.</p>
           <h4>Sign in &amp; approve Persnicketly</h4>
           <a id="signIn" class="cta" href="/readability/login">
             <img src="/img/blue_chair.png" alt="" height="29" />
             <span>Sign in to Readability</span>
           </a>
+          <h4>Want details about what we're doing?</h4>
           #else
           <div id="confirm">
-            <h3>Thanks for signing up to use</h3>
-            <p class="serviceName">Persnicketly</p>
-            <p class="notice">We'll publish a note to your reading list when we're up and running.</p>
+            <h3>Thanks for sharing your data</h3>
+            <p>We'll send you to the top articles in just a moment. Or if you're impatient <a href="/article/list">go see the top articles yourself</a>.</p>
           </div>
+          <h4>Maybe you want more details first?</h4>
           #end
-          <h4>Details your thing?</h4>
-          <a id="learnMore" class="cta" href="/learn-more">
+          <a id="learnMore" class="cta" href="/about">
             <img src="/img/purple_books.png" alt="" width="33" />
             <span>Learn More</span>
           </a>
@@ -48,7 +53,7 @@
       </section>
       <footer>
         <p>Persnicketly &copy; 2011</p>
-        <a href="/learn-more">about</a>
+        <a href="/about">about</a>
       </footer>
     </div>
     <script src="/js/persnicketly.js"></script>
