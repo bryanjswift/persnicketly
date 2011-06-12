@@ -88,7 +88,7 @@ p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6
   content: ' '; display: block; position: absolute; top: 0; left: 0; width: 82%; height: 5px;
   background: #fbbd12 url(/img/strip_slant.png) no-repeat right top;
 }
-.about h3 { padding: 29px 0 10px 10px; color: #119337; }
+.about h3 { margin: 0; padding: 29px 0 10px 10px; color: #119337; }
 #about h2 { color: #47abcb; }
 #about h2:before { background-color: #47abcb; }
 #more h2 { color: #bd1c9d; }
@@ -156,6 +156,7 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
        screen and (max-device-width: 480px),
        screen and (-webkit-min-device-pixel-ratio: 2) {
   header { }
+  .about h2:before { width: 90%; }
   #content { padding-right: 10px; }
   .cta { width: auto; }
 }
