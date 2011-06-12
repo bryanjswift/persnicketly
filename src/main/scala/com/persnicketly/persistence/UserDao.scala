@@ -127,7 +127,7 @@ object UserDao {
    * @param id to convert to ObjectId
    * @return Some(User) if id exists, None otherwise
    */
-  def getById(id: String) = dao.get(new ObjectId(id))
+  def getById(id: String) = if (id.length == 0) { None } else { dao.get(new ObjectId(id)) }
 
   /**
    * Proxy to UserDao instance to get data
