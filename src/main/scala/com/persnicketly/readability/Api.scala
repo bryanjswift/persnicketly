@@ -7,7 +7,7 @@ import dispatch.json.JsHttp.requestToJsHandlers
 import dispatch.oauth.Consumer
 import dispatch.oauth.OAuth.Request2RequestSigner
 import com.persnicketly.Logging
-import com.persnicketly.readability.model.{Bookmark, Meta, User, UserData}
+import com.persnicketly.readability.model.{Article, Bookmark, Meta, User, UserData}
 import com.persnicketly.readability.api.{BookmarkExtractor, BookmarkRequestConditions, MetaExtractor, UserDataExtractor}
 import org.joda.time.DateTime
 
@@ -38,6 +38,12 @@ object Api extends Logging {
     request(userUrl, consumer, user) { response =>
       UserDataExtractor(response).copy(userId = marks().flatMap(_.headOption.map(_.userId)))
     }
+  }
+  def bookmark(consumer: Consumer, user: User, article: Article): Unit = bookmark(consumer, user, article.url)
+  def bookmark(consumer: Consumer, user: User, pageUrl: String): Unit = {
+    val url = bookmarksUrl << Map("url" -> pageUrl)
+    // article adding gives an empty response which dispatch translates to null
+    request(url, consumer, user) { response => response }
   }
   private def request[T](url: Request, consumer: Consumer, user: User)(thunk: JsObject => T): Option[T] = {
     val http = new Log4jHttp
