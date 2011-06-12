@@ -32,6 +32,10 @@ class ScoredArticleDao extends Dao {
     articles.map(dbobject2article).toList
   }
 
+  def get(articleId: String): Option[ScoredArticle] = {
+    collection.findOne(MongoDBObject("article_id" -> articleId)).map(dbobject2article)
+  }
+
   def save(scored: ScoredArticle): ScoredArticle = {
     val query = scored.id match {
       case Some(id) => MongoDBObject("_id" -> id)
@@ -77,11 +81,13 @@ object ScoredArticleDao {
 
   private def dao = { new ScoredArticleDao }
 
-  def compute() = { dao.compute() }
+  def compute() = dao.compute()
 
-  def find(limit: Int) = { dao.find(limit) }
+  def find(limit: Int) = dao.find(limit)
 
-  def save(scored: ScoredArticle) = { dao.save(scored) }
+  def get(articleId: String) = dao.get(articleId)
+
+  def save(scored: ScoredArticle) = dao.save(scored)
 
   def update(): Unit = {
     val instance = dao
