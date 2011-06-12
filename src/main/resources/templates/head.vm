@@ -6,12 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0" />
     #if ($ogTitle && $ogDescription)
     <!-- Facebook stuff -->
-    <meta property="og:image" content="http://persnicketly.com/img/open-graph-icon.png" />
     <meta property="og:title" content="${ogTitle}" />
     <meta property="og:description" content="${ogDescription}" />
+    #end
+    <meta property="og:image" content="http://persnicketly.com/img/open-graph-icon.png" />
     <meta property="og:site_name" content="Persnicketly" />
     <meta property="og:type" content="persnicketly:webapp" />
-    #end
+    <meta property="fb:admins" content="678400723" />
+    <!-- Favicons -->
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <link href="/humans.txt" rel="author" />
