@@ -57,7 +57,9 @@ h4 {
   content: ' '; display: block; position: absolute; top: 0; left: 0; width: 82%; height: 5px;
   background: #fbbd12 url(/img/strip_slant.png) no-repeat right top;
 }
-.list p { padding: 0; font-size: 0.6875em; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+.list p {
+  padding: 0; font-size: 0.75em; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight: normal;
+}
 .list .excerpt { padding: 3px 0 0; color: #41403a; }
 .list .meta { position: absolute; top: 5px; right: 10px; padding: 10px 0; height: 1em; font-size: 0.625em; }
 .meta .favorited, .meta .bookmarked {
