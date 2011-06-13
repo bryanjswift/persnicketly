@@ -91,6 +91,14 @@ p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6
   background: #fbbd12 url(/img/strip_slant.png) no-repeat right top;
 }
 .about h3 { margin: 0; padding: 29px 0 10px 10px; color: #119337; }
+#back {
+  display: block; position: absolute; top: 0; left: 10px; padding: 8px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.6875em; font-weight: normal; color: #868378; text-transform: uppercase;
+  box-shadow: rgba(0,0,0,0.5) 0 0 4px; -webkit-box-shadow: rgba(0,0,0,0.5) 0 0 4px;
+  -moz-box-shadow: rgba(0,0,0,0.5) 0 0 4px; -ms-box-shadow: rgba(0,0,0,0.5) 0 0 4px;
+}
+#back:hover { text-decoration: underline; }
 #about h2 { color: #47abcb; }
 #about h2:before { background-color: #47abcb; }
 #more h2 { color: #bd1c9d; }

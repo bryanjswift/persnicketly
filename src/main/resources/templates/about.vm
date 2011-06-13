@@ -22,6 +22,11 @@
       <div id="content">
         <div class="col">
           <section id="about">
+            #if (${user.isEmpty()})
+            <a id="back" href="/">&laquo;Back to Home</a>
+            #else
+            <a id="back" href="/article/list">&laquo;Back to List</a>
+            #end
             <h2>About Persnicketly</h2>
             <p class="tagline">The best of Readability's bookmarks at your desk or on-the-go.</p>
             <p>We're collecting and curating the most favorited Readability bookmarks and serving them to you when you want them where you want them.</p>
