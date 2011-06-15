@@ -5,11 +5,12 @@ import dispatch.oauth.OAuth.Request2RequestSigner
 import dispatch.json.Js.obj
 import dispatch.json.JsHttp.requestToJsHandlers
 import com.google.inject.Singleton
-import com.persnicketly.readability.{Api, Auth}
 import com.persnicketly.{Constants, Logging, Persnicketly}
-import com.persnicketly.web.Servlet
-import com.persnicketly.persistence.UserDao
 import com.persnicketly.mill.UserQueue
+import com.persnicketly.persistence.UserDao
+import com.persnicketly.readability.{Api, Auth}
+import com.persnicketly.readability.model.User
+import com.persnicketly.web.Servlet
 import org.slf4j.LoggerFactory
 import velocity.VelocityView
 import javax.ws.rs.core.MediaType
@@ -35,8 +36,14 @@ class CallbackServlet extends Servlet with Logging {
     log.info("setting _user cookie to {}", dbUser.id.get.toString)
     helper.cookies + (Constants.UserCookie, dbUser.id.get.toString)
     UserQueue.add(dbUser)
+    CallbackServlet.render(helper, dbUser)
+  }
+}
+
+object CallbackServlet extends Logging {
+  def render(helper: Servlet#HttpHelper, user: User): Unit = {
     val view = new VelocityView("/templates/readability/callback.vm")
     helper.response.setContentType(MediaType.TEXT_HTML)
-    view.render(Map[String,Any]("personalInfo" -> dbUser.personalInfo), helper.response)
+    view.render(Map[String,Any]("personalInfo" -> user.personalInfo), helper.response)
   }
 }
