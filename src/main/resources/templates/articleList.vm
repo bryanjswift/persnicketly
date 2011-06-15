@@ -24,6 +24,7 @@
         <ul class="articles">
           #foreach( $scored in $articles )
           #set( $article = $scored.article() )
+          #set( $isLoggedIn = $user.isDefined() )
           <li>
             <h3><a href="/article/read/${article.articleId()}">${article.title()}</a></h3>
             #if (${article.excerpt().isDefined()})
@@ -44,7 +45,9 @@
               </a>
             </p>
             #end
+            #if ($isLoggedIn)
             <a class="add" href="/article/add/${article.articleId()}">Add</a>
+            #end
           </li>
           #end
         </ul>
