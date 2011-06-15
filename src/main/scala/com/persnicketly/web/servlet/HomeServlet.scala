@@ -3,6 +3,7 @@ package com.persnicketly.web.servlet
 import com.google.inject.Singleton
 import com.persnicketly.{Constants, Logging}
 import com.persnicketly.persistence.UserDao
+import com.persnicketly.readability.model.User
 import com.persnicketly.web.Servlet
 import com.persnicketly.web.servlet.readability.CallbackServlet
 import velocity.VelocityView
@@ -22,6 +23,7 @@ class HomeServlet extends Servlet with Logging {
           }
           case None => HomeServlet.render(helper)
         }
+      case "/thanks" => CallbackServlet.render(helper, User.EMPTY)
       case _ => HomeServlet.render(helper)
     }
   }

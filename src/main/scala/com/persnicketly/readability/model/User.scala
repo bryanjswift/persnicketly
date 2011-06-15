@@ -12,6 +12,10 @@ case class User(
   lastProcessed: Option[DateTime],
   personalInfo: Option[UserData])
 
+object User {
+  val EMPTY = User(None, null, None, None, None, None)
+}
+
 object TokenHelper {
   def apply(value: Option[String], secret: Option[String]) = {
     if (value.isDefined && secret.isDefined) {

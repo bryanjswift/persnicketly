@@ -42,8 +42,9 @@ class CallbackServlet extends Servlet with Logging {
 
 object CallbackServlet extends Logging {
   def render(helper: Servlet#HttpHelper, user: User): Unit = {
+    log.info("Rendering view - /templates/callback.vm")
     val view = new VelocityView("/templates/readability/callback.vm")
     helper.response.setContentType(MediaType.TEXT_HTML)
-    view.render(Map[String,Any]("personalInfo" -> user.personalInfo), helper.response)
+    view.render(Map[String,Any]("personalInfo" -> user.personalInfo, "uri" -> helper.uri), helper.response)
   }
 }
