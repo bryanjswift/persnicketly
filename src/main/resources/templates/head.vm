@@ -30,7 +30,7 @@
       var isLive = (location.host || location.hostname).match(/.*persnicket(ly|lyapp|yapp).com/i)
         , el = d.createElement(t)
         , sib = d.getElementsByTagName(t)[0];
-      el.src = 'http://mint.persnicketly.com/?js';
+      el.src = '//mint.persnicketly.com/?js';
       el.async = 1;
       if (isLive) { sib.parentNode.insertBefore(el, sib); }
     })(document, 'script');
