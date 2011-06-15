@@ -9,9 +9,6 @@
     #set( $ogTitle = "Persnicketly" )
     #set( $ogDescription = "Collecting Readability stars since 2011" )
     #parse("templates/head.vm")
-    #if (!${user.isEmpty()})
-    <meta http-equiv="refresh" content="5;url=/article/list" />
-    #end
   </head>
   <body>
     <div id="wrapper">
@@ -26,25 +23,23 @@
         <div id="what" class="col">
           <h2>The best of Readability's bookmarks at your desk or on-the-go.</h2>
           <p>We're collecting and curating the most favorited Readability bookmarks and serving them to you when you want them, where you want them.</p>
-          <img class="hero" src="/img/chair_stars.png" alt="" />
-        </div>
-        <div id="when" class="col last">
-          #if (${user.isEmpty()})
-          <h3>We're live,</h3>
-          <p>but a little data starved. If you have a Readability account please help make Persnicketly better. If you'd rather not you can just go <a href="/article/list">see the top articles</a>.</p>
-          <h4>Sign in &amp; approve Persnicketly</h4>
-          <a id="signIn" class="cta" href="/readability/login">
-            <img src="/img/blue_chair.png" alt="" height="29" />
-            <span>Sign in to Readability</span>
-          </a>
-          <h4>Want details about what we're doing?</h4>
-          #else
-          <div id="confirm">
-            <h3>Thanks for sharing your data</h3>
-            <p>We'll send you to the top articles in just a moment. Or if you're impatient <a href="/article/list">go see the top articles yourself</a>.</p>
+          <div class="getData">
+            <h4>Get started with Persnicketly</h4>
+            <a id="signIn" class="cta" href="/readability/login">
+              <img src="/img/blue_chair.png" alt="" height="29" />
+              <span>Sign in to Readability</span>
+            </a>
+            <p class="please">We're just getting started and we need all the data we can get. <strong>By logging in and approving our app you're helping a ton!</strong></p>
           </div>
+        </div>
+        <div id="more" class="col last">
+          <img class="hero" src="/img/chair_stars.png" alt="" />
+          <h4>Want to see what Persnicketly looks like?</h4>
+          <a id="articles" class="cta" href="/article/list">
+            <img src="/img/yellow_star.png" alt="" width="33" />
+            <span>See top bookmarks</span>
+          </a>
           <h4>Maybe you want more details first?</h4>
-          #end
           <a id="learnMore" class="cta" href="/about">
             <img src="/img/purple_books.png" alt="" width="33" />
             <span>Learn More</span>

@@ -15,6 +15,7 @@ p { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight: no
 p[class] {
   font-family: "museo-slab-1", "museo-slab-2", "Helvetica Neue", "Helvetica", Arial, sans-serif; font-weight: 500;
 }
+strong { font-weight: 700; }
 header, nav, footer, section { display: block; }
 #wrapper { background: url(/img/background.png) left top; }
 header {
@@ -29,16 +30,22 @@ header h1 {
 }
 header h1 a { display: block; color: #868378; }
 h2, h3, h4, p { padding: 0 10px; }
-h2 { position: relative; margin: 0 0 10px; padding-top: 10px; font-size: 1.1875em; color: #6a3387; }
-h3 { font-size: 1.25em; font-weight: 500; margin: 15px 0 4px; color: #119337; }
+h2 { position: relative; margin: 0 0 10px; padding-top: 10px; font-size: 1.1875em; }
+h3 { font-size: 1.25em; font-weight: 500; margin: 15px 0 4px; }
 h4 {
   margin: 13px 0 0; font-size: 0.8125em; font-weight: 500;
   text-transform: uppercase; -webkit-font-smoothing: antialiased;
 }
 /* Home */
 .home .col, .thanks .col { position: relative; }
+.home h2 { font-size: 1em; font-weight: 500; }
 .home .hero, .thanks .hero { margin: 9px 0 0 6px; max-width: 92.8825623%; }
 .home p, .thanks p { font-size: 0.8125em; line-height: 1.384615385; }
+.please {
+  float: right; padding: 13px 0 0 103px; max-width: 350px; background: url(/img/pointy_arrow.png) no-repeat 50px 8px;
+}
+.getData { position: relative; width: 75%; overflow: hidden; }
+.getData .cta { width: auto; }
 /* Article List */
 .list h2 {
   margin: 10px 2.507836991% 15px 0; padding: 11px 2.903225806% 9px; text-shadow: rgba(0, 0, 0, 0.199219) 1px 1px 0px;
@@ -80,7 +87,7 @@ p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6
 }
 /* About */
 #content {
-  position: relative; margin: 0 2.507836991% 20px; padding: 12px 15% 10px 0; background: #fafaf9;
+  position: relative; margin: 0 2.507836991%; padding: 12px 15% 10px 0; background: #fafaf9;
   box-shadow: rgba(0,0,0,0.6) 1px 1px 4px; -webkit-box-shadow: rgba(0,0,0,0.6) 1px 1px 4px;
   -moz-box-shadow: rgba(0,0,0,0.6) 1px 1px 4px; -ms-box-shadow: rgba(0,0,0,0.6) 1px 1px 4px;
 }
@@ -135,7 +142,7 @@ p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6
 #signUp { background-color: #ba239c; }
 #learnMore { background-color: #683686; }
 #emailUs { background-color: #f66e24; }
-#followUs { background-color: #fbbd12; }
+#followUs, #articles { background-color: #fbbd12; }
 /* Who */
 #who { clear: both; margin: 20px 0; font-weight: 500; text-align: center; color: #5d5d5d; }
 #who p {
@@ -149,8 +156,8 @@ p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6
 .placekitten img { max-width: 100%; }
 /* Footer */
 footer {
-  position: relative; padding: 16px 0 0 2.507836991%; height: 26px; font-size: 0.70em; font-weight: normal;
-  background: url(/img/bg_footer.png) repeat-x left top;
+  position: relative; margin: -2px 0 0; padding: 16px 0 0 2.507836991%; height: 26px;
+  font-size: 0.70em; font-weight: normal; background: url(/img/bg_footer.png) repeat-x left top;
 }
 footer p {
   padding: 0; color: #aaa9a3; color: rgba(255,255,255,0.52); text-transform: uppercase;
@@ -169,11 +176,16 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
   .about h2:before { width: 90%; }
   #content { padding-right: 10px; }
   .cta { width: auto; }
+  .getData { width: auto; }
 }
 @media screen and (-webkit-min-device-pixel-ratio: 2) {
   header h1 {
     background-image: url(/img/x2/logo.png);
     -o-background-size: auto 37px; -webkit-background-size: auto 37px; -moz-background-size: auto 37px;
+  }
+  .please {
+    background-image: url(/img/x2/pointy_arrow.png);
+    -o-background-size: auto 49px; -webkit-background-size: auto 49px; -moz-background-size: auto 49px;
   }
   .about h2:before, .list h3:before {
     background-image: url(/img/x2/strip_slant.png);
@@ -199,7 +211,7 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
 }
 @media screen and (min-width: 850px) {
   header h1 { padding-right: 5%; padding-left: 5%; background-position: 5.5% center; }
-  #content { margin: 0 5% 20px; padding-right: 0; overflow: hidden; }
+  #content { margin: 0 5%; padding-right: 0; overflow: hidden; }
   .list li { margin-right: 5%; margin-left: 5%; }
   .list h2 { margin-right: 5%; padding-left: 5%; }
   #who { clear: both; margin-top: 0; padding: 15px 0 0; }
@@ -208,6 +220,7 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
   .home .hero, .thanks .hero { max-width: 135%; }
   #when { clear: left; float: right; }
   .col .cta { margin-right: 10px; width: auto; }
+  .col .getData { width: auto; }
   footer { padding-left: 5%; }
   footer a { right: 5%; }
 }
