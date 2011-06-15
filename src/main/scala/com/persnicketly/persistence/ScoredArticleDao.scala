@@ -20,16 +20,24 @@ class ScoredArticleDao extends Dao {
   collection.ensureIndex(MongoDBObject("article_id" -> 1))
   collection.ensureIndex(MongoDBObject("score" -> -1))
 
+  private val articleConverter = dbobject2article _
+
+  def all(): List[ScoredArticle] = {
+    log.debug("Fetching all scored articles")
+    val articles = collection.find().sort(MongoDBObject("score" -> -1))
+    articles.map(articleConverter).toList
+  }
+
   def find(count: Int): List[ScoredArticle] = {
     log.debug("Fetching the top {} articles", count)
     val articles = collection.find("score" $gt 2).limit(count).sort(MongoDBObject("score" -> -1))
-    articles.map(dbobject2article).toList
+    articles.map(articleConverter).toList
   }
 
   def compute(): List[ScoredArticle] = {
     val bookmarks = new BookmarkDao
     val articles = bookmarks.collection.group(key, cond, initial, reduce)
-    articles.map(dbobject2article).toList
+    articles.map(articleConverter).toList
   }
 
   def get(articleId: String): Option[ScoredArticle] = {
@@ -80,6 +88,8 @@ object ScoredArticleDao {
   }
 
   private def dao = { new ScoredArticleDao }
+
+  def all() = dao.all()
 
   def compute() = dao.compute()
 
