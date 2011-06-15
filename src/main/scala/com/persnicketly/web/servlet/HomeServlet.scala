@@ -32,6 +32,6 @@ object HomeServlet extends Logging {
     log.info("Rendering view - /templates/index.vm")
     val view = new VelocityView("/templates/index.vm")
     helper.response.setContentType(MediaType.TEXT_HTML)
-    view.render(Map[String,Any]("user" -> helper.cookie(Constants.UserCookie)), helper.response)
+    view.render(Map[String,Any]("user" -> helper.cookie(Constants.UserCookie), "uri" -> helper.uri), helper.response)
   }
 }
