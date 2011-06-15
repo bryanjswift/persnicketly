@@ -7,33 +7,36 @@
     #set( $title = "Thanks!" )
     #set( $description = "You authorized us to read your reading list on Readability. Thanks!" )
     #parse("templates/head.vm")
+    #if (${personalInfo.isDefined()})
     <meta http-equiv="refresh" content="5;url=/article/list" />
+    #end
   </head>
   <body>
     <div id="wrapper">
       <header>
         <h1><a href="/article/list">Persnicketly<span class="headerCurl"></span></a></h1>
       </header>
-      <section id="content" class="thanks">
-        #set ( $name = "" )
+      <div id="content" class="thanks">
+        #set ( $name = "guy" )
         #if (${personalInfo.isDefined()})
-          #set ( $name = ", ${personalInfo.get().firstName()}" )
+          #set ( $name = "${personalInfo.get().firstName()}" )
         #end
-        <div id="what" class="col">
-          <h2>Thanks for signing up${name}!</h2>
-          <p>Keep on reading with Readability and don't forget to favorite the good stuff. We promise not to publish anything to your reading list you haven't asked us to.</p>
+        <section id="what" class="col">
+          <h2>Hey thanks ${name}!</h2>
+          <p>You're now all set up to begin using Persnicketly. <strong>We hope you enjoy it!</strong></p>
           <img class="hero" src="/img/chair_stars.png" alt="" />
-        </div>
-        <div id="when" class="col last">
-          <h3>In just a few moments,</h3>
-          <p>we'll send you to the top articles. Or if you're impatient <a href="/article/list">go see the top articles yourself</a>.</p>
-          <h4>Wondering what you got yourself into?</h4>
-          <a id="learnMore" class="cta" href="/about">
-            <img src="/img/purple_books.png" alt="" width="33" />
-            <span>Learn More</span>
+        </section>
+        <section id="when" class="col last">
+          <h3>We'll redirect you to see the top bookmarks in a hot second...</h3>
+          <h4>Or you can click this button:</h4>
+          <a id="articles" class="cta" href="/article/list">
+            <img src="/img/yellow_star.png" alt="" width="33" />
+            <span>See top bookmarks</span>
           </a>
-        </div>
-      </section>
+        </section>
+        #set( $ogRef = $uri )
+        #parse("templates/sharing.vm")
+      </div>
       <footer>
         <p>Persnicketly &copy; 2011</p>
         <a href="/about">about</a>
