@@ -1,6 +1,18 @@
-      <!--
-      <div id="sharing">
-        <div id="fb-root"></div><script src="http://connect.facebook.net/en_US/all.js#appId=130183613727280&amp;xfbml=1"></script><fb:like href="http://persnicketly.com" send="false" layout="button_count" width="50" show_faces="false" font="tahoma" ref="${ogRef}"></fb:like>
-        <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" data-via="persnicketly">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
-      </div>
-      -->
+#if (!$ogRef)<p style="color:red; font-size: 3em;">You need to include <code>ogRef</code></p>#end
+<div id="sharing">
+  <span class="share cta">
+    <img src="/img/blue_twitter.png" alt="" width="28" />
+    <span>Tweet about us</span>
+    <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" data-via="persnicketly" data-url="http://persnicketly.com?twt-ref=${ogRef}">Tweet</a><script async="async" type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+  </span>
+  <span class="share cta">
+    <img src="/img/blue_facebook.png" alt="" width="21" />
+    <span>Like us on Facebook</span>
+    <div id="fb-root"></div><script async="async" src="http://connect.facebook.net/en_US/all.js#appId=130183613727280&amp;xfbml=1"></script><fb:like href="http://persnicketly.com" send="false" layout="button_count" width="450" show_faces="false" font="" ref="${ogRef}"></fb:like>
+  </span>
+  <span class="share cta">
+    <img src="/img/blue_facebook.png" alt="" width="21" />
+    <span>Tell someone specific</span>
+    <div id="fb-root"></div><script async="async" src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script><fb:send href="http://persnicketly.com" font=""></fb:send>
+  </span>
+</div>
