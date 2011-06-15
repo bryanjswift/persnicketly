@@ -25,6 +25,10 @@
           #foreach( $scored in $articles )
           #set( $article = $scored.article() )
           <li>
+            <h3><a href="/article/read/${article.articleId()}">${article.title()}</a></h3>
+            #if (${article.excerpt().isDefined()})
+            <p class="excerpt">${article.excerpt().get()}</p>
+            #end
             <p class="meta">
               #if (${article.publishedDisplay().isDefined()})
               <span class="published">${article.publishedDisplay().get()}</span>
@@ -32,10 +36,6 @@
               <span class="favorited"><span>Times Favorited:</span> ${scored.numFavorites()}</span>
               <span class="bookmarked"><span>Times Bookmarked:</span> ${scored.numBookmarks()}</span>
             </p>
-            <h3><a href="/article/read/${article.articleId()}">${article.title()}</a></h3>
-            #if (${article.excerpt().isDefined()})
-            <p class="excerpt">${article.excerpt().get()}</p>
-            #end
             #if (${article.domain()})
             <p class="original">
               <a href="${article.url()}" rel="canonical">
