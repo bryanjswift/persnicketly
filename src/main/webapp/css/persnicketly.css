@@ -29,7 +29,7 @@ header h1 {
   text-indent: -9999px; background: url(/img/logo.png) no-repeat 3.095% center;
 }
 header h1 a { display: block; color: #868378; }
-h2, h3, h4, p { padding: 0 10px; }
+h2, h3, h4, p { }
 h2 { position: relative; margin: 0 0 10px; padding-top: 10px; font-size: 1.1875em; }
 h3 { font-size: 1.25em; font-weight: 500; margin: 15px 0 4px; }
 h4 {
@@ -46,6 +46,7 @@ h4 {
 }
 .getData { position: relative; width: 75%; overflow: hidden; }
 .getData .cta { width: auto; }
+.home #sharing .stars { display: none; }
 /* Article List */
 .list h2 {
   margin: 10px 2.507836991% 15px 0; padding: 11px 2.903225806% 9px; text-shadow: rgba(0, 0, 0, 0.199219) 1px 1px 0px;
@@ -87,14 +88,14 @@ p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6
 }
 /* About */
 #content {
-  position: relative; margin: 0 2.507836991%; padding: 12px 15% 10px 0; background: #fafaf9;
+  position: relative; margin: 0 2.507836991%; padding: 12px 15% 10px 10px; background: #fafaf9;
   box-shadow: rgba(0,0,0,0.6) 1px 1px 4px; -webkit-box-shadow: rgba(0,0,0,0.6) 1px 1px 4px;
   -moz-box-shadow: rgba(0,0,0,0.6) 1px 1px 4px; -ms-box-shadow: rgba(0,0,0,0.6) 1px 1px 4px;
 }
 .about section { padding: 24px 0 0; }
 .about h2 { text-transform: uppercase; }
 .about h2:before {
-  content: ' '; display: block; position: absolute; top: 0; left: 0; width: 82%; height: 5px;
+  content: ' '; display: block; position: absolute; top: 0; left: -10px; width: 82%; height: 5px;
   background: #fbbd12 url(/img/strip_slant.png) no-repeat right top;
 }
 .about h3 { margin: 0; padding: 29px 0 10px 10px; color: #119337; }
@@ -129,7 +130,7 @@ p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6
 .about footer p { font-size: 1em; }
 /* Calls to Action */
 .cta {
-  display: block; position: relative; margin: 2px 0 0 10px; padding: 13px 0 10px 0; width: 75%; min-width: 280px;
+  display: block; position: relative; margin: 2px 0 0; padding: 13px 0 10px 0; width: 75%; min-width: 280px;
   color: #fff; font-size: 0.95em; text-transform: uppercase; line-height: 1; text-shadow: rgba(0,0,0,0.2) 1px 1px 0;
   background: url(/img/bg_arrow.png) no-repeat right center;
   box-shadow: rgba(0,0,0,0.33) 1px 1px 1px; -webkit-box-shadow: rgba(0,0,0,0.33) 1px 1px 1px;
@@ -143,11 +144,24 @@ p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6
 #learnMore { background-color: #683686; }
 #emailUs { background-color: #f66e24; }
 #followUs, #articles { background-color: #fbbd12; }
-#sharing { overflow: hidden; }
-#sharing .cta { background-color: #47abcb; background-image: none; }
+/* Sharing */
+#sharing { clear: both; margin: 10px 0 0; padding: 10px 10px; width: 75%; background: #e7e7e6; overflow: hidden; }
+#sharing h1, #sharing h2 { text-align: center; }
+#sharing h2 {
+  margin: 0 0 15px; padding: 0 13.2352941%;
+  font-size: 0.8125em; font-weight: 500; line-height: 1.076923077; color: #bd1c9d;
+}
+#sharing h1 {
+  margin: 0; padding: 0 13.2352941%; text-transform: uppercase;
+  font-size: 1em; font-weight: 700; line-height: 0.875; color: #119337;
+}
+#sharing .stars { margin: 15px 0 0; max-width: 100%; }
+#sharing h4 { padding: 5px 0; }
+#sharing .cta { margin: 0 1px 0 0; width: auto; background-color: #47abcb; background-image: none; }
+#sharing .cta img { top: 0; }
 #sharing .twitter-share-button { position: absolute; top: 9px; right: 7px; }
-#fb-root, .fb_iframe_widget { position: absolute; top: 7px; right: 7px; width: 90px; height: 20px; }
-.fb_iframe_widget span { top: auto; left: auto; }
+#sharing .like-wrapper { position: absolute; top: 9px; right: 7px; width: 48px; height: 20px; overflow: hidden; }
+.fb_iframe_widget span { position: relative; top: auto; left: auto; }
 /* Who */
 #who { clear: both; margin: 20px 0; font-weight: 500; text-align: center; color: #5d5d5d; }
 #who p {
@@ -175,13 +189,14 @@ footer a {
 footer a:hover { text-decoration: none; }
 footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 5px; }
 @media screen and (max-width: 640px),
-       screen and (max-device-width: 480px),
-       screen and (-webkit-min-device-pixel-ratio: 2) {
+       screen and (max-device-width: 480px) {
   header { }
   .about h2:before { width: 90%; }
   #content { padding-right: 10px; }
   .cta { width: auto; }
   .getData { width: auto; }
+  #sharing { padding: 10px 5px; width: auto; }
+  #sharing .stars { display: none; }
 }
 @media screen and (-webkit-min-device-pixel-ratio: 2) {
   header h1 {
@@ -222,10 +237,12 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
   #who { clear: both; margin-top: 0; padding: 15px 0 0; }
   .col { float: left; width: 49%; }
   .col.last { margin: 0 0 0 5.5%; width: 44.5%; }
+  .col.last:after { content: ' '; display: block; clear: both; height: 0; overflow: hidden; visibility: hidden; }
   .home .hero, .thanks .hero { max-width: 135%; }
   #when { clear: left; float: right; }
-  .col .cta { margin-right: 10px; width: auto; }
+  .col .cta { width: auto; }
   .col .getData { width: auto; }
+  #sharing { display: none; margin-right: 10px; width: auto; }
   footer { padding-left: 5%; }
   footer a { right: 5%; }
 }

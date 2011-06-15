@@ -19,8 +19,8 @@
         <h1><a href="/article/list">Persnicketly<span class="headerCurl"></span></a></h1>
         #end
       </header>
-      <section id="content" class="home">
-        <div id="what" class="col">
+      <div id="content" class="home">
+        <section id="what" class="col">
           <h2>The best of Readability's bookmarks at your desk or on-the-go.</h2>
           <p>We're collecting and curating the most favorited Readability bookmarks and serving them to you when you want them, where you want them.</p>
           <div class="getData">
@@ -31,8 +31,8 @@
             </a>
             <p class="please">We're just getting started and we need all the data we can get. <strong>By logging in and approving our app you're helping a ton!</strong></p>
           </div>
-        </div>
-        <div id="more" class="col last">
+        </section>
+        <section id="more" class="col last">
           <img class="hero" src="/img/chair_stars.png" alt="" />
           <h4>Want to see what Persnicketly looks like?</h4>
           <a id="articles" class="cta" href="/article/list">
@@ -44,8 +44,10 @@
             <img src="/img/purple_books.png" alt="" width="33" />
             <span>Learn More</span>
           </a>
-        </div>
-      </section>
+        </section>
+        #set( $ogRef = $uri )
+        #parse("templates/sharing.vm")
+      </div>
       <footer>
         <p>Persnicketly &copy; 2011</p>
         <a href="/about">about</a>
