@@ -46,7 +46,6 @@ h4 {
 }
 .getData { position: relative; width: 75%; overflow: hidden; }
 .getData .cta { width: auto; }
-.home #sharing .stars { display: none; }
 /* Thanks */
 .thanks h2 { font-size: 1.1875em; color: #bd1c9d; text-transform: uppercase; text-align: center; }
 .thanks .hero { max-width: 92.8825623%; }
@@ -99,7 +98,7 @@ p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6
 }
 /* About */
 #content {
-  position: relative; margin: 0 2.507836991%; padding: 12px 15% 10px 10px; background: #fafaf9;
+  position: relative; margin: 0 2.507836991%; padding: 12px 10px 10px; background: #fafaf9;
   box-shadow: rgba(0,0,0,0.6) 1px 1px 4px; -webkit-box-shadow: rgba(0,0,0,0.6) 1px 1px 4px;
   -moz-box-shadow: rgba(0,0,0,0.6) 1px 1px 4px; -ms-box-shadow: rgba(0,0,0,0.6) 1px 1px 4px;
 }
@@ -156,7 +155,8 @@ p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6
 #emailUs { background-color: #f66e24; }
 #followUs, #articles { background-color: #fbbd12; }
 /* Sharing */
-#sharing { clear: both; margin: 10px 0 0; padding: 10px 10px; width: 75%; background: #e7e7e6; overflow: hidden; }
+#sharing { clear: both; margin: 10px 0 0; padding: 10px 0; background: #e7e7e6; overflow: hidden; }
+#sharing .col { padding: 0 10px; }
 #sharing h1, #sharing h2 { text-align: center; }
 #sharing h2 {
   margin: 0 0 15px; padding: 0 13.2352941%;
@@ -168,7 +168,7 @@ p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6
 }
 #sharing .stars { margin: 15px 0 0; max-width: 100%; }
 #sharing h4 { padding: 5px 0; }
-#sharing .cta { margin: 0 1px 0 0; width: auto; background-color: #47abcb; background-image: none; }
+#sharing .cta { margin: 0 1px 0 0; background-color: #47abcb; background-image: none; }
 #sharing .cta img { top: 0; }
 #sharing .twitter-share-button { position: absolute; top: 9px; right: 7px; }
 #sharing .like-wrapper { position: absolute; top: 9px; right: 7px; width: 48px; height: 20px; overflow: hidden; }
@@ -206,7 +206,8 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
   #content { padding-right: 10px; }
   .cta { width: auto; }
   .getData { width: auto; }
-  #sharing { padding: 10px 5px; width: auto; }
+  #sharing { width: auto; }
+  #sharing .col { padding: 0 5px; }
   #sharing .stars { display: none; }
 }
 @media screen and (-webkit-min-device-pixel-ratio: 2) {
@@ -241,19 +242,22 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
   }
 }
 @media screen and (min-width: 850px) {
-  header h1 { padding-right: 5%; padding-left: 5%; background-position: 5.5% center; }
-  #content { margin: 0 5%; padding-right: 0; overflow: hidden; }
-  .list li { margin-right: 5%; margin-left: 5%; }
-  .list h2 { margin-right: 5%; padding-left: 5%; }
-  #who { clear: both; margin-top: 0; padding: 15px 0 0; }
-  .col { float: left; width: 49%; }
-  .col.last { margin: 0 0 0 5.5%; width: 44.5%; }
-  .col.last:after { content: ' '; display: block; clear: both; height: 0; overflow: hidden; visibility: hidden; }
-  .home .hero, .thanks .hero { max-width: 135%; }
-  #when { clear: left; float: right; }
-  .col .cta { width: auto; }
-  .col .getData { width: auto; }
-  #sharing { display: none; margin-right: 10px; width: auto; }
-  footer { padding-left: 5%; }
-  footer a { right: 5%; }
+  header { margin: 0 8.8% 0 14%; }
+  header h1 { padding: 31px 10px 15px; background-position: 5px 26px; }
+  #content { margin: 0 8.8% 0 14%; }
+  footer { padding: 16px 8.8% 0 14%; }
+  footer p { padding: 0 0 0 10px; }
+  footer a { right: 8.8%; padding-right: 10px; }
+  /* Thanks */
+  .thanks h2 { padding-top: 40px; }
+  .thanks section { padding: 0 6%; width: 38%; }
+  .thanks h3, .thanks p { padding: 0; }
+  .thanks .chair { position: absolute; top: 25px; right: 3.242542153%; padding: 0; width: 50%; }
+  .thanks .chair img { width: auto; max-width: none; }
+  .thanks #sharing { margin-top: 50px; }
+  /* Sharing */
+  #sharing { width: auto; overflow: hidden; }
+  #sharing .col { float: left; padding: 0 1.351351351%; width: 47%; }
+  #sharing .col.last { float: right; }
+  #sharing .cta { width: auto; }
 }
