@@ -39,14 +39,24 @@ h4 {
 /* Home */
 .home .col, .thanks .col { position: relative; }
 .home h2 { font-size: 1em; font-weight: 500; }
-.home .hero, .thanks .hero { margin: 9px 0 0 6px; max-width: 92.8825623%; }
-.home p, .thanks p { font-size: 0.8125em; line-height: 1.384615385; }
+.home .hero { margin: 9px 0 0 6px; max-width: 92.8825623%; }
+.home p { font-size: 0.8125em; line-height: 1.384615385; }
 .please {
   float: right; padding: 13px 0 0 103px; max-width: 350px; background: url(/img/pointy_arrow.png) no-repeat 50px 8px;
 }
 .getData { position: relative; width: 75%; overflow: hidden; }
 .getData .cta { width: auto; }
 .home #sharing .stars { display: none; }
+/* Thanks */
+.thanks h2 { font-size: 1.1875em; color: #bd1c9d; text-transform: uppercase; text-align: center; }
+.thanks .hero { margin: 9px 0 0 6px; max-width: 92.8825623%; }
+.thanks p {
+  padding: 0 5.6478405%; font-size: 1em; text-align: center; line-height: 1.384615385;
+  font-family: "museo-slab-1", "museo-slab-2", "Helvetica Neue", "Helvetica", Arial, sans-serif; font-weight: 500;
+}
+.thanks h3 {
+  padding: 0 13.289036545%; font-size: 0.9375em; font-weight: 500; color: #47abcb; line-height: 1.4; text-align: center;
+}
 /* Article List */
 .list h2 {
   margin: 10px 2.507836991% 15px 0; padding: 11px 2.903225806% 9px; text-shadow: rgba(0, 0, 0, 0.199219) 1px 1px 0px;
