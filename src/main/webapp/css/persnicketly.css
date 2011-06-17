@@ -12,7 +12,10 @@ body {
 /* General */
 a { color: #6a3387; text-decoration: none; }
 a:hover { text-decoration: underline; }
-p { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight: normal; line-height: 1.375; }
+p {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight: normal; line-height: 1.375;
+  -webkit-font-smoothing: subpixel-antialiased;
+}
 p[class] {
   font-family: "museo-slab-1", "museo-slab-2", "Helvetica Neue", "Helvetica", Arial, sans-serif; font-weight: 500;
 }
@@ -47,10 +50,7 @@ h4 { margin: 13px 0 0; font-size: 0.8125em; font-weight: 500; text-transform: up
 /* Thanks */
 .thanks h2 { font-size: 1.1875em; color: #bd1c9d; text-transform: uppercase; text-align: center; }
 .thanks .hero { max-width: 92.8825623%; }
-.thanks p {
-  padding: 0 5.6478405%; font-size: 1em; text-align: center; line-height: 1.384615385;
-  font-family: "museo-slab-1", "museo-slab-2", "Helvetica Neue", "Helvetica", Arial, sans-serif; font-weight: 500;
-}
+.thanks p { padding: 0 5.6478405%; font-size: 1em; text-align: center; line-height: 1.384615385; }
 .thanks .chair { margin: 10px 0 -5px; text-align: center; }
 .thanks h3 {
   padding: 0 13.289036545%; font-size: 0.9375em; font-weight: 500; color: #47abcb; line-height: 1.4; text-align: center;
@@ -192,10 +192,7 @@ footer {
   position: relative; margin: -2px 0 0; padding: 16px 0 0 2.507836991%; height: 26px;
   font-size: 0.70em; font-weight: normal; background: url(/img/bg_footer.png) repeat-x left top;
 }
-footer p {
-  padding: 0; color: #aaa9a3; color: rgba(255,255,255,0.52); text-transform: uppercase;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
+footer p { padding: 0; color: #aaa9a3; color: rgba(255,255,255,0.52); text-transform: uppercase; }
 footer a {
   display: block; position: absolute; top: 2px; right: 2.507836991%; padding: 13px 0 0 18px; height: 25px;
   color: #fff; color: rgba(255,255,255,0.95); background: url(/img/bg_about.png) no-repeat left top;

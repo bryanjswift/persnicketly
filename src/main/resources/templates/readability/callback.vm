@@ -23,7 +23,7 @@
         #end
         <section id="what">
           <h2>Hey thanks ${name}!</h2>
-          <p>You're now all set up to begin using Persnicketly. <strong>We hope you enjoy it!</strong></p>
+          <p class="weloveyou">You're now all set up to begin using Persnicketly. <strong>We hope you enjoy it!</strong></p>
           <p class="chair"><img class="hero" src="/img/big_chair.png" alt="" /></p>
         </section>
         <section id="redirect">
