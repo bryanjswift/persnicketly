@@ -12,10 +12,10 @@
       <span>Tweet about us</span>
       <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" data-via="persnicketly" data-url="http://persnicketly.com?twt-ref=${ogRef}">Tweet</a>
     </span>
-    <h4>Tell you friends on Facebook</h4>
+    <h4>Tell your friends on Facebook</h4>
     <span class="share cta">
       <img src="/img/blue_facebook.png" alt="" width="21" />
-      <span>Like us on Facebook</span>
+      <span>Like us</span>
       <div id="fb-root"></div>
       <div class="like-wrapper">
         <fb:like class="fb-like" href="http://persnicketly.com" send="false" layout="button_count" width="90" show_faces="false" font="" ref="${ogRef}"></fb:like>
