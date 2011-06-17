@@ -10,9 +10,15 @@
     <meta name="description" content="Couldn't find what you're looking for, but we found this cute little thing." />
     <meta name="author" content="Rachel Diesel & Bryan J Swift" />
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0" />
+    <meta property="og:image" content="http://persnicketly.com/img/open-graph-icon.png" />
+    <meta property="og:site_name" content="Persnicketly" />
+    <meta property="og:type" content="persnicketly:webapp" />
+    <meta property="fb:admins" content="678400723" />
+    <!-- Favicons -->
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <link href="/humans.txt" rel="author" />
+    <!-- Includes -->
     <link href="/css/persnicketly.css" rel="stylesheet" type="text/css" />
     <script src="/js/libs/modernizr-custom.js"></script>
     <script src="http://use.typekit.com/rxz7gnq.js"></script>
@@ -22,7 +28,7 @@
       var isLive = (location.host || location.hostname).match(/.*persnicket(ly|lyapp|yapp).com/i)
         , el = d.createElement(t)
         , sib = d.getElementsByTagName(t)[0];
-      el.src = 'http://mint.persnicketly.com/?js';
+      el.src = '//mint.persnicketly.com/?js';
       el.async = 1;
       if (isLive) { sib.parentNode.insertBefore(el, sib); }
     })(document, 'script');
@@ -33,12 +39,18 @@
       <header>
         <h1><a href="/">Persnicketly<span class="headerCurl"></span></a></h1>
       </header>
-      <section id="content">
-        <h2>Probably not what you were hoping for.</h2>
-        <p>Whatever you were looking for, we didn't find it... Sorry.</p>
-        <p>For now, the best we can offer is this kitten.</p>
-        <p class="placekitten"><img src="http://placekitten.com/g/400/300" alt="" /></p>
-      </section>
+      <div id="content" class="error">
+        <section>
+          <h2>Probably not what you <br /> were hoping for.</h2>
+          <p class="wtf">Whatever you were looking for, we didn't find it... Sorry. For now, the best we can offer is this kitten.</p>
+          <p class="placekitten"><img src="/img/placekitten/300.jpeg" alt="" /></p>
+          <h4>Homeward bound?</h4>
+          <a id="articles" class="cta" href="/article/list">
+            <img src="/img/yellow_star.png" alt="" width="33" />
+            <span>Go to Persnicketly</span>
+          </a>
+        </section>
+      </div>
       <footer>
         <p>Persnicketly &copy; 2011</p>
         <a href="/about">about</a>

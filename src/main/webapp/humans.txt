@@ -16,6 +16,7 @@
   Readability: http://www.readability.com
   Favrd: http://favrd.textism.com
   Roger Johansson: http://www.456bereastreet.com (specifically for http://www.456bereastreet.com/archive/201105/styling_ordered_list_numbers/)
+  Placekitten: http://placekitten.com (error images are from placekitten.com)
 
 /* SITE */
   Standards: HTML5, CSS3

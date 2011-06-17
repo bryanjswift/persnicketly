@@ -1,4 +1,4 @@
-#if (!$ogRef)<p style="color:red; font-size: 3em;">You need to include <code>ogRef</code></p>#end
+#if (!$ogRef)<p>You need to include <code>ogRef</code></p>#end
 <section id="sharing">
   <div class="col">
     <h2>Much like a growing flower needs sun, our growing project needs data.</h2>

@@ -8,6 +8,7 @@ body {
   font-size: 100%; font-family: "museo-slab-1", "museo-slab-2", "Helvetica Neue", "Helvetica", Arial, sans-serif;
   font-weight: 700; line-height: 1; color: #4d4b44; background: #fff;
 }
+.wf-active body { -webkit-font-smoothing: antialiased; }
 /* General */
 a { color: #6a3387; text-decoration: none; }
 a:hover { text-decoration: underline; }
@@ -32,10 +33,7 @@ header h1 a { display: block; color: #868378; }
 h2, h3, h4, p { }
 h2 { position: relative; margin: 0 0 10px; padding-top: 10px; font-size: 1.1875em; }
 h3 { font-size: 1.25em; font-weight: 500; margin: 15px 0 4px; }
-h4 {
-  margin: 13px 0 0; font-size: 0.8125em; font-weight: 500;
-  text-transform: uppercase; -webkit-font-smoothing: antialiased;
-}
+h4 { margin: 13px 0 0; font-size: 0.8125em; font-weight: 500; text-transform: uppercase; }
 /* Home */
 .home .col, .thanks .col { position: relative; }
 .home h2 { font-size: 1em; font-weight: 500; }
@@ -123,14 +121,13 @@ p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6
 #more h2:before { background-color: #bd1c9d; }
 #contact h2 { color: #f66e24; }
 #contact h2:before { background-color: #f66e24; }
-.about .tagline { margin: 0 0 6px; font-size: 1em; line-height: 1.25; -webkit-font-smoothing: antialiased; }
+.about .tagline { margin: 0 0 6px; font-size: 1em; line-height: 1.25; }
 .about p { font-size: 0.8125em; line-height: 1.384615385; }
 .about ol { counter-reset: li; }
 .ie7 .about ol, .ie6 .about ol { padding: 0 0 0 40px; list-style: decimal outside; }
 .ie7 .about li, .ie6 .about li { padding-left: 0; }
 .about li {
-  position: relative; margin: 0 0 17px; padding: 4px 0 0 40px; min-height: 19px;
-  font-weight: 500; line-height: 1.25; -webkit-font-smoothing: antialiased;
+  position: relative; margin: 0 0 17px; padding: 4px 0 0 40px; min-height: 19px; font-weight: 500; line-height: 1.25;
 }
 .about li:before {
   position: absolute; top: 0; left: 0; padding: 3px 0 0 11px; width: 28px; height: 20px; color: #fff;
@@ -154,6 +151,7 @@ p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6
 #learnMore { background-color: #683686; }
 #emailUs { background-color: #f66e24; }
 #followUs, #articles { background-color: #fbbd12; }
+#followUs span, #articles span { top: 0; }
 /* Sharing */
 #sharing { clear: both; margin: 10px 0 0; padding: 10px 0; background: #e7e7e6; overflow: hidden; }
 #sharing .col { padding: 0 10px; }
@@ -181,7 +179,12 @@ p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6
 #who span { padding: 0 4px; color: #fff; }
 #bryan { background: #683686; }
 #diesel { background: #4eacca; }
-/* 404 */
+/* Error */
+.error h2 { font-weight: 500; color: #bd1c9d; text-align: center; }
+.error p { font-size: 0.875em; font-weight: 500; line-height: 1.428571429; }
+.error p a { color: #4d4b44; text-decoration: underline; }
+.error p a:hover { color: #bd1c9d; text-decoration: none; }
+.error .cta { margin-bottom: 15px; }
 .placekitten { position: relative; margin: 8px 0 0; }
 .placekitten img { max-width: 100%; }
 /* Footer */
@@ -252,12 +255,16 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
   .thanks h2 { padding-top: 40px; }
   .thanks section { padding: 0 6%; width: 38%; }
   .thanks h3, .thanks p { padding: 0; }
-  .thanks .chair { position: absolute; top: 25px; right: 3.242542153%; padding: 0; width: 50%; }
-  .thanks .chair img { width: auto; max-width: none; }
+  .thanks .chair { position: absolute; top: 25px; right: 3.242542153%; padding: 0; width: 48%; }
+  .thanks .chair img { width: auto; max-width: 100%; }
   .thanks #sharing { margin-top: 50px; }
   /* Sharing */
   #sharing { width: auto; overflow: hidden; }
   #sharing .col { float: left; padding: 0 1.351351351%; width: 47%; }
   #sharing .col.last { float: right; }
   #sharing .cta { width: auto; }
+  /* Error */
+  .error section { padding: 0 6% 150px; width: 38%; }
+  .error .placekitten { position: absolute; top: 16px; right: 3.242542153%; padding: 0; width: 48%; }
+  .error .placekitten img { width: auto; max-width: 100%; }
 }
