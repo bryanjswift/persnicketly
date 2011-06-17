@@ -45,6 +45,7 @@
             <span>Learn More</span>
           </a>
         </section>
+        <hr />
         #set( $ogRef = $uri )
         #parse("templates/sharing.vm")
       </div>

@@ -20,6 +20,7 @@ p[class] {
   font-family: "museo-slab-1", "museo-slab-2", "Helvetica Neue", "Helvetica", Arial, sans-serif; font-weight: 500;
 }
 strong { font-weight: 700; }
+hr { display: none; clear: both; margin: 0; border: 0; padding: 0; height: 1px; visibility: hidden; }
 header, nav, footer, section { display: block; }
 #wrapper { background: url(/img/background.png) left top; }
 header {
@@ -43,7 +44,8 @@ h4 { margin: 13px 0 0; font-size: 0.8125em; font-weight: 500; text-transform: up
 .home .hero { margin: 9px 0 0 6px; max-width: 92.8825623%; }
 .home p { font-size: 0.8125em; line-height: 1.384615385; }
 .please {
-  float: right; padding: 13px 0 0 103px; max-width: 350px; background: url(/img/pointy_arrow.png) no-repeat 50px 8px;
+  float: right; margin: 0 auto; padding: 13px 0 0 103px; max-width: 350px;
+  background: url(/img/pointy_arrow.png) no-repeat 50px 8px;
 }
 .getData { position: relative; width: 75%; overflow: hidden; }
 .getData .cta { width: auto; }
@@ -248,6 +250,13 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
   footer { padding: 16px 8.8% 0 14%; }
   footer p { padding: 0 0 0 10px; }
   footer a { right: 8.8%; padding-right: 10px; }
+  /* Home */
+  .home .col { float: left; margin: 0 1.351351351%; width: 47%; }
+  .home .col.last { float: right; }
+  .home .col.last:after { content: ' '; clear: both; display: block; height: 0; visibility: hidden; overflow: hidden; }
+  .home hr { display: block; }
+  .home .cta { width: auto; }
+  .home .getData { width: auto; }
   /* Thanks */
   .thanks h2 { padding-top: 40px; }
   .thanks section { padding: 0 6%; width: 38%; }
@@ -256,8 +265,8 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
   .thanks .chair img { width: auto; max-width: 100%; }
   .thanks #sharing { margin-top: 50px; }
   /* Sharing */
-  #sharing { width: auto; overflow: hidden; }
-  #sharing .col { float: left; padding: 0 1.351351351%; width: 47%; }
+  #sharing { clear: both; width: auto; overflow: hidden; }
+  #sharing .col { float: left; margin: 0; padding: 0 1.351351351%; width: 47%; }
   #sharing .col.last { float: right; }
   #sharing .cta { width: auto; }
   /* Error */
