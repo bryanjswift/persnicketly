@@ -139,7 +139,7 @@ p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6
 .about footer p { font-size: 1em; }
 /* Calls to Action */
 .cta {
-  display: block; position: relative; margin: 2px 0 0; padding: 13px 0 10px 0; width: 75%; min-width: 280px;
+  display: block; position: relative; margin: 2px 0 0; padding: 13px 0 10px 0; width: 75%; min-width: 265px;
   color: #fff; font-size: 0.95em; text-transform: uppercase; line-height: 1; text-shadow: rgba(0,0,0,0.2) 1px 1px 0;
   background: url(/img/bg_arrow.png) no-repeat right center;
   box-shadow: rgba(0,0,0,0.33) 1px 1px 1px; -webkit-box-shadow: rgba(0,0,0,0.33) 1px 1px 1px;
@@ -159,11 +159,11 @@ p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6
 #sharing .col { padding: 0 10px; }
 #sharing h1, #sharing h2 { text-align: center; }
 #sharing h2 {
-  margin: 0 0 15px; padding: 0 13.2352941%;
+  margin: 0 0 15px; padding: 0 5%;
   font-size: 0.8125em; font-weight: 500; line-height: 1.076923077; color: #bd1c9d;
 }
 #sharing h1 {
-  margin: 0; padding: 0 13.2352941%; text-transform: uppercase;
+  margin: 0; padding: 0 10%; text-transform: uppercase;
   font-size: 1em; font-weight: 700; line-height: 0.875; color: #119337;
 }
 #sharing .stars { margin: 15px 0 0; max-width: 100%; }
@@ -171,7 +171,7 @@ p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6
 #sharing .cta { margin: 0 1px 0 0; background-color: #47abcb; background-image: none; }
 #sharing .cta img { top: 0; }
 #sharing .twitter-share-button { position: absolute; top: 9px; right: 7px; }
-#sharing .like-wrapper { position: absolute; top: 9px; right: 7px; width: 48px; height: 20px; overflow: hidden; }
+#sharing .like-wrapper { position: absolute; top: 9px; right: 7px; width: 49px; height: 20px; overflow: hidden; }
 .fb_iframe_widget span { position: relative; top: auto; left: auto; }
 /* Who */
 #who { clear: both; margin: 20px 0; font-weight: 500; text-align: center; color: #5d5d5d; }
