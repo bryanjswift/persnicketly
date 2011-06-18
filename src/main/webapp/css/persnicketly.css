@@ -279,7 +279,8 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
   /* List */
   .list header { text-align: center; }
   .list header h2:before { width: 95%; }
-  .list li { float: right; margin: 0 1.34589502% 0.75em; padding: 1em 1.34589502% 10px; width: 44.61641992%; }
+  .list li { float: right; margin: 0 1.34589502% 0.75em; padding: 1em 1.34589502% 41px; width: 44.61641992%; }
+  .list .original { position: absolute; bottom: 10px; }
   .list li.odd { float: left; clear: both; }
   /* Sharing */
   #sharing { clear: both; width: auto; overflow: hidden; }
