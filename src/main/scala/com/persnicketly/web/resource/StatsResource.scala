@@ -21,7 +21,14 @@ class StatsResource() {
   def articleStats() = {
     ArticleStats(ScoredArticleDao.all.size)
   }
+
+  @GET @Path("/bookmarks")
+  def bookmarkStats() = {
+    val bookmarks = new BookmarkDao
+    BookmarkStats(bookmarks.collection.count)
+  }
 }
 
 case class UserStats(unique: Int, total: Int)
 case class ArticleStats(articles: Int)
+case class BookmarkStats(bookmarks: Long)
