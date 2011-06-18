@@ -82,8 +82,7 @@ object ScoredArticleDao {
         o.getAsOrElse("article_processed", false)
       ),
       o.getAsOrElse("favorite_count", 0.0),
-      o.getAsOrElse("count", 0.0),
-      o.getAsOrElse("score", 0.0)
+      o.getAsOrElse("count", 0.0)
     )
   }
 
