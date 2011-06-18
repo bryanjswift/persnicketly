@@ -25,7 +25,7 @@
     t = setTimeout(function resizeTimeout() {
       resetArticles();
       if (win.width() > 850) {
-        setTimeout(evenArticles, 1);
+        evenArticles();
       }
       t = false;
     }, 100);
