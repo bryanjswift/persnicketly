@@ -23,38 +23,9 @@
         <section>
           <header>
             <h2>Top Bookmarks</h2>
-            <h3 class="generated">for ${today}</h3>
+            <h3 class="generated">for ${today.toString("MMMM dd, yyyy")}</h3>
           </header>
-          <ul class="articles">
-            #foreach( $scored in $articles )
-            #set( $article = $scored.article() )
-            #set( $isLoggedIn = $user.isDefined() )
-            <li #if ($velocityCount % 2 == 0)class="odd"#end>
-              <h3><a href="/article/read/${article.articleId()}">${article.title()}</a></h3>
-              #if (${article.excerpt().isDefined()})
-              <p class="excerpt">${article.excerpt().get()}</p>
-              #end
-              <p class="meta">
-                #if (${article.publishedDisplay().isDefined()})
-                <span class="published">${article.publishedDisplay().get()}</span>
-                #end
-                <span class="favorited"><span>Times Favorited:</span> ${scored.numFavorites()}</span>
-                <span class="bookmarked"><span>Times Bookmarked:</span> ${scored.numBookmarks()}</span>
-              </p>
-              #if (${article.domain()})
-              <p class="original">
-                <a href="${article.url()}" rel="canonical">
-                  <img src="http://${article.domain()}/favicon.ico" alt="" width="16" height="16" />
-                  <span>${article.domain()}</span>
-                </a>
-              </p>
-              #end
-              #if ($isLoggedIn)
-              <a class="add" href="/article/add/${article.articleId()}">Add</a>
-              #end
-            </li>
-            #end
-          </ul>
+          #renderArticles($articles $user)
         </section>
         <hr />
         #set( $ogRef = $uri )
