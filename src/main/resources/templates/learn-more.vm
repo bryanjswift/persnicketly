@@ -57,6 +57,7 @@
         <a class="active" href="/learn-more">about</a>
       </footer>
     </div>
+    <script src="/js/libs/ender.min.js"></script>
     <script src="/js/persnicketly.js"></script>
   </body>
 </html>
