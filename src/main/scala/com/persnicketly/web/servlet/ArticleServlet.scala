@@ -2,6 +2,7 @@ package com.persnicketly.web.servlet
 
 import com.google.inject.Singleton
 import com.persnicketly.{Constants, Logging}
+import com.persnicketly.model.ScoredArticle
 import com.persnicketly.persistence.ScoredArticleDao
 import com.persnicketly.web.Servlet
 import com.persnicketly.web.controller.ArticleController
@@ -16,9 +17,10 @@ class ArticleServlet extends Servlet with Logging {
   override def doGet(helper: HttpHelper) {
     log.info("Parts for uri :: '{}' for '{}'", helper.parts, helper.uri)
     helper.parts match {
+      case Array("article", "add", articleId) => add(helper, articleId)
       case Array("article", "list") => list(helper)
       case Array("article", "read", articleId) => read(helper, articleId)
-      case Array("article", "add", articleId) => add(helper, articleId)
+      case Array("article", "recent") => recent(helper)
       case _ => helper.response.sendError(HttpStatus.SC_NOT_FOUND)
     }
   }
@@ -29,24 +31,27 @@ class ArticleServlet extends Servlet with Logging {
     helper.response.sendRedirect(ArticleServlet.listUrl)
   }
 
-  def list(helper: HttpHelper): Unit = {
-    val userId = helper.cookie(Constants.UserCookie)
-    val articles = ScoredArticleDao.find(10)
-    val view = new VelocityView("/templates/articleList.vm")
-    helper.response.setContentType(MediaType.TEXT_HTML)
-    view.render(Map[String,Any](
-      "articles" -> articles,
-      "user" -> userId,
-      "uri" -> helper.uri,
-      "today" -> (new DateTime()).toString("MMMM dd, yyyy")
-    ), helper.response)
-  }
+  def list(helper: HttpHelper) = renderArticles(helper, ScoredArticleDao.find(10), "/templates/articleList.vm")
 
   def read(helper: HttpHelper, articleId: String): Unit = {
     ArticleController.addArticleForUser(articleId, helper.cookie(Constants.UserCookie))
     // it would be nice to say an article wasn't found or you're not logged in
     val url = "http://www.readability.com/articles/%s".format(articleId)
     helper.response.sendRedirect(url)
+  }
+
+  def recent(helper: HttpHelper) = renderArticles(helper, ScoredArticleDao.recent(10), "/templates/articleRecent.vm")
+
+  private def renderArticles(helper: HttpHelper, articles: List[ScoredArticle], template: String): Unit = {
+    val userId = helper.cookie(Constants.UserCookie)
+    val view = new VelocityView(template)
+    helper.response.setContentType(MediaType.TEXT_HTML)
+    view.render(Map[String,Any](
+      "articles" -> articles,
+      "user" -> userId,
+      "uri" -> helper.uri,
+      "today" -> (new DateTime())
+    ), helper.response)
   }
 }
 
