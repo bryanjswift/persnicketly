@@ -289,6 +289,6 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
   #sharing .cta { width: auto; }
   /* Error */
   .error section { padding: 0 6% 150px; width: 38%; }
-  .error .placekitten { position: absolute; top: 16px; right: 3.242542153%; padding: 0; width: 48%; }
-  .error .placekitten img { width: auto; max-width: 100%; }
+  .error .placekitten { position: absolute; top: 16px; right: 3.242542153%; padding: 0; width: 48%; text-align: center; }
+  .error .placekitten img { width: auto; max-width: 100%; max-height: 340px; }
 }
