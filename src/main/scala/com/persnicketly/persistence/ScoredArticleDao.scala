@@ -4,7 +4,9 @@ import com.mongodb.casbah.Imports._
 import com.persnicketly.{Logging, Persnicketly}
 import com.persnicketly.model.ScoredArticle
 import com.persnicketly.readability.model.Article
+import org.scala_tools.time.Imports._
 import org.bson.types.ObjectId
+import org.joda.time.DateTime
 
 class ScoredArticleDao extends Dao {
   import ScoredArticleDao._
@@ -16,9 +18,11 @@ class ScoredArticleDao extends Dao {
   private val initial = MongoDBObject("count" -> 0, "favorite_count" -> 0, "score" -> 0)
   private val reduce = """function(o,p) { if (o.favorite) { p.favorite_count++; p.score++; } p.count++; p.score++; }"""
 
+  private val defaultSort = MongoDBObject("favorite_count" -> -1, "count" -> -1, "score" -> -1)
+
   // Initialize indexes
   collection.ensureIndex(MongoDBObject("article_id" -> 1))
-  collection.ensureIndex(MongoDBObject("score" -> -1))
+  collection.ensureIndex(MongoDBObject("favorite_count" -> -1, "count" -> -1, "score" -> -1))
 
   private val articleConverter = dbobject2article _
 
@@ -30,7 +34,7 @@ class ScoredArticleDao extends Dao {
 
   def find(count: Int): List[ScoredArticle] = {
     log.debug("Fetching the top {} articles", count)
-    val articles = collection.find("score" $gt 2).limit(count).sort(MongoDBObject("score" -> -1))
+    val articles = collection.find("score" $gt 2).limit(count).sort(defaultSort)
     articles.map(articleConverter).toList
   }
 
@@ -42,6 +46,15 @@ class ScoredArticleDao extends Dao {
 
   def get(articleId: String): Option[ScoredArticle] = {
     collection.findOne(MongoDBObject("article_id" -> articleId)).map(dbobject2article)
+  }
+
+  def recent(count: Int): List[ScoredArticle] = {
+    val bookmarks = new BookmarkDao
+    val now = new DateTime
+    val yesterday = now - 24.hours
+    val c = cond + ("update_date" -> MongoDBObject("$gt" -> yesterday, "$lt" -> now))
+    val articles = bookmarks.collection.group(key, c, initial, reduce)
+    articles.map(articleConverter).toList.sorted.take(count)
   }
 
   def save(scored: ScoredArticle): ScoredArticle = {
@@ -95,6 +108,8 @@ object ScoredArticleDao {
   def find(limit: Int) = dao.find(limit)
 
   def get(articleId: String) = dao.get(articleId)
+
+  def recent(limit: Int) = dao.recent(limit)
 
   def save(scored: ScoredArticle) = dao.save(scored)
 
