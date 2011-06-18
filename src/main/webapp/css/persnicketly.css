@@ -91,7 +91,9 @@ h4 { margin: 13px 0 0; font-size: 0.8125em; font-weight: 500; text-transform: up
 .meta .favorited, .meta .bookmarked {
   float: left; display: block; position: relative; top: -4px; padding: 4px 3px 3px; min-width: 34px; background: #ededed;
 }
-.meta span span { display: inline-block; width: 12px; height: 12px; background: no-repeat center; text-indent: -9999px; }
+.meta span span {
+  display: inline-block; width: 12px; height: 12px; background: no-repeat left top; text-indent: -9999px;
+}
 .meta .favorited span { background-image: url(/img/stars.png); }
 .meta .bookmarked { margin: 0 0 0 5px; }
 .meta .bookmarked span { background-image: url(/img/bookmark.png); }
@@ -104,7 +106,14 @@ p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6
   display: block; position: absolute; bottom: 0; right: 0; width: 50px; height: 50px;
   background: url(/img/add.png) no-repeat left top; text-indent: -9999px;
 }
-.list hr { display: block; height: 20px; visibility: visible; background: url(/img/bg_hr.png) no-repeat center; }
+.list hr { display: block; height: 20px; visibility: visible; background: url(/img/bg_hr.png) no-repeat center top; }
+/* Recent Articles */
+.list.recent header h2:before { background-color: #4eacca; }
+.list.recent h2 { color: #4eacca; }
+.list.recent li h3:before { background-color: #4eacca; }
+.recent .meta .favorited span { background-position: -24px top; }
+.recent .meta .bookmarked span { background-position: -24px top; }
+.list.recent hr { background-position: center -20px; }
 /* About */
 #content {
   position: relative; margin: 0 2.507836991%; padding: 12px 10px 10px; background: #fafaf9;
@@ -254,7 +263,7 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
   }
   .list hr {
     background-image: url(/img/x2/bg_hr.png);
-    -o-background-size: auto 20px; -webkit-background-size: auto 20px; -moz-background-size: auto 20px;
+    -o-background-size: auto 40px; -webkit-background-size: auto 40px; -moz-background-size: auto 40px;
   }
 }
 @media screen and (min-width: 850px) {
