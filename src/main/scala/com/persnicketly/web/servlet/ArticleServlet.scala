@@ -33,7 +33,7 @@ class ArticleServlet extends Servlet with Logging {
     val articles = ScoredArticleDao.find(10)
     val view = new VelocityView("/templates/articleList.vm")
     helper.response.setContentType(MediaType.TEXT_HTML)
-    view.render(Map[String,Any]("articles" -> articles, "user" -> userId), helper.response)
+    view.render(Map[String,Any]("articles" -> articles, "user" -> userId, "uri" -> helper.uri), helper.response)
   }
 
   def read(helper: HttpHelper, articleId: String): Unit = {

@@ -19,39 +19,47 @@
         <h1>Persnicketly<span class="headerCurl"></span></h1>
         #end
       </header>
-      <section class="list">
-        <h2>Top Bookmarks</h2>
-        <ul class="articles">
-          #foreach( $scored in $articles )
-          #set( $article = $scored.article() )
-          #set( $isLoggedIn = $user.isDefined() )
-          <li>
-            <h3><a href="/article/read/${article.articleId()}">${article.title()}</a></h3>
-            #if (${article.excerpt().isDefined()})
-            <p class="excerpt">${article.excerpt().get()}</p>
-            #end
-            <p class="meta">
-              #if (${article.publishedDisplay().isDefined()})
-              <span class="published">${article.publishedDisplay().get()}</span>
+      <div id="content" class="list">
+        <section>
+          <header>
+            <h2>Top Bookmarks</h2>
+            <h3 class="generated">for Today</h3>
+          </header>
+          <ul class="articles">
+            #foreach( $scored in $articles )
+            #set( $article = $scored.article() )
+            #set( $isLoggedIn = $user.isDefined() )
+            <li>
+              <h3><a href="/article/read/${article.articleId()}">${article.title()}</a></h3>
+              #if (${article.excerpt().isDefined()})
+              <p class="excerpt">${article.excerpt().get()}</p>
               #end
-              <span class="favorited"><span>Times Favorited:</span> ${scored.numFavorites()}</span>
-              <span class="bookmarked"><span>Times Bookmarked:</span> ${scored.numBookmarks()}</span>
-            </p>
-            #if (${article.domain()})
-            <p class="original">
-              <a href="${article.url()}" rel="canonical">
-                <img src="http://${article.domain()}/favicon.ico" alt="${article.domain()}" width="16" height="16" />
-                <span>${article.domain()}</span>
-              </a>
-            </p>
+              <p class="meta">
+                #if (${article.publishedDisplay().isDefined()})
+                <span class="published">${article.publishedDisplay().get()}</span>
+                #end
+                <span class="favorited"><span>Times Favorited:</span> ${scored.numFavorites()}</span>
+                <span class="bookmarked"><span>Times Bookmarked:</span> ${scored.numBookmarks()}</span>
+              </p>
+              #if (${article.domain()})
+              <p class="original">
+                <a href="${article.url()}" rel="canonical">
+                  <img src="http://${article.domain()}/favicon.ico" alt="" width="16" height="16" />
+                  <span>${article.domain()}</span>
+                </a>
+              </p>
+              #end
+              #if ($isLoggedIn)
+              <a class="add" href="/article/add/${article.articleId()}">Add</a>
+              #end
+            </li>
             #end
-            #if ($isLoggedIn)
-            <a class="add" href="/article/add/${article.articleId()}">Add</a>
-            #end
-          </li>
-          #end
-        </ul>
-      </section>
+          </ul>
+        </section>
+        <hr />
+        #set( $ogRef = $uri )
+        #parse("templates/sharing.vm")
+      </div>
       <footer>
         <p>Persnicketly &copy; 2011</p>
         <a href="/about">about</a>
