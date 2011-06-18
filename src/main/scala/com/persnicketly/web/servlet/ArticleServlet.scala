@@ -6,6 +6,7 @@ import com.persnicketly.persistence.ScoredArticleDao
 import com.persnicketly.web.Servlet
 import com.persnicketly.web.controller.ArticleController
 import org.apache.http.HttpStatus
+import org.joda.time.DateTime
 import velocity.VelocityView
 import javax.ws.rs.core.MediaType
 
@@ -33,7 +34,12 @@ class ArticleServlet extends Servlet with Logging {
     val articles = ScoredArticleDao.find(10)
     val view = new VelocityView("/templates/articleList.vm")
     helper.response.setContentType(MediaType.TEXT_HTML)
-    view.render(Map[String,Any]("articles" -> articles, "user" -> userId, "uri" -> helper.uri), helper.response)
+    view.render(Map[String,Any](
+      "articles" -> articles,
+      "user" -> userId,
+      "uri" -> helper.uri,
+      "today" -> (new DateTime()).toString("MMMM dd, yyyy")
+    ), helper.response)
   }
 
   def read(helper: HttpHelper, articleId: String): Unit = {

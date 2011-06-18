@@ -23,7 +23,7 @@
         <section>
           <header>
             <h2>Top Bookmarks</h2>
-            <h3 class="generated">for Today</h3>
+            <h3 class="generated">for ${today}</h3>
           </header>
           <ul class="articles">
             #foreach( $scored in $articles )
