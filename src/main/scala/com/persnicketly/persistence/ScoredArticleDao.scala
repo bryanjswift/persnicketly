@@ -52,7 +52,7 @@ class ScoredArticleDao extends Dao {
     val bookmarks = new BookmarkDao
     val now = new DateTime
     val yesterday = now - 24.hours
-    val c = cond + ("update_date" -> MongoDBObject("$gt" -> yesterday, "$lt" -> now))
+    val c = cond + ("update_date" -> MongoDBObject("$gt" -> yesterday, "$lt" -> now)) + ("favorite" -> true)
     val articles = bookmarks.collection.group(key, c, initial, reduce)
     articles.map(articleConverter).toList.sorted.take(count)
   }
