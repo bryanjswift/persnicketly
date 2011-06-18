@@ -22,7 +22,7 @@
       <div id="content" class="list recent">
         <section>
           <header>
-            <h2>Recently Updated</h2>
+            <h2>Recent Favorites</h2>
             <h3 class="generated">as of ${today.toString("MMMM dd, yyyy KK:mm aa")}</h3>
           </header>
           #renderArticles($articles $user)
