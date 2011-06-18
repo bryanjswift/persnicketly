@@ -3,7 +3,7 @@
     , t = false;
 
   $.script.path = '/js/';
-  $.domReady(resizeArticles);
+  $.domReady(resetAndResizeArticles);
   win.addListener('resize', function onResize() {
     if (t) { clearTimeout(t); }
     t = setTimeout(function resizeTimeout() {
