@@ -29,7 +29,7 @@
             #foreach( $scored in $articles )
             #set( $article = $scored.article() )
             #set( $isLoggedIn = $user.isDefined() )
-            <li>
+            <li #if ($velocityCount % 2 == 0)class="odd"#end>
               <h3><a href="/article/read/${article.articleId()}">${article.title()}</a></h3>
               #if (${article.excerpt().isDefined()})
               <p class="excerpt">${article.excerpt().get()}</p>

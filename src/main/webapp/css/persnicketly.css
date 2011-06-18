@@ -67,7 +67,7 @@ h4 { margin: 13px 0 0; font-size: 0.8125em; font-weight: 500; text-transform: up
   content: ' '; display: block; position: absolute; top: 0; left: -10px; padding: 0 0 0 10px; width: 82%; height: 5px;
   background: #fbbd12 url(/img/strip_slant.png) no-repeat right top;
 }
-.list header h3 { margin: 1px 0 0; font-size: 0.875em; font-weight: 500; }
+.list header h3 { margin: 1px 0 0; padding: 0; font-size: 0.875em; font-weight: 500; }
 .list h2 {
   margin: 0 0 15px; padding: 11px 0 9px;
   font-size: 1.125em; font-weight: 700; color: #fbbd12; line-height: 1; text-transform: uppercase;
@@ -79,7 +79,7 @@ h4 { margin: 13px 0 0; font-size: 0.8125em; font-weight: 500; text-transform: up
 }
 .list h3 { padding: 0 100px 0 0; margin: 0; font-size: 0.9375em; font-weight: 500; line-height: 1.133333333; }
 .list h3 a { color: #4d4b44; }
-.list h3:before {
+.list li h3:before {
   content: ' '; display: block; position: absolute; top: 0; left: 0; width: 82%; height: 5px;
   background: #fbbd12 url(/img/strip_slant.png) no-repeat right top;
 }
@@ -276,6 +276,11 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
   .thanks .chair { position: absolute; top: 25px; right: 3.242542153%; padding: 0; width: 48%; }
   .thanks .chair img { width: auto; max-width: 100%; }
   .thanks #sharing { margin-top: 50px; }
+  /* List */
+  .list header { text-align: center; }
+  .list header h2:before { width: 95%; }
+  .list li { float: right; margin: 0 1.34589502% 0.75em; padding: 1em 1.34589502% 10px; width: 44.61641992%; }
+  .list li.odd { float: left; clear: both; }
   /* Sharing */
   #sharing { clear: both; width: auto; overflow: hidden; }
   #sharing .col { float: left; margin: 0; padding: 0 1.351351351%; width: 47%; }
