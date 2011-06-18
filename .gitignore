@@ -13,5 +13,6 @@ src/main/resources/velocity/velocity.properties
 /config.json
 /log4j.properties
 /velocity.properties
+node_modules/
 nginx.local.conf
 mongod.local.conf
