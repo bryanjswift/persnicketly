@@ -1,146 +1,35 @@
-## Create a variable size list of frequency data (no <ul>)
-## $doc - com.jodange.api.model.frequency.FrequencyDocument to display
-## $baseUrl - URL to append com.jodange.api.model.Frequency::name to in order to get URL
-## $nocolor - include this to skip the color output
-#macro(frequencyCloud $doc $baseUrl $nocolor)
-  #set( $max = ${doc.maxOpinions} )
-  #set( $min = ${doc.minOpinions} )
-  #set( $maxFontSize = 2 )
-  #set( $minFontSize = 0.95 )
-  #set( $step = ($maxFontSize - $minFontSize) / ($max - $min) )
-  #set( $frequencies = ${doc.frequencies} )
-  #foreach ($frequency in $frequencies)
-    #set( $size = (${maxFontSize} - ${minFontSize}) * (${Math.log(${frequency.count})} - ${Math.log(${min})}) / (${Math.log(${max})} - ${Math.log(${min})}) + ${minFontSize} )
-    <li style="font-size: ${size}em">
-      <a href="${baseUrl}${frequency.name}" #if (!$nocolor)style="color: #${frequency.color}"#end>${frequency.name}</a>
-    </li>
-  #end
+## Create a list of articles for a given user
+## $articles - Collection of com.persnicketly.model.ScoredArticle to display
+## $user - Option representing whether or not the user is logged in
+#macro(renderArticles $articles $user)
+          <ol class="articles">
+            #foreach( $scored in $articles )
+            #set( $article = $scored.article() )
+            #set( $isLoggedIn = $user.isDefined() )
+            <li #if ($velocityCount % 2 == 0)class="odd"#end>
+              <h3><a href="/article/read/${article.articleId()}">${article.title()}</a></h3>
+              #if (${article.excerpt().isDefined()})
+              <p class="excerpt">${article.excerpt().get()}</p>
+              #end
+              <p class="meta">
+                #if (${article.publishedDisplay().isDefined()})
+                <span class="published">${article.publishedDisplay().get()}</span>
+                #end
+                <span class="favorited"><span>Times Favorited:</span> ${scored.numFavorites()}</span>
+                <span class="bookmarked"><span>Times Bookmarked:</span> ${scored.numBookmarks()}</span>
+              </p>
+              #if (${article.domain()})
+              <p class="original">
+                <a href="${article.url()}" rel="canonical">
+                  <img src="http://${article.domain()}/favicon.ico" alt="" width="16" height="16" />
+                  <span>${article.domain()}</span>
+                </a>
+              </p>
+              #end
+              #if ($isLoggedIn)
+              <a class="add" href="/article/add/${article.articleId()}">Add</a>
+              #end
+            </li>
+            #end
+          </ol>
 #end
-
-## Create a list of opinions (no <ul>)
-## $opinions - Iterable of opinions to process
-#macro(opinionList $opinions)
-  #foreach ($opinion in $opinions)
-    #set( $authors = "" )
-    #set( $authorLabel = "Author" )
-    #if (${opinion.authors.size()} > 1)
-      #set( $authorLabel = "Authors" )
-      #foreach ($author in ${opinion.authors})
-        #set( $a =  ${author.name} )
-        #if (${a.length()} > 0)
-          #set( $authors = $authors + ${a} )
-        #end
-        #if ($velocityHasNext)
-          #set( $authors = $authors + ", " )
-        #end
-      #end
-    #elseif (${opinion.authors.size()} == 1)
-      #set( $authors = ${opinion.authors.get(0).name} )
-    #end
-    #if (${authors.length()} == 0)
-      #set( $authors = "Unknown" )
-    #end
-    <li>
-      <h3>${opinion.documentTitle}</h3>
-      <p class="attribution">
-        <span class="author">${authorLabel}: <span class="authorName">${authors}</span></span>
-      </p>
-      <p class="publishDate">
-        <span class="date">Published: <span class="timestamp">${opinion.publishDate.toString("MMM dd, YYYY")}</span></span>
-      </p>
-      <p class="opinionHolder"><a href="${domain}.vm?queryType=opholder&time=${time}&terms=${opinion.opinionHolder}" class="name">${opinion.opinionHolder}</a> said:</p>
-      <p class="sentence">
-        <span class="context pre">${opinion.preSentence}</span>
-        <span class="sent">${opinion.sentence}</span>
-        <span class="context post">${opinion.postSentence}</span>
-      </p>
-      <p class="source">
-        <a href="${opinion.documentLink}" rel="external" target="publisher">View original from <span class="publisher">${opinion.publisher}</span> &raquo;</a>
-      </p>
-    </li>
-  #end
-#end
-
-## Create display of a pagination list
-## $page - current page number
-## $numPages - total number of pages visible
-## $maxPages - page number of last page
-## $urlBase - URL to append page number to in order to get the URL for that page
-#macro(pagination $page $numPages $maxPages $urlBase)
-  #if ($numPages > $maxPages)
-    #set( $numPages = $maxPages )
-  #end
-  #set( $context = 2 )
-  #if ($numPages % 2 == 1)
-    #set( $context = ($numPages - 1) / 2 )
-  #else
-    #set( $context = $numPages / 2 )
-  #end
-  #set( $first = $page - $context )
-  #set( $last = $page + $context )
-  #if ($first < 1)
-    #set( $first = 1 )
-    #set( $last = $first + ($context * 2) )
-  #elseif ($last > $maxPages)
-    #set( $last = $maxPages )
-    #set( $first = $last - ($context * 2) )
-  #end
-  #set( $previous = $page - 1 )
-  #set( $next = $page + 1 )
-  #if ($previous < 1)
-    #set( $previous = 1 )
-  #elseif ($next > $maxPages)
-    #set( $next = $maxPages )
-  #end
-  <ul>
-    <li class="first #if ($page == $first)disabled#end">
-      <a href="${urlBase}1" title="First page">&laquo;</a>
-    </li>
-    <li class="previous #if ($page == $first)disabled#end">
-      <a href="${urlBase}${previous}" title="Previous page">&lsaquo;</a>
-    </li>
-  #foreach ($i in [$first .. $last])
-    #set( $display = $i )
-    <li class="page #if ($i == $page)current#end"><a href="${urlBase}${i}">${display}</a></li>
-  #end
-    <li class="next #if ($page == $last)disabled#end">
-      <a href="${urlBase}${next}" title="Next page">&rsaquo;</a>
-    </li>
-    <li class="last #if ($page == $last)disabled#end">
-      <a href="${urlBase}${maxPages}" title="Last page">&raquo;</a>
-    </li>
-  </ul>
-#end
-
-## Create an XML representation of an opinion
-## $opinion - com.jodange.api.model.Opinion to display as XML
-## $dateFormat - format to use when displaying date (optional)
-#macro(opinionXml $opinion $dateFormat)
-  #if (!$dateFormat)
-    #set( $dateFormat = "YYYY-MM-dd" )
-  #end
-  <opinion index="${opinion.index}">
-    <op_id>${opinion.opinionId}</op_id>
-    <sent_id>${opinion.sentenceId}</sent_id>
-    <doc_id>${opinion.documentId}</doc_id>
-    <doc_link>${opinion.documentLink}</doc_link>
-    <doc_title>${opinion.documentTitle}</doc_title>
-    <publish_date>${opinion.publishDate.toString(${dateFormat})}</publish_date>
-    <type_id>${opinion.typeId}</type_id>
-    <pre_sent> ${opinion.preSentence}</pre_sent>
-    <sent>${opinion.sentence}</sent>
-    <post_sent>${opinion.postSentence}</post_sent>
-    <topics>
-    #foreach ($topic in ${opinion.topics})
-      <topic id="${topic.id}">${topic.name}</topic>
-    #end
-    </topics>
-    <provider id="${opinion.providerId}">${opinion.provider}</provider>
-    <publisher id="${opinion.publisherId}">${opinion.publisher}</publisher>
-    <author id="${opinion.authorId}">${opinion.author}</author>
-    <opholder id="${opinion.opinionHolderId}">${opinion.opinionHolder}</opholder>
-    <polarity>${opinion.polarity}</polarity>
-    <polarity_conf>${opinion.polarityConfidence}</polarity_conf>
-  </opinion>
-#end
-
