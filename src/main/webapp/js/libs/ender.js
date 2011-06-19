@@ -1,4 +1,67 @@
 /*!
+  * Ender: open module JavaScript framework
+  * copyright Dustin Diaz & Jacob Thornton 2011 (@ded @fat)
+  * https://ender.no.de
+  * License MIT
+  * Build: ender build qwery underscore domready bonzo bean
+  */
+!function (context) {
+
+  function aug(o, o2) {
+    for (var k in o2) {
+      k != 'noConflict' && k != '_VERSION' && (o[k] = o2[k]);
+    }
+    return o;
+  }
+
+  function boosh(s, r, els) {
+                          // string || node || nodelist || window
+    if (ender._select && (typeof s == 'string' || s.nodeName || s.length && 'item' in s || s == window)) {
+      els = ender._select(s, r);
+      els.selector = s;
+    } else {
+      els = isFinite(s.length) ? s : [s];
+    }
+    return aug(els, boosh);
+  }
+
+  function ender(s, r) {
+    return boosh(s, r);
+  }
+
+  aug(ender, {
+    _VERSION: '0.2.4',
+    ender: function (o, chain) {
+      aug(chain ? boosh : ender, o);
+    },
+    fn: context.$ && context.$.fn || {} // for easy compat to jQuery plugins
+  });
+
+  aug(boosh, {
+    forEach: function (fn, scope, i) {
+      // opt out of native forEach so we can intentionally call our own scope
+      // defaulting to the current item and be able to return self
+      for (i = 0, l = this.length; i < l; ++i) {
+        i in this && fn.call(scope || this[i], this[i], i, this);
+      }
+      // return self for chaining
+      return this;
+    },
+    $: ender // handy reference to self
+  });
+
+  var old = context.$;
+  ender.noConflict = function () {
+    context.$ = old;
+    return this;
+  };
+
+  (typeof module !== 'undefined') && module.exports && (module.exports = ender);
+  // use subscript notation as extern for Closure compilation
+  context['ender'] = context['$'] = ender;
+
+}(this);
+/*!
   * Qwery - A Blazing Fast query selector engine
   * https://github.com/ded/qwery
   * copyright Dustin Diaz & Jacob Thornton 2011
@@ -303,19 +366,17 @@
   }, true);
 }(document);
 !function (context, doc) {
-  var loaded = 0, fns = [], ol, f = false,
-      testEl = doc.createElement('a'),
+  var fns = [], ol, f = false,
+      testEl = doc.documentElement,
+      hack = testEl.doScroll,
       domContentLoaded = 'DOMContentLoaded',
       addEventListener = 'addEventListener',
-      onreadystatechange = 'onreadystatechange';
+      onreadystatechange = 'onreadystatechange',
+      loaded = /^loade|c/.test(doc.readyState);
 
-  /^loade|c/.test(doc.readyState) && (loaded = 1);
-
-  function flush() {
+  function flush(i) {
     loaded = 1;
-    for (var i = 0, l = fns.length; i < l; i++) {
-      fns[i]();
-    }
+    while (i = fns.shift()) { i() }
   }
   doc[addEventListener] && doc[addEventListener](domContentLoaded, function fn() {
     doc.removeEventListener(domContentLoaded, fn, f);
@@ -323,35 +384,29 @@
   }, f);
 
 
-  testEl.doScroll && doc.attachEvent(onreadystatechange, (ol = function ol() {
+  hack && doc.attachEvent(onreadystatechange, (ol = function ol() {
     if (/^c/.test(doc.readyState)) {
       doc.detachEvent(onreadystatechange, ol);
       flush();
     }
   }));
 
-  var domReady = testEl.doScroll ?
+  context['domReady'] = hack ?
     function (fn) {
       self != top ?
-        !loaded ?
-          fns.push(fn) :
-          fn() :
-        !function () {
+        loaded ? fn() : fns.push(fn) :
+        function () {
           try {
             testEl.doScroll('left');
           } catch (e) {
-            return setTimeout(function() {
-              domReady(fn);
-            }, 50);
+            return setTimeout(function() { domReady(fn) }, 50);
           }
           fn();
-        }();
+        }()
     } :
     function (fn) {
       loaded ? fn() : fns.push(fn);
     };
-
-    context['domReady'] = domReady;
 
 }(this, document);!function ($) {
   $.ender({domReady: domReady});
@@ -1464,69 +1519,6 @@
 
   $.ender(methods, true);
 }(ender);
-/*!
-  * Ender: open module JavaScript framework
-  * copyright Dustin Diaz & Jacob Thornton 2011 (@ded @fat)
-  * https://ender.no.de
-  * License MIT
-  * Build: ender build qwery underscore domready bonzo bean
-  */
-!function (context) {
-
-  function aug(o, o2) {
-    for (var k in o2) {
-      k != 'noConflict' && k != '_VERSION' && (o[k] = o2[k]);
-    }
-    return o;
-  }
-
-  function boosh(s, r, els) {
-                          // string || node || nodelist || window
-    if (ender._select && (typeof s == 'string' || s.nodeName || s.length && 'item' in s || s == window)) {
-      els = ender._select(s, r);
-      els.selector = s;
-    } else {
-      els = isFinite(s.length) ? s : [s];
-    }
-    return aug(els, boosh);
-  }
-
-  function ender(s, r) {
-    return boosh(s, r);
-  }
-
-  aug(ender, {
-    _VERSION: '0.2.4',
-    ender: function (o, chain) {
-      aug(chain ? boosh : ender, o);
-    },
-    fn: context.$ && context.$.fn || {} // for easy compat to jQuery plugins
-  });
-
-  aug(boosh, {
-    forEach: function (fn, scope, i) {
-      // opt out of native forEach so we can intentionally call our own scope
-      // defaulting to the current item and be able to return self
-      for (i = 0, l = this.length; i < l; ++i) {
-        i in this && fn.call(scope || this[i], this[i], i, this);
-      }
-      // return self for chaining
-      return this;
-    },
-    $: ender // handy reference to self
-  });
-
-  var old = context.$;
-  ender.noConflict = function () {
-    context.$ = old;
-    return this;
-  };
-
-  (typeof module !== 'undefined') && module.exports && (module.exports = ender);
-  // use subscript notation as extern for Closure compilation
-  context['ender'] = context['$'] = ender;
-
-}(this);
 !function () { var exports = {}, module = { exports: exports }; //     Underscore.js 1.1.6
 //     (c) 2011 Jeremy Ashkenas, DocumentCloud Inc.
 //     Underscore is freely distributable under the MIT license.
