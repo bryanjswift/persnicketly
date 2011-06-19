@@ -130,6 +130,13 @@ object UserDao {
   def getById(id: String) = if (id.length == 0) { None } else { dao.get(new ObjectId(id)) }
 
   /**
+   * Create an ObjectId for id string if it exists and pass it to UserDao#get(org.bson.types.ObjectId)
+   * @param opt to convert to ObjectId if defined
+   * @return Some(User) if opt is defined and a User is found for Some(id)
+   */
+  def getById(opt: Option[String]) = opt.flatMap(id => dao.get(new ObjectId(id)))
+
+  /**
    * Proxy to UserDao instance to get data
    * @param requestToken to retrieve user for
    * @return Some(User) if requestToken exists, None otherwise
