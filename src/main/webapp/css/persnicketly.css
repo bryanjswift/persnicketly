@@ -113,6 +113,7 @@ p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6
 .list.recent li h3:before { background-color: #4eacca; }
 .recent .meta .favorited span { background-position: -24px top; }
 .recent .meta .bookmarked span { background-position: -24px top; }
+.recent .add { background-position: -50px top; }
 .list.recent hr { background-position: center -20px; }
 /* About */
 #content {
