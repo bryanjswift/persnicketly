@@ -20,7 +20,7 @@ class UserDao extends Dao {
    * @return an Iterator of Users
    */
   def all(): List[User] =
-    collection.find("username" $exists true).map(o => dbobject2user(o)).toList
+    collection.distinct("user_id").filter(_ != null).map(i => this.get(i.asInstanceOf[Int]).get).toList
 
   /**
    * Get a User by object id
