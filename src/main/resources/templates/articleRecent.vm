@@ -23,7 +23,7 @@
         <section>
           <header>
             <h2>Recent Favorites</h2>
-            <h3 class="generated">as of ${today.toString("MMMM dd, yyyy KK:mm aa")}</h3>
+            <h3 class="generated">from ${weekAgo.toString("MMMM dd, yyyy")} to ${yesterday.toString("MMMM dd, yyyy")}</h3>
           </header>
           #renderArticles($articles $user)
         </section>

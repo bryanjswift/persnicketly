@@ -8,6 +8,7 @@ import com.persnicketly.web.Servlet
 import com.persnicketly.web.controller.ArticleController
 import org.apache.http.HttpStatus
 import org.joda.time.DateTime
+import org.scala_tools.time.Imports._
 import velocity.VelocityView
 import javax.ws.rs.core.MediaType
 
@@ -45,12 +46,15 @@ class ArticleServlet extends Servlet with Logging {
   private def renderArticles(helper: HttpHelper, articles: List[ScoredArticle], template: String): Unit = {
     val userId = helper.cookie(Constants.UserCookie)
     val view = new VelocityView(template)
+    val now = new DateTime()
     helper.response.setContentType(MediaType.TEXT_HTML)
     view.render(Map[String,Any](
       "articles" -> articles,
       "user" -> userId,
       "uri" -> helper.uri,
-      "today" -> (new DateTime())
+      "today" -> now,
+      "yesterday" -> (now - 1.day),
+      "weekAgo" -> (now - 8.days)
     ), helper.response)
   }
 }
