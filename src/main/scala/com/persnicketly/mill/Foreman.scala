@@ -23,13 +23,13 @@ object Foreman extends Command {
             log.info("Processing users")
             Foreman.usersToUpdate.foreach(UserQueue.add)
           }
-        }, 0L, 8L, TimeUnit.HOURS)
+        }, 0L, 4L, TimeUnit.HOURS)
       executor.scheduleWithFixedDelay(new Runnable {
           override def run() {
             log.info("Updating article scores")
             ScoredArticleDao.update()
           }
-        }, 0L, 4L, TimeUnit.HOURS)
+        }, 0L, 5L, TimeUnit.HOURS)
     }
     // join consumers to main thread
     List(userConsumer, bookmarkRequestConsumer)
