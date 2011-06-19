@@ -10,25 +10,28 @@ import com.persnicketly.persistence._
 @Singleton
 class StatsResource() {
 
+  @GET
+  def stats() = {
+    val bookmarks = new BookmarkDao
+    Stats(UserDao.all.size, ScoredArticleDao.all.size, bookmarks.collection.count)
+  }
+
   @GET @Path("/users")
   def userStats() = {
     val users = UserDao.all
-    val unique = users.map(_.personalInfo.get.username).toSet
-    UserStats(unique.size, users.size)
+    Stats(users.size, -1, -1)
   }
 
   @GET @Path("/articles")
   def articleStats() = {
-    ArticleStats(ScoredArticleDao.all.size)
+    Stats(-1, ScoredArticleDao.all.size, -1)
   }
 
   @GET @Path("/bookmarks")
   def bookmarkStats() = {
     val bookmarks = new BookmarkDao
-    BookmarkStats(bookmarks.collection.count)
+    Stats(-1, -1, bookmarks.collection.count)
   }
 }
 
-case class UserStats(unique: Int, total: Int)
-case class ArticleStats(articles: Int)
-case class BookmarkStats(bookmarks: Long)
+case class Stats(users: Int, articles: Int, bookmarks: Long)
