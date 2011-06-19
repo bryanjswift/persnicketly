@@ -3,7 +3,7 @@ package com.persnicketly.persistence
 import com.mongodb.casbah.Imports._
 import com.mongodb.casbah.commons.conversions.scala._
 import com.persnicketly.Persnicketly
-import com.persnicketly.readability.model.{Article, Bookmark}
+import com.persnicketly.readability.model.{Article, Bookmark, User}
 import org.bson.types.ObjectId
 import org.joda.time.DateTime
 
@@ -18,6 +18,19 @@ class BookmarkDao extends Dao {
                                        "article_procecced" -> 1,
                                        "update_date" -> 1,
                                        "favorite" -> 1))
+
+  /**
+   * Determine whether a user has a Bookmark for a given article
+   * @param user to check for
+   * @param article to check for
+   * @return true if a bookmark exists with user's userId and article's articleId
+   */
+  def hasBookmark(user: User, article: Article): Boolean = {
+    val userData = user.personalInfo.get
+    val aid = article.articleId
+    val uid = userData.userId.getOrElse(0)
+    user.personalInfo.isDefined && collection.count(MongoDBObject("article_id" -> aid, "user_id" -> uid)) > 0
+  }
 
   /**
    * Save bookmark data by updating existing record or inserting new
@@ -75,6 +88,8 @@ object BookmarkDao {
   }
 
   private def dao = { new BookmarkDao }
+
+  def hasBookmark(user: User, article: Article) = dao.hasBookmark(user, article)
 
   def save(bookmark: Bookmark) = { dao.save(bookmark) }
 }
