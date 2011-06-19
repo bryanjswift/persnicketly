@@ -26,7 +26,7 @@
   },
 
   "queue": {
-    "host": "localhost",
+    "host": "web1.persnicketly.com",
     "port": 5672,
     "bookmarks-requests": {
       "name": "bookmarks-requests",
