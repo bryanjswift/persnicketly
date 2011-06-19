@@ -4,8 +4,8 @@
 <!--[if IE 8]>    <html class="no-js ie8" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
   <head>
-    #set( $title = "Top Articles on Persnicketly" )
-    #set( $description = "Higest rated recent articles according to our Readability users." )
+    #set( $title = "Recent Favorites on Persnicketly" )
+    #set( $description = "Higest rated recent articles according to our Readability users in the past week." )
     #set( $ogTitle = "Persnicketly" )
     #set( $ogDescription = "Collecting Readability stars since 2011" )
     #parse("templates/head.vm")
