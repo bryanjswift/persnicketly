@@ -6,15 +6,22 @@ import org.bson.types.ObjectId
 case class ScoredArticle(id: Option[ObjectId],
                          article: Article,
                          favoriteCount: Double,
-                         count: Double) extends Ordered[ScoredArticle] {
+                         count: Double,
+                         isBookmarked: Boolean,
+                         isFavorited: Boolean) extends Ordered[ScoredArticle] {
 
   val numFavorites = favoriteCount.toInt
   val numBookmarks = count.toInt
-  val score = favoriteCount + count
+  val score = numFavorites + numBookmarks
 
   def compare(that: ScoredArticle): Int = {
-    if (that.favoriteCount != this.favoriteCount) { that.favoriteCount.compareTo(this.favoriteCount) }
-    else if (that.count != this.count) { that.count.compareTo(this.count) }
+    if (that.numFavorites != this.numFavorites) { that.numFavorites.compareTo(this.numFavorites) }
+    else if (that.numBookmarks != this.numBookmarks) { that.numBookmarks.compareTo(this.numBookmarks) }
     else { that.article.articleId.compareTo(this.article.articleId) }
   }
+}
+
+object ScoredArticle {
+  def apply(id: Option[ObjectId], article: Article, favoriteCount: Double, count: Double): ScoredArticle =
+    new ScoredArticle(id, article, favoriteCount, count, false, false)
 }
