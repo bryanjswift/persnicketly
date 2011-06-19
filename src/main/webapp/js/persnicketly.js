@@ -2,7 +2,6 @@
   var win = $(window)
     , t = false;
 
-  $.script.path = '/js/';
   $.domReady(resetAndResizeArticles);
   win.addListener('resize', function onResize() {
     if (t) { clearTimeout(t); }
