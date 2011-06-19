@@ -16,7 +16,7 @@
         #if (${user.isEmpty()})
         <h1><a href="/">Persnicketly<span class="headerCurl"></span></a></h1>
         #else
-        <h1>Persnicketly<span class="headerCurl"></span></h1>
+        <h1><a href="/article/list">Persnicketly<span class="headerCurl"></span></a></h1>
         #end
       </header>
       <div id="content" class="list recent">
