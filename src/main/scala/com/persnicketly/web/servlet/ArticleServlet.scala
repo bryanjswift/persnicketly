@@ -2,15 +2,10 @@ package com.persnicketly.web.servlet
 
 import com.google.inject.Singleton
 import com.persnicketly.{Constants, Logging}
-import com.persnicketly.model.ScoredArticle
 import com.persnicketly.persistence.ScoredArticleDao
 import com.persnicketly.web.Servlet
 import com.persnicketly.web.controller.ArticleController
 import org.apache.http.HttpStatus
-import org.joda.time.DateTime
-import org.scala_tools.time.Imports._
-import velocity.VelocityView
-import javax.ws.rs.core.MediaType
 
 @Singleton
 class ArticleServlet extends Servlet with Logging {
@@ -32,7 +27,8 @@ class ArticleServlet extends Servlet with Logging {
     helper.response.sendRedirect(ArticleServlet.listUrl)
   }
 
-  def list(helper: HttpHelper) = renderArticles(helper, ScoredArticleDao.find(10), "/templates/articleList.vm")
+  def list(helper: HttpHelper) =
+    ArticleController.renderArticles(helper, ScoredArticleDao.find(10), "/templates/articleList.vm")
 
   def read(helper: HttpHelper, articleId: String): Unit = {
     ArticleController.addArticleForUser(articleId, helper.cookie(Constants.UserCookie))
@@ -41,22 +37,8 @@ class ArticleServlet extends Servlet with Logging {
     helper.response.sendRedirect(url)
   }
 
-  def recent(helper: HttpHelper) = renderArticles(helper, ScoredArticleDao.recent(10), "/templates/articleRecent.vm")
-
-  private def renderArticles(helper: HttpHelper, articles: List[ScoredArticle], template: String): Unit = {
-    val userId = helper.cookie(Constants.UserCookie)
-    val view = new VelocityView(template)
-    val now = new DateTime()
-    helper.response.setContentType(MediaType.TEXT_HTML)
-    view.render(Map[String,Any](
-      "articles" -> articles,
-      "user" -> userId,
-      "uri" -> helper.uri,
-      "today" -> now,
-      "yesterday" -> (now - 1.day),
-      "weekAgo" -> (now - 8.days)
-    ), helper.response)
-  }
+  def recent(helper: HttpHelper) =
+    ArticleController.renderArticles(helper, ScoredArticleDao.recent(10), "/templates/articleRecent.vm")
 }
 
 object ArticleServlet {
