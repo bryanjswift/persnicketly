@@ -27,7 +27,13 @@
               </p>
               #end
               #if ($isLoggedIn)
-              <a class="add" href="/article/add/${article.articleId()}">Add</a>
+                #if ($scored.isFavorited())
+                <span class="corner starred">Favorited</span>
+                #elseif ($scored.isBookmarked())
+                <a class="corner star" href="/article/star/${article.articleId()}">Mark as Favorite</a>
+                #else
+                <a class="corner add" href="/article/add/${article.articleId()}">Add</a>
+                #end
               #end
             </li>
             #end

@@ -89,7 +89,8 @@ h4 { margin: 13px 0 0; font-size: 0.8125em; font-weight: 500; text-transform: up
 .list .excerpt { padding: 3px 0 0; color: #41403a; }
 .list .meta { position: absolute; top: 5px; right: 10px; padding: 10px 0; height: 1em; font-size: 0.625em; }
 .meta .favorited, .meta .bookmarked {
-  float: left; display: block; position: relative; top: -4px; padding: 4px 3px 3px; min-width: 34px; background: #ededed;
+  float: left; display: block; position: relative; top: -4px; padding: 4px 3px 3px; min-width: 34px;
+  font-weight: bold; background: #ededed;
 }
 .meta span span {
   display: inline-block; width: 12px; height: 12px; background: no-repeat left top; text-indent: -9999px;
@@ -102,10 +103,14 @@ p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6
 .original a:hover { color: #41403a; text-decoration: none; }
 .original a:hover span { text-decoration: underline; }
 .original span { position: relative; top: -4px; }
-.add {
-  display: block; position: absolute; bottom: 0; right: 0; width: 50px; height: 50px;
-  background: url(/img/add.png) no-repeat left top; text-indent: -9999px;
+.corner {
+  display: block; position: absolute; bottom: 0; right: 0; width: 50px; height: 50px; text-indent: -9999px;
+  background: #fbbd12 url(/img/corner.png) no-repeat left top;
 }
+.corner:hover { background-color: #c59205; }
+.corner.add { background-position: -50px top; }
+.corner.star { background-color: #bcbba9 !important; }
+.corner.star:hover { background-color: #969585 !important; }
 .list hr { display: block; height: 20px; visibility: visible; background: url(/img/bg_hr.png) no-repeat center top; }
 /* Recent Articles */
 .list.recent header h2:before { background-color: #4eacca; }
@@ -113,7 +118,8 @@ p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6
 .list.recent li h3:before { background-color: #4eacca; }
 .recent .meta .favorited span { background-position: -24px top; }
 .recent .meta .bookmarked span { background-position: -24px top; }
-.recent .add { background-position: -50px top; }
+.recent .corner { background-color: #4eacca; }
+.recent .corner:hover { background-color: #3e8aa2; }
 .list.recent hr { background-position: center -20px; }
 /* About */
 #content {
@@ -262,8 +268,12 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
     background: url(/img/x2/bg_footer.png) repeat-x left top;
     -o-background-size: auto 42px; -webkit-background-size: auto 42px; -moz-background-size: auto 42px;
   }
-  .add {
+  .corner.add {
     background-image: url(/img/x2/add.png);
+    -o-background-size: auto 50px; -webkit-background-size: auto 50px; -moz-background-size: auto 50px;
+  }
+  .corner.star, .corner.starred {
+    background-image: url(/img/x2/corner.png);
     -o-background-size: auto 50px; -webkit-background-size: auto 50px; -moz-background-size: auto 50px;
   }
   .list hr {
