@@ -46,6 +46,12 @@ object Api extends Logging {
         MetaExtractor(metaObject)
       }
     }
+    def unfavorite(consumer: Consumer, mark: Bookmark, user: User): Option[Bookmark] = {
+      val url = bookmarksUrl / mark.bookmarkId.toString <<? Map("favorite" -> "0")
+      request(url, consumer, user) { response =>
+        BookmarkExtractor(response)
+      }
+    }
   }
 
   def bookmarks(consumer: Consumer, conditions: BookmarkRequestConditions): Option[List[Bookmark]] = {
