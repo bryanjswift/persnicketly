@@ -23,9 +23,9 @@ class BookmarkDao extends Dao {
    * Determine whether a user has a Bookmark for a given article
    * @param user to check for
    * @param article to check for
-   * @return true if a bookmark exists with user's userId and article's articleId
+   * @return Some if a bookmark exists with user's userId and article's articleId
    */
-  def hasBookmark(user: User, article: Article): Option[Bookmark] = {
+  def get(user: User, article: Article): Option[Bookmark] = {
     user match {
       case User(_, _, _, _, _, Some(UserData(Some(uid), _, _, _))) =>
         collection.findOne(MongoDBObject("article_id" -> article.articleId, "user_id" -> uid)).map(dbobject2bookmark)
@@ -90,7 +90,7 @@ object BookmarkDao {
 
   private def dao = { new BookmarkDao }
 
-  def hasBookmark(user: User, article: Article) = dao.hasBookmark(user, article)
+  def get(user: User, article: Article) = dao.get(user, article)
 
   def save(bookmark: Bookmark) = { dao.save(bookmark) }
 }

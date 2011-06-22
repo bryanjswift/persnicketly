@@ -36,7 +36,7 @@ object ArticleController extends Logging {
     val scored = UserDao.getById(userId) match {
       case Some(u) =>
         articles.map(s => {
-          val b = BookmarkDao.hasBookmark(u, s.article)
+          val b = BookmarkDao.get(u, s.article)
           s.copy(isBookmarked = b.isDefined, isFavorited = b.map(_.isFavorite).getOrElse(false))
         })
       case None => articles
