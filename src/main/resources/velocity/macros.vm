@@ -28,7 +28,7 @@
               #end
               #if ($isLoggedIn)
                 #if ($scored.isFavorited())
-                <span class="corner starred">Favorited</span>
+                <a class="corner starred" href="/article/unstar/${article.articleId()}">Remove Favorite</a>
                 #elseif ($scored.isBookmarked())
                 <a class="corner star" href="/article/star/${article.articleId()}">Mark as Favorite</a>
                 #else
