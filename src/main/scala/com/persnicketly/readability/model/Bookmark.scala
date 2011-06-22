@@ -12,5 +12,7 @@ case class Bookmark(
   article: Article,
   archivedDate: Option[DateTime],
   favoritedDate: Option[DateTime],
-  updatedDate: Option[DateTime])
+  updatedDate: Option[DateTime]) {
 
+  def asMap() = Map("favorite" -> (if (isFavorite) "1" else "0"), "archive" -> (if (isArchived) "1" else "0"))
+}
