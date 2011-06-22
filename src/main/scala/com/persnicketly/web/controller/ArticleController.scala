@@ -5,7 +5,7 @@ import com.persnicketly.mill.UserQueue
 import com.persnicketly.model.ScoredArticle
 import com.persnicketly.persistence.{BookmarkDao, ScoredArticleDao, UserDao}
 import com.persnicketly.readability.Api
-import com.persnicketly.readability.model.User
+import com.persnicketly.readability.model.{Bookmark, User}
 import com.persnicketly.web.Servlet
 import org.joda.time.DateTime
 import org.scala_tools.time.Imports._
@@ -14,7 +14,7 @@ import javax.ws.rs.core.MediaType
 
 object ArticleController extends Logging {
   def addArticleForUser(articleId: String, userId: Option[String]): Unit = {
-    UserDao.getById(userId.getOrElse("")) match {
+    UserDao.getById(userId) match {
       case Some(user) =>
         ScoredArticleDao.get(articleId) match {
           // Add article to reading list
@@ -27,6 +27,23 @@ object ArticleController extends Logging {
         }
       case None => log.info("No logged in user, just redirecting")
     }
+  }
+
+  def updateBookmark(articleId: String, userId: Option[String], toFavorite: Boolean): Option[Bookmark] = {
+    UserDao.getById(userId).flatMap(u => {
+      ScoredArticleDao.get(articleId).flatMap(s => {
+        BookmarkDao.get(u, s.article).flatMap(mark => {
+          val result = if (toFavorite) {
+            Api.Bookmarks.favorite(Persnicketly.oauthConsumer, u, mark)
+          } else {
+            Api.Bookmarks.unfavorite(Persnicketly.oauthConsumer, u, mark)
+          }
+          // this should trigger a rescore (?)
+          result.foreach(BookmarkDao.save)
+          result
+        })
+      })
+    })
   }
 
   def renderArticles(helper: Servlet#HttpHelper, articles: List[ScoredArticle], template: String): Unit = {

@@ -17,6 +17,8 @@ class ArticleServlet extends Servlet with Logging {
       case Array("article", "list") => list(helper)
       case Array("article", "read", articleId) => read(helper, articleId)
       case Array("article", "recent") => recent(helper)
+      case Array("article", "star", articleId) => star(helper, articleId)
+      case Array("article", "unstar", articleId) => unstar(helper, articleId)
       case _ => helper.response.sendError(HttpStatus.SC_NOT_FOUND)
     }
   }
@@ -39,6 +41,19 @@ class ArticleServlet extends Servlet with Logging {
 
   def recent(helper: HttpHelper) =
     ArticleController.renderArticles(helper, ScoredArticleDao.recent(10), "/templates/articleRecent.vm")
+
+  def star(helper: HttpHelper, articleId: String): Unit = {
+    ArticleController.updateBookmark(articleId, helper.cookie(Constants.UserCookie), toFavorite = true)
+    // it would be nice to say an article wasn't found or you're not logged in
+    helper.response.sendRedirect(ArticleServlet.listUrl)
+  }
+
+  def unstar(helper: HttpHelper, articleId: String): Unit = {
+    ArticleController.updateBookmark(articleId, helper.cookie(Constants.UserCookie), toFavorite = false)
+    // it would be nice to say an article wasn't found or you're not logged in
+    helper.response.sendRedirect(ArticleServlet.listUrl)
+  }
+
 }
 
 object ArticleServlet {
