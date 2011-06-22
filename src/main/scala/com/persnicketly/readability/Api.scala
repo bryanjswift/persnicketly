@@ -25,8 +25,8 @@ object Api extends Logging {
       // article adding gives an empty response which dispatch translates to null
       request(url, consumer, user) { response => response }
     }
-    def favorite(consumer: Consumer, mark: Bookmark, user: User): Option[Bookmark] = {
-      val url = bookmarksUrl / mark.bookmarkId.toString <<? Map("favorite" -> "1")
+    def favorite(consumer: Consumer, user: User, mark: Bookmark): Option[Bookmark] = {
+      val url = bookmarksUrl / mark.bookmarkId.toString << (mark.asMap + ("favorite" -> "1"))
       request(url, consumer, user) { response =>
         BookmarkExtractor(response)
       }
@@ -46,8 +46,8 @@ object Api extends Logging {
         MetaExtractor(metaObject)
       }
     }
-    def unfavorite(consumer: Consumer, mark: Bookmark, user: User): Option[Bookmark] = {
-      val url = bookmarksUrl / mark.bookmarkId.toString <<? Map("favorite" -> "0")
+    def unfavorite(consumer: Consumer, user: User, mark: Bookmark): Option[Bookmark] = {
+      val url = bookmarksUrl / mark.bookmarkId.toString << (mark.asMap + ("favorite" -> "0"))
       request(url, consumer, user) { response =>
         BookmarkExtractor(response)
       }
