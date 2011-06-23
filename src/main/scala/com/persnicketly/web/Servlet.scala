@@ -20,6 +20,7 @@ trait Servlet extends HttpServlet {
       case _ => "html"
     }
     val parts = uri.split("/").filter(_.length > 0)
+    val isAjax = header("X-Requested-With").isDefined
     def apply(param:String, default:String = "") = {
       val value = request.getParameter(param)
       if (value == null || value == "" || value == default) None else Some(value)
@@ -43,6 +44,10 @@ trait Servlet extends HttpServlet {
     }
     def header(name: String, value: String): Unit = {
       response.setHeader(name, value)
+    }
+    def write(contentType: String, output: String): Unit = {
+      response.setContentType(contentType)
+      response.getWriter.write(output)
     }
   }
 
