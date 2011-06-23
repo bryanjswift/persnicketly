@@ -46,12 +46,12 @@ trait Servlet extends HttpServlet {
     }
   }
 
-  private class RichEnumeration[T](enumeration: java.util.Enumeration[T]) extends Iterator[T] {
+  class RichEnumeration[T](enumeration: java.util.Enumeration[T]) extends Iterator[T] {
     def hasNext: Boolean = enumeration.hasMoreElements()
     def next: T = enumeration.nextElement()
   }
 
-  private implicit def enumerationToRichEnumeration[T](enumeration: java.util.Enumeration[T]): RichEnumeration[T] = {
+  implicit def enumerationToRichEnumeration[T](enumeration: java.util.Enumeration[T]): RichEnumeration[T] = {
     new RichEnumeration(enumeration)
   }
 }
