@@ -19,7 +19,7 @@ object ArticleController extends Logging {
         ScoredArticleDao.get(articleId) match {
           // Add article to reading list
           case Some(scored) => {
-            Api.bookmark(Persnicketly.oauthConsumer, user, scored.article)
+            Api.Bookmarks.add(Persnicketly.oauthConsumer, user, scored.article)
             UserQueue.add(user)
           }
           // show article not found page
