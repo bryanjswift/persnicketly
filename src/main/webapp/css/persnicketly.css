@@ -5,7 +5,7 @@ html, body, div, span, a, img, p, ul, ol, li, h1, h2, h3, h4, h5 {
 }
 ul, ol { list-style: none; }
 body {
-  font-size: 100%; font-family: "museo-slab-1", "museo-slab-2", "Helvetica Neue", "Helvetica", Arial, sans-serif;
+  font-size: 100%; font-family: "museo-slab", "Helvetica Neue", "Helvetica", Arial, sans-serif;
   font-weight: 700; line-height: 1; color: #4d4b44; background: #fff;
 }
 .wf-active body { -webkit-font-smoothing: antialiased; }
@@ -17,7 +17,7 @@ p {
   -webkit-font-smoothing: subpixel-antialiased;
 }
 p[class] {
-  font-family: "museo-slab-1", "museo-slab-2", "Helvetica Neue", "Helvetica", Arial, sans-serif; font-weight: 500;
+  font-family: "museo-slab", "Helvetica Neue", "Helvetica", Arial, sans-serif; font-weight: 500;
 }
 strong { font-weight: 700; }
 hr { display: none; clear: both; margin: 0; border: 0; padding: 0; height: 1px; visibility: hidden; }
@@ -202,7 +202,7 @@ p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6
 /* Who */
 #who { clear: both; margin: 20px 0; font-weight: 500; text-align: center; color: #5d5d5d; }
 #who p {
-  font-family: "museo-slab-1", "museo-slab-2", "Helvetica Neue", "Helvetica", Arial, sans-serif; font-weight: 500;
+  font-family: "museo-slab", "Helvetica Neue", "Helvetica", Arial, sans-serif; font-weight: 500;
 }
 #who span { padding: 0 4px; color: #fff; }
 #bryan { background: #683686; }

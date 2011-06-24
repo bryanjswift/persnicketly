@@ -24,7 +24,7 @@
     <link href="/css/persnicketly.css" rel="stylesheet" type="text/css" />
     #end
     <script src="/js/libs/modernizr-custom.js"></script>
-    <script src="http://use.typekit.com/rxz7gnq.js"></script>
+    <script src="http://use.typekit.com/cyx7hbi.js"></script>
     <script>
     (function(d,t) {
       try{Typekit.load();}catch(e){}
