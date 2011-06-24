@@ -41,7 +41,7 @@ object Api extends Logging {
       }
     }
     def update(consumer: Consumer, user: User, mark: Bookmark): Option[Bookmark] = {
-      val url = bookmarksUrl / mark.bookmarkId.toString << mark.asMap
+      val url = bookmarksUrl / mark.bookmarkId.toString << mark
       request(url, consumer, user) { response =>
         BookmarkExtractor(response)
       }
