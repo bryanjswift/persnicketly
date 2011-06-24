@@ -19,7 +19,7 @@ object Api extends Logging {
   val datePattern = "YYYY-MM-dd HH:mm:ss"
 
   object Bookmarks {
-    def add(consumer: Consumer, user: User, article: Article): Unit = bookmark(consumer, user, article.url)
+    def add(consumer: Consumer, user: User, article: Article): Unit = add(consumer, user, article.url)
     def add(consumer: Consumer, user: User, pageUrl: String): Unit = {
       val url = bookmarksUrl << Map("url" -> pageUrl)
       // article adding gives an empty response which dispatch translates to null
@@ -54,18 +54,9 @@ object Api extends Logging {
     }
   }
 
-  def bookmarks(consumer: Consumer, conditions: BookmarkRequestConditions): Option[List[Bookmark]] = {
-    Bookmarks.fetch(consumer, conditions)
-  }
-  def bookmarksMeta(consumer: Consumer, user: User, since: Option[DateTime] = None): Option[Meta] = {
-    Bookmarks.meta(consumer, user, since)
-  }
-  def bookmark(consumer: Consumer, user: User, article: Article): Unit = Bookmarks.add(consumer, user, article)
-  def bookmark(consumer: Consumer, user: User, pageUrl: String): Unit = Bookmarks.add(consumer, user, pageUrl)
-
   def currentUser(consumer: Consumer, user: User): Option[UserData] = {
     import scala.actors.Futures.future
-    val marks = future { bookmarks(consumer, BookmarkRequestConditions(1, user)) }
+    val marks = future { Bookmarks.fetch(consumer, BookmarkRequestConditions(1, user)) }
     request(userUrl, consumer, user) { response =>
       UserDataExtractor(response).copy(userId = marks().flatMap(_.headOption.map(_.userId)))
     }
