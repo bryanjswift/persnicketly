@@ -8,7 +8,7 @@ import org.scala_tools.time.Imports._
 import org.bson.types.ObjectId
 import org.joda.time.DateTime
 
-class ScoredArticleDao extends Dao {
+object ScoredArticleDao extends Dao {
   import ScoredArticleDao._
   val collectionName = "articles"
 
@@ -24,37 +24,35 @@ class ScoredArticleDao extends Dao {
   collection.ensureIndex(MongoDBObject("article_id" -> 1))
   collection.ensureIndex(MongoDBObject("favorite_count" -> -1, "count" -> -1, "score" -> -1))
 
-  private val articleConverter = dbobject2article _
-
   def all(): List[ScoredArticle] = {
     log.debug("Fetching all scored articles")
     val articles = collection.find().sort(MongoDBObject("score" -> -1))
-    articles.map(articleConverter).toList
+    articles.map(ScoredArticle.apply).toList
   }
 
   def find(count: Int): List[ScoredArticle] = {
     log.debug("Fetching the top {} articles", count)
     val articles = collection.find("score" $gt 2).limit(count).sort(defaultSort)
-    articles.map(articleConverter).toList
+    articles.map(ScoredArticle.apply).toList
   }
 
   def compute(): List[ScoredArticle] = {
-    val bookmarks = new BookmarkDao
-    val articles = bookmarks.collection.group(key, cond, initial, reduce)
-    articles.map(articleConverter).toList
+    val bookmarks = BookmarkDao.collection
+    val articles = bookmarks.group(key, cond, initial, reduce)
+    articles.map(ScoredArticle.apply).toList
   }
 
   def get(articleId: String): Option[ScoredArticle] = {
-    collection.findOne(MongoDBObject("article_id" -> articleId)).map(dbobject2article)
+    collection.findOne(MongoDBObject("article_id" -> articleId)).map(ScoredArticle.apply)
   }
 
   def recent(count: Int): List[ScoredArticle] = {
-    val bookmarks = new BookmarkDao
+    val bookmarks = BookmarkDao.collection
     val now = (new DateTime) - 1.day
     val yesterday = now - 7.days
     val c = cond + ("update_date" -> MongoDBObject("$gt" -> yesterday, "$lt" -> now))
-    val articles = bookmarks.collection.group(key, c, initial, reduce)
-    articles.map(articleConverter).toList.sorted.take(count)
+    val articles = bookmarks.group(key, c, initial, reduce)
+    articles.map(ScoredArticle.apply).toList.sorted.take(count)
   }
 
   def save(scored: ScoredArticle): ScoredArticle = {
@@ -65,57 +63,9 @@ class ScoredArticleDao extends Dao {
     collection.update(query, scored, upsert = true, multi = false)
     collection.findOne(query).get
   }
-}
-
-object ScoredArticleDao {
-  implicit def article2dbobject(scored: ScoredArticle): DBObject = {
-    val builder = MongoDBObject.newBuilder
-    scored.id.foreach(id => builder += ("_id" -> id))
-    builder += "article_id" -> scored.article.articleId
-    builder += "article_title" -> scored.article.title
-    builder += "article_domain" -> scored.article.domain
-    builder += "article_url" -> scored.article.url
-    builder += "article_processed" -> scored.article.processed
-    scored.article.excerpt.foreach(ex => builder += ("article_excerpt" -> ex))
-    builder += "favorite_count" -> scored.favoriteCount
-    builder += "count" -> scored.count
-    builder += "score" -> scored.score
-    builder.result
-  }
-
-  implicit def dbobject2article(o: DBObject): ScoredArticle = {
-    ScoredArticle(
-      o._id,
-      Article(
-        o.getAsOrElse("article_id", ""),
-        o.getAsOrElse("article_title", ""),
-        o.getAsOrElse("article_domain", ""),
-        o.getAsOrElse("article_url", ""),
-        o.getAs[String]("article_excerpt"),
-        o.getAsOrElse("article_processed", false)
-      ),
-      o.getAsOrElse("favorite_count", 0.0),
-      o.getAsOrElse("count", 0.0)
-    )
-  }
-
-  private def dao = { new ScoredArticleDao }
-
-  def all() = dao.all()
-
-  def compute() = dao.compute()
-
-  def find(limit: Int) = dao.find(limit)
-
-  def get(articleId: String) = dao.get(articleId)
-
-  def recent(limit: Int) = dao.recent(limit)
-
-  def save(scored: ScoredArticle) = dao.save(scored)
 
   def update(): Unit = {
-    val instance = dao
-    val articles = instance.compute
-    articles.map(instance.save)
+    val articles = compute
+    articles.foreach(save)
   }
 }

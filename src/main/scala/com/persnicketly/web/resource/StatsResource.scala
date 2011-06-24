@@ -9,12 +9,8 @@ import com.persnicketly.persistence._
 @Produces(Array(MediaType.APPLICATION_JSON))
 @Singleton
 class StatsResource() {
-
   @GET
-  def stats() = {
-    val bookmarks = new BookmarkDao
-    Stats(UserDao.all.size, ScoredArticleDao.all.size, bookmarks.collection.count)
-  }
+  def stats() = Stats(UserDao.all.size, ScoredArticleDao.all.size, BookmarkDao.collection.count)
 
   @GET @Path("/users")
   def userStats() = {
@@ -23,15 +19,10 @@ class StatsResource() {
   }
 
   @GET @Path("/articles")
-  def articleStats() = {
-    Stats(-1, ScoredArticleDao.all.size, -1)
-  }
+  def articleStats() = Stats(-1, ScoredArticleDao.all.size, -1)
 
   @GET @Path("/bookmarks")
-  def bookmarkStats() = {
-    val bookmarks = new BookmarkDao
-    Stats(-1, -1, bookmarks.collection.count)
-  }
+  def bookmarkStats() = Stats(-1, -1, BookmarkDao.collection.count)
 }
 
 case class Stats(users: Int, articles: Int, bookmarks: Long)

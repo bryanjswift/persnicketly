@@ -7,7 +7,7 @@ import com.persnicketly.readability.model.{Article, Bookmark, User, UserData}
 import org.bson.types.ObjectId
 import org.joda.time.DateTime
 
-class BookmarkDao extends Dao {
+object BookmarkDao extends Dao {
   import BookmarkDao._
   val collectionName = "bookmarks"
 
@@ -28,7 +28,7 @@ class BookmarkDao extends Dao {
   def get(user: User, article: Article): Option[Bookmark] = {
     user match {
       case User(_, _, _, _, _, Some(UserData(Some(uid), _, _, _))) =>
-        collection.findOne(MongoDBObject("article_id" -> article.articleId, "user_id" -> uid)).map(dbobject2bookmark)
+        collection.findOne(MongoDBObject("article_id" -> article.articleId, "user_id" -> uid)).map(Bookmark.apply)
       case _ => None
     }
   }
@@ -47,51 +47,3 @@ class BookmarkDao extends Dao {
     collection.findOne(query).get
   }
 }
-
-object BookmarkDao {
-  implicit def bookmark2dbobject(bookmark: Bookmark): DBObject = {
-    val builder = MongoDBObject.newBuilder
-    builder += "bookmark_id" -> bookmark.bookmarkId
-    builder += "user_id" -> bookmark.userId
-    builder += "favorite" -> bookmark.isFavorite
-    builder += "archive" -> bookmark.isArchived
-    bookmark.archivedDate.foreach(date => builder += "archive_date" -> date)
-    bookmark.favoritedDate.foreach(date => builder += "favorite_date" -> date)
-    bookmark.updatedDate.foreach(date => builder += "update_date" -> date)
-    builder += "article_id" -> bookmark.article.articleId
-    builder += "article_title" -> bookmark.article.title
-    builder += "article_domain" -> bookmark.article.domain
-    builder += "article_url" -> bookmark.article.url
-    builder += "article_excerpt" -> bookmark.article.excerpt
-    builder += "article_processed" -> bookmark.article.processed
-    builder.result
-  }
-
-  implicit def dbobject2bookmark(o: DBObject): Bookmark = {
-    Bookmark(
-      o._id,
-      o.getAsOrElse("bookmark_id", 0),
-      o.getAsOrElse("user_id", 0),
-      o.getAsOrElse("favorite", false),
-      o.getAsOrElse("archive", false),
-      Article(
-        o.getAsOrElse("article_id", ""),
-        o.getAsOrElse("article_title", ""),
-        o.getAsOrElse("article_domain", ""),
-        o.getAsOrElse("article_url", ""),
-        o.getAs[String]("article_excerpt"),
-        o.getAsOrElse("article_processed", false)
-      ),
-      o.getAs[DateTime]("archive_date"),
-      o.getAs[DateTime]("favorite_date"),
-      o.getAs[DateTime]("update_date")
-    )
-  }
-
-  private def dao = { new BookmarkDao }
-
-  def get(user: User, article: Article) = dao.get(user, article)
-
-  def save(bookmark: Bookmark) = { dao.save(bookmark) }
-}
-

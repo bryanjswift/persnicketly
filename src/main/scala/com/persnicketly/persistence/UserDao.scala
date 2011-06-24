@@ -7,8 +7,7 @@ import com.persnicketly.readability.model.{TokenHelper, User, UserData}
 import org.bson.types.ObjectId
 import org.joda.time.DateTime
 
-class UserDao extends Dao {
-  import UserDao._
+object UserDao extends Dao {
   val collectionName = "users"
 
   // Initialize indexes
@@ -28,7 +27,7 @@ class UserDao extends Dao {
    * @return Some(User) if found None otherwise
    */
   def get(id: ObjectId): Option[User] =
-    collection.findOneByID(id).map(o => dbobject2user(o))
+    collection.findOneByID(id).map(User.apply)
 
   /**
    * Get a User by request token
@@ -36,7 +35,7 @@ class UserDao extends Dao {
    * @return Some(User) if found None otherwise
    */
   def get(requestToken: String): Option[User] =
-    collection.findOne(MongoDBObject("request_token_value" -> requestToken)).map(o => dbobject2user(o))
+    collection.findOne(MongoDBObject("request_token_value" -> requestToken)).map(User.apply)
 
   /**
    * Get a User by user_id
@@ -44,7 +43,21 @@ class UserDao extends Dao {
    * @return Some(User) if found None otherwise
    */
   def get(userId: Int): Option[User] =
-    collection.findOne(MongoDBObject("user_id" -> userId)).map(o => dbobject2user(o))
+    collection.findOne(MongoDBObject("user_id" -> userId)).map(User.apply)
+
+  /**
+   * Create an ObjectId for id and send it to UserDao#get(org.bson.types.ObjectId)
+   * @param id to convert to ObjectId
+   * @return Some(User) if id exists, None otherwise
+   */
+  def getById(id: String) = if (id.length == 0) { None } else { get(new ObjectId(id)) }
+
+  /**
+   * Create an ObjectId for id string if it exists and pass it to UserDao#get(org.bson.types.ObjectId)
+   * @param opt to convert to ObjectId if defined
+   * @return Some(User) if opt is defined and a User is found for Some(id)
+   */
+  def getById(opt: Option[String]) = opt.flatMap(id => get(new ObjectId(id)))
 
   /**
    * Save user data by updating existing record or inserting new
@@ -59,94 +72,4 @@ class UserDao extends Dao {
     collection.update(query, user, upsert = true, multi = false)
     get(user.requestToken.value).get
   }
-}
-
-object UserDao {
-  implicit def user2dbobject(user: User): DBObject = {
-    val builder = MongoDBObject.newBuilder
-    user.id.foreach(id => builder += ("_id" -> id))
-    builder += "request_token_value" -> user.requestToken.value
-    builder += "request_token_secret" -> user.requestToken.secret
-    user.accessToken.foreach(t => {
-      builder += "access_token_value" -> t.value
-      builder += "access_token_secret" -> t.secret
-    })
-    user.verifier.foreach(v => builder += ("verifier" -> v))
-    user.personalInfo.foreach(info => {
-      builder += "user_id" -> info.userId
-      builder += "username" -> info.username
-      builder += "first_name" -> info.firstName
-      builder += "last_name" -> info.lastName
-    })
-    user.lastProcessed.foreach(d => builder += ("last_processed" -> d))
-    builder += ("last_updated" -> new DateTime)
-    builder.result
-  }
-
-  implicit def dbobject2user(o: DBObject): User = {
-    val rtv = o.getAs[String]("request_token_value")
-    val rts = o.getAs[String]("request_token_secret")
-    val atv = o.getAs[String]("access_token_value")
-    val ats = o.getAs[String]("access_token_secret")
-    User(
-      o._id,
-      TokenHelper(rtv, rts).get,
-      TokenHelper(atv, ats),
-      o.getAs[String]("verifier"),
-      o.getAs[DateTime]("last_processed"),
-      UserData(
-        o.getAs[Int]("user_id"),
-        o.getAs[String]("username"),
-        o.getAs[String]("first_name"),
-        o.getAs[String]("last_name")
-      )
-    )
-  }
-
-  /**
-   * Get a new DAO object
-   * @return a new instance of UserDao
-   */
-  private def dao = { new UserDao }
-
-  /**
-   * Proxy to UserDao instance to get data
-   * @return Iterator of verified users in DB
-   */
-  def all() = dao.all()
-
-  /**
-   * Proxy to UserDao instance to get data
-   * @param id to retrieve
-   * @return Some(User) if id exists, None otherwise
-   */
-  def get(id: ObjectId) = dao.get(id)
-
-  /**
-   * Create an ObjectId for id and send it to UserDao#get(org.bson.types.ObjectId)
-   * @param id to convert to ObjectId
-   * @return Some(User) if id exists, None otherwise
-   */
-  def getById(id: String) = if (id.length == 0) { None } else { dao.get(new ObjectId(id)) }
-
-  /**
-   * Create an ObjectId for id string if it exists and pass it to UserDao#get(org.bson.types.ObjectId)
-   * @param opt to convert to ObjectId if defined
-   * @return Some(User) if opt is defined and a User is found for Some(id)
-   */
-  def getById(opt: Option[String]) = opt.flatMap(id => dao.get(new ObjectId(id)))
-
-  /**
-   * Proxy to UserDao instance to get data
-   * @param requestToken to retrieve user for
-   * @return Some(User) if requestToken exists, None otherwise
-   */
-  def get(requestToken: String) = dao.get(requestToken)
-
-  /**
-   * Proxy to a UserDao object to save data
-   * @param user to save
-   * @return saved User
-   */
-  def save(user: User) = { dao.save(user) }
 }
