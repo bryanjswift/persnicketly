@@ -268,11 +268,7 @@ footer a.active { color: #3b3934; text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 
     background: url(/img/x2/bg_footer.png) repeat-x left top;
     -o-background-size: auto 42px; -webkit-background-size: auto 42px; -moz-background-size: auto 42px;
   }
-  .corner.add {
-    background-image: url(/img/x2/add.png);
-    -o-background-size: auto 50px; -webkit-background-size: auto 50px; -moz-background-size: auto 50px;
-  }
-  .corner.star, .corner.starred {
+  .corner {
     background-image: url(/img/x2/corner.png);
     -o-background-size: auto 50px; -webkit-background-size: auto 50px; -moz-background-size: auto 50px;
   }
