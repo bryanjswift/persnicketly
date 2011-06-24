@@ -33,11 +33,7 @@ object ArticleController extends Logging {
     UserDao.getById(userId).flatMap(u => {
       ScoredArticleDao.get(articleId).flatMap(s => {
         BookmarkDao.get(u, s.article).flatMap(mark => {
-          val result = if (toFavorite) {
-            Api.Bookmarks.favorite(Persnicketly.oauthConsumer, u, mark)
-          } else {
-            Api.Bookmarks.unfavorite(Persnicketly.oauthConsumer, u, mark)
-          }
+          val result = Api.Bookmarks.update(Persnicketly.oauthConsumer, u, mark.copy(isFavorite = toFavorite))
           // this should trigger a rescore (?)
           result.foreach(BookmarkDao.save)
           result
