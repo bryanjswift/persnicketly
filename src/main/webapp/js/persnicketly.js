@@ -2,7 +2,10 @@
   var win = $(window)
     , t = false;
 
-  $.domReady(resetAndResizeArticles);
+  $.domReady(function onDomReady() {
+    resetAndResizeArticles();
+    ajaxifyLinks();
+  });
   win.addListener('resize', function onResize() {
     if (t) { clearTimeout(t); }
     t = setTimeout(function resizeTimeout() {
@@ -16,6 +19,28 @@
   });
   win.addListener('load', resizeContent);
 
+  function ajaxifyLinks() {
+    $('.list li a.corner').bind('click', function cornerClick(e) {
+      e.preventDefault();
+      var el = $(this)
+        , href = el.attr('href');
+      reqwest({
+        url: href,
+        type: 'json',
+        success: function cornerClickSuccess(res) {
+          if (el.hasClass('add')) {
+            el.addClass('star').removeClass('add');
+          } else if (el.hasClass('star')) {
+            el.addClass('starred').removeClass('star');
+            el.attr('href', href.replace(/\bstar\b/, 'unstar'));
+          } else if (el.hasClass('starred')) {
+            el.addClass('star').removeClass('starred');
+            el.attr('href', href.replace(/\bunstar\b/, 'star'));
+          }
+        }
+      });
+    });
+  }
   function resetArticles() {
     $('.list li').attr('style', '');
   }
