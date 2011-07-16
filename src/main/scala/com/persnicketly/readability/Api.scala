@@ -8,10 +8,11 @@ import dispatch.oauth.Consumer
 import dispatch.oauth.OAuth.Request2RequestSigner
 import com.persnicketly.Logging
 import com.persnicketly.readability.model.{Article, Bookmark, Meta, User, UserData}
-import com.persnicketly.readability.api.{BookmarkExtractor, BookmarkRequestConditions, MetaExtractor, UserDataExtractor}
+import com.persnicketly.readability.api._
 import org.joda.time.DateTime
 
 object Api extends Logging {
+  private val articlesUrl = url("https://www.readability.com/api/rest/v1/articles")
   private val bookmarksUrl = url("https://www.readability.com/api/rest/v1/bookmarks")
   private val userUrl = url("https://www.readability.com/api/rest/v1/users/_current")
   private val statusCodes = { code: Int => List(200, 201, 202, 203, 204, 400, 401, 403, 404, 409, 500) contains code }
@@ -44,6 +45,15 @@ object Api extends Logging {
       val url = bookmarksUrl / mark.bookmarkId.toString << mark
       request(url, consumer, user) { response =>
         BookmarkExtractor(response)
+      }
+    }
+  }
+
+  object Articles {
+    def apply(consumer: Consumer, user: User, articleId: String): Option[Article] = {
+      val url = articlesUrl / articleId
+      request(url, consumer, user) { response =>
+        ArticleExtractor(response)
       }
     }
   }
