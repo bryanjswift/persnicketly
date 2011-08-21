@@ -18,6 +18,27 @@ object ScoredArticleDao extends Dao {
   private val initial = MongoDBObject("count" -> 0, "favorite_count" -> 0, "score" -> 0)
   private val reduce = """function(o,p) { if (o.favorite) { p.favorite_count++; p.score++; } p.count++; p.score++; }"""
 
+  private val m = """
+  function map() {
+    var a = {article_id:this.article_id, article_title:this.article_title, article_domain:this.article_domain, article_url:this.article_url, article_excerpt:this.article_excerpt, article_processed:this.article_processed, favorite_count:this.favorite ? 1 : 0, count:1};
+    emit(this.article_id, a);
+  }"""
+  private val r = """
+  function reduce(key, values) {
+    var result = {article_id:"", article_title:"", article_domain:"", article_url:"", article_excerpt:"", article_processed:false, favorite_count:0, count:0, article_id:key};
+    values.forEach(function (a) {result.article_title = a.article_title;result.article_domain = a.article_domain;result.article_url = a.article_url;result.article_excerpt = a.article_excerpt;result.favorite_count += a.favorite_count;result.count += a.count;});
+    return result;
+  }"""
+  private val f ="""
+  function (k, v) {
+    v.score = v.favorite_count + v.count;
+    return v;
+  }"""  
+  private val out = MapReduceReduceOutput("scored")
+  private val q = "article_domain" $not ".*persnicket(ly.com|yapp.com|lyapp.com)".r + ("article_processed" -> true)
+  private val s = MongoDBObject("article_id" -> 1)
+  private val c = MapReduceCommand("bookmarks", m, r, out, query = Some(q), sort = Some(s), finalizeFunction = Some(f))
+
   private val defaultSort = MongoDBObject("favorite_count" -> -1, "count" -> -1, "score" -> -1)
 
   // Initialize indices
@@ -46,6 +67,14 @@ object ScoredArticleDao extends Dao {
 
   def get(articleId: String): Option[ScoredArticle] = {
     collection.findOne(MongoDBObject("article_id" -> articleId)).map(ScoredArticle.apply)
+  }
+
+  def mr(): List[ScoredArticle] = {
+    import Persnicketly.Config
+    BookmarkDao.collection.mapReduce(c)
+    val scored = Connection.mongo(Config("db.name").or("persnicketly_test"))("scored")
+    val articles = scored.find().map(_.getAs[DBObject]("value").get)
+    articles.map(ScoredArticle.apply).toList
   }
 
   def recent(count: Int): List[ScoredArticle] = {
