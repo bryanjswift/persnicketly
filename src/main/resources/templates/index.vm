@@ -35,6 +35,10 @@
         <section id="more" class="col last">
           <img class="hero" src="/img/chair_stars.png" alt="" />
           <h4>See what Persnicketly looks like</h4>
+          <a id="recent" class="cta" href="/article/recent">
+            <img src="/img/blue_star.png" alt="" width="33" />
+            <span>See recent bookmarks</span>
+          </a>
           <a id="articles" class="cta" href="/article/list">
             <img src="/img/yellow_star.png" alt="" width="33" />
             <span>See top bookmarks</span>
