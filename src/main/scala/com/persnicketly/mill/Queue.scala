@@ -63,7 +63,10 @@ trait Queue extends Logging {
       val counter = new AtomicInteger(0)
       while (continue) {
         val delivery = consumer.nextDelivery
-        val result = processDelivery(delivery)
+        val result =
+          try { processDelivery(delivery) }
+          catch { case e: Exception => { log.error("Unable to process {}", delivery, e); false } }
+
         if (result) {
           counter.incrementAndGet
           channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false)
