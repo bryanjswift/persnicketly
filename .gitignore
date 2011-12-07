@@ -7,7 +7,7 @@ project/plugins/project/build.properties
 project/test
 src_managed
 tags
-target
+target/
 # config files
 src/main/resources/velocity/velocity.properties
 /config.json
