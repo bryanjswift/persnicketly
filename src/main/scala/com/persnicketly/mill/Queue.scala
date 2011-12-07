@@ -2,11 +2,12 @@ package com.persnicketly.mill
 
 import com.persnicketly.{Logging,Persnicketly}
 import com.rabbitmq.client.{Channel,ConnectionFactory,QueueingConsumer}
+import com.yammer.metrics.Instrumented
 import java.util.concurrent.atomic.AtomicInteger
 import scala.collection.mutable.Set
 import scala.util.control.Exception.catching
 
-trait Queue extends Logging {
+trait Queue extends Logging with Instrumented {
   type Delivery = QueueingConsumer.Delivery
   def queueName: String
   val args: java.util.Map[String, Object] = null
@@ -14,6 +15,7 @@ trait Queue extends Logging {
   def config = Persnicketly.Config("queue." + queueName).as[QueueConfig]
   def processDelivery(delivery: QueueingConsumer.Delivery): Boolean
   private val rejectedDeliveries = Set[Long]()
+  lazy val counter = metrics.counter(queueName)
 
   /** Process something within a try/catch/finally with a Channel
     * @param queue configuration used when declaring the channel
@@ -53,14 +55,13 @@ trait Queue extends Logging {
   /**
    * Start a QueueingConsumer that performs process method for each delivery. If
    * process returns false then the consumer finishes.
-   * @return Option containing the number of deliveries processed
+   * @return Option containing the number of deliveries to be processed
    */
-  def startConsumer: Option[Int] = {
+  def startConsumer: Option[Long] = {
     withChannel(config) { channel =>
       val consumer = new QueueingConsumer(channel)
       channel.basicConsume(queueName, false, consumer)
       var continue = true
-      val counter = new AtomicInteger(0)
       while (continue) {
         val delivery = consumer.nextDelivery
         val result =
@@ -68,7 +69,6 @@ trait Queue extends Logging {
           catch { case e: Exception => { log.error("Unable to process {}", delivery, e); false } }
 
         if (result) {
-          counter.incrementAndGet
           channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false)
         } else {
           val tag = delivery.getEnvelope().getDeliveryTag()
@@ -77,8 +77,8 @@ trait Queue extends Logging {
           rejectedDeliveries += tag
         }
       }
-      log.warn("Consumer quitting after processing {} deliveries", counter.get)
-      counter.get
+      log.warn("Consumer quitting with {} jobs remaining", counter.count)
+      counter.count
     }
   }
 }
