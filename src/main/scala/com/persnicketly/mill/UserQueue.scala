@@ -15,6 +15,7 @@ object UserQueue extends Queue {
       if (user.id.isDefined) {
         log.info("Adding User({}) to queue", user.id.get)
         channel.basicPublish(exchange, config.name, config.message.properties, user.id.get.toByteArray)
+        counter += 1
       }
       user
     }
@@ -24,7 +25,9 @@ object UserQueue extends Queue {
     val id = new ObjectId(delivery.getBody)
     val user = UserDao.get(id)
     log.info("Processing delivery of {}", id)
-    user.map(process).getOrElse(false)
+    val result = user.map(process).getOrElse(false)
+    if (result) { counter -= 1 }
+    result
   }
 
   def process(user: User): Boolean = {
