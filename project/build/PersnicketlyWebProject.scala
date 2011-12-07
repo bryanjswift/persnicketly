@@ -30,7 +30,7 @@ class PersnicketlyWebProject(info: ProjectInfo) extends DefaultWebProject(info)
   // TODO: 05/01/11 <bryanjswift> -- Change back to regular packaging once
   // http://java.net/jira/browse/JERSEY-697 is resolved.
   val jerseyGuice = "com.sun.jersey.contribs" % "jersey-guice-nogrizzly" % "1.6"
-  val jerseyScala = "com.codahale" %% "jersey-scala" % "0.1.5"
+  val jerseyScala = "com.codahale" %% "jersey-scala" % "0.2.0"
   // configuration with JSON files
   val fig = "com.codahale" %% "fig" % "1.1.7"
   // SLF4J for a nicer logging interface
@@ -50,9 +50,10 @@ class PersnicketlyWebProject(info: ProjectInfo) extends DefaultWebProject(info)
   val casbahQuery = "com.mongodb.casbah" %% "casbah-query" % "2.1.5-1"
   val casbahCore = "com.mongodb.casbah" %% "casbah-core" % "2.1.5-1"
   val casbahCommons = "com.mongodb.casbah" %% "casbah-commons" % "2.1.5-1"
-  val casbahGridFs = "com.mongodb.casbah" %% "casbah-gridfs" % "2.1.5-1"
   // RabbitMQ
   val rabbitmq = "com.rabbitmq" % "amqp-client" % "2.4.1"
+  // Metrics
+  val metricsScala = "com.yammer.metrics" %% "metrics-scala" % "2.0.0-BETA17"
 
   // for specs via ScalaTest
   val scalatest = "org.scalatest" % "scalatest" % "1.2" % "test"
