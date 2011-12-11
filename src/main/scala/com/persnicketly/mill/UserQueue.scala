@@ -25,15 +25,14 @@ object UserQueue extends Queue {
     val id = new ObjectId(delivery.getBody)
     val user = UserDao.get(id)
     log.info("Processing delivery of {}", id)
-    val result = user.map(process).getOrElse(false)
-    if (result) { counter -= 1 }
-    result
+    user.map(process).getOrElse(false)
   }
 
   def process(user: User): Boolean = {
     val meta = Api.Bookmarks.meta(Persnicketly.oauthConsumer, user, user.lastProcessed)
     val added = meta.flatMap(m => BookmarkRequestsQueue.addAll(m, user, user.lastProcessed))
     UserDao.save(user.copy(lastProcessed = Some(new DateTime)))
+    counter -= 1
     added.isDefined
   }
 }
