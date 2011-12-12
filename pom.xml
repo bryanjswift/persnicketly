@@ -5,7 +5,7 @@
 
   <groupId>com.persnicketly</groupId>
   <artifactId>persnicketly-web_2.8.1</artifactId>
-  <version>1.1.0</version>
+  <version>1.1.1-SNAPSHOT</version>
   <packaging>war</packaging>
   <name>persnicketly-web</name>
 
