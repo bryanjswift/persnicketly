@@ -70,13 +70,13 @@ object Api extends Logging {
     val http = new Log4jHttp
     val request = url <@ (consumer, user.accessToken.get)
     val response = http.when(statusCodes)(request ># obj)()
-    val responseStr = if (response == null) { "null" } else { response.toString }
+    val responseStr = if (response == null) { "null" } else { response.toString() }
     log.debug("Request to '{}' responded with '{}'", request.path, responseStr)
     try {
       val result = if (isError(response)) { None } else { Some(thunk(response)) }
       result
     } finally {
-      http.shutdown
+      http.shutdown()
     }
   }
   private def isError(response: JsObject): Boolean = errorExtractor(response).getOrElse(false)
@@ -87,7 +87,8 @@ class Log4jHttp extends nio.Http {
   private val logger = LoggerFactory.getLogger(getClass)
   override def make_logger: dispatch.Logger = {
     new dispatch.Logger {
-      def info(msg: String, items: Any*): Unit = logger.info(msg.format(items:_*))
+      def info(msg: String, items: Any*) { logger.info(msg.format(items:_*)) }
+      def warn(msg: String, items: Any*) { logger.warn(msg.format(items:_*)) }
     }
   }
 }
