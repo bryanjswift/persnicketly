@@ -5,7 +5,7 @@ import com.persnicketly.mill.UserQueue
 import com.persnicketly.model.ScoredArticle
 import com.persnicketly.persistence.{BookmarkDao, ScoredArticleDao, UserDao}
 import com.persnicketly.readability.Api
-import com.persnicketly.readability.model.{Bookmark, User}
+import com.persnicketly.readability.model.Bookmark
 import com.persnicketly.web.Servlet
 import org.joda.time.DateTime
 import org.scala_tools.time.Imports._
@@ -13,7 +13,12 @@ import velocity.VelocityView
 import javax.ws.rs.core.MediaType
 
 object ArticleController extends Logging {
-  def addArticleForUser(articleId: String, userId: Option[String]): Unit = {
+  /**
+   * Add article to reader's reading list
+   * @param articleId to add
+   * @param userId for reading list to append
+   */
+  def addArticleForUser(articleId: String, userId: Option[String]) {
     UserDao.getById(userId) match {
       case Some(user) =>
         ScoredArticleDao.get(articleId) match {
@@ -25,10 +30,17 @@ object ArticleController extends Logging {
           // show article not found page
           case None => log.info("No article found with article_id '{}'", articleId)
         }
-      case None => log.info("No logged in user, just redirecting")
+      case None => log.info("No logged in user with reading list found")
     }
   }
 
+  /**
+   * Update the favorite state of a bookmark
+   * @param articleId to update
+   * @param userId to update article for
+   * @param toFavorite this article has been marked a favorite
+   * @return Some[Bookmark] if article could be updated
+   */
   def updateBookmark(articleId: String, userId: Option[String], toFavorite: Boolean): Option[Bookmark] = {
     UserDao.getById(userId).flatMap(u => {
       ScoredArticleDao.get(articleId).flatMap(s => {
@@ -42,7 +54,13 @@ object ArticleController extends Logging {
     })
   }
 
-  def renderArticles(helper: Servlet#HttpHelper, articles: List[ScoredArticle], template: String): Unit = {
+  /**
+   * Render articles using a given template
+   * @param helper wrapping HttpServletRequest and HttpServletResponse
+   * @param articles to be rendered
+   * @param template name of template to use for rendering
+   */
+  def renderArticles(helper: Servlet#HttpHelper, articles: List[ScoredArticle], template: String) {
     val userId = helper.cookie(Constants.UserCookie)
     val view = new VelocityView(template)
     val now = new DateTime()
