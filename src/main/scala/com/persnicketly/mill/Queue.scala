@@ -3,7 +3,6 @@ package com.persnicketly.mill
 import com.persnicketly.{Logging,Persnicketly}
 import com.rabbitmq.client.{Channel,ConnectionFactory,QueueingConsumer}
 import com.yammer.metrics.Instrumented
-import java.util.concurrent.atomic.AtomicInteger
 import scala.collection.mutable.Set
 import scala.util.control.Exception.catching
 
@@ -36,8 +35,8 @@ trait Queue extends Logging with Instrumented {
         channel.basicQos(config.prefetch)
         thunk(channel)
       } finally {
-        channel.close
-        connection.close
+        channel.close()
+        connection.close()
       }
     } match {
       case Left(e) => {
@@ -61,17 +60,16 @@ trait Queue extends Logging with Instrumented {
     withChannel(config) { channel =>
       val consumer = new QueueingConsumer(channel)
       channel.basicConsume(queueName, false, consumer)
-      var continue = true
-      while (continue) {
+      while (true) {
         val delivery = consumer.nextDelivery
         val result =
           try { processDelivery(delivery) }
           catch { case e: Exception => { log.error("Unable to process {}", delivery, e); false } }
 
+        val tag = delivery.getEnvelope.getDeliveryTag
         if (result) {
-          channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false)
+          channel.basicAck(tag, false)
         } else {
-          val tag = delivery.getEnvelope().getDeliveryTag()
           log.warn("Rejected delivery of {}", tag)
           channel.basicNack(tag, false, rejectedDeliveries.contains(tag))
           rejectedDeliveries += tag
