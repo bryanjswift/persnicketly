@@ -1,14 +1,13 @@
 package com.persnicketly.persistence
 
 import com.mongodb.casbah.Imports._
-import com.mongodb.casbah.commons.conversions.scala._
-import com.persnicketly.Persnicketly
-import com.persnicketly.readability.model.{TokenHelper, User, UserData}
+import com.persnicketly.readability.model.User
 import org.bson.types.ObjectId
-import org.joda.time.DateTime
 
 object UserDao extends Dao {
   val collectionName = "users"
+  
+  val saveTimer = metrics.timer("user-save")
 
   // Initialize indexes
   collection.ensureIndex(MongoDBObject("user_id" -> 1))
@@ -65,11 +64,13 @@ object UserDao extends Dao {
    * @return User as it now exists in database
    */
   def save(user: User): User = {
-    val query = user.id match {
-      case Some(id) => MongoDBObject("_id" -> id)
-      case None => MongoDBObject("request_token_value" -> user.requestToken.value)
+    saveTimer.time {
+      val query = user.id match {
+        case Some(id) => MongoDBObject("_id" -> id)
+        case None => MongoDBObject("request_token_value" -> user.requestToken.value)
+      }
+      collection.update(query, user, upsert = true, multi = false)
+      get(user.requestToken.value).get
     }
-    collection.update(query, user, upsert = true, multi = false)
-    get(user.requestToken.value).get
   }
 }
