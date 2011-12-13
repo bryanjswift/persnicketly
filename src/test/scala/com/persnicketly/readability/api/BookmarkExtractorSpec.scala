@@ -4,7 +4,10 @@ import org.scalatest.WordSpec
 import org.scalatest.matchers.ShouldMatchers
 import dispatch.json.{JsValue, JsObject}
 import dispatch.json.Js._
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
 
+@RunWith(classOf[JUnitRunner])
 class BookmarkExtractorSpec extends WordSpec with ShouldMatchers {
   val userId = 7567890
   val bookmarkId = 479280
