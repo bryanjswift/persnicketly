@@ -17,15 +17,16 @@ class PersnicketlyWebProject(info: ProjectInfo) extends DefaultWebProject(info)
   val bjsRepo = "Bryan J Swift's Repository" at "http://repos.bryanjswift.com/maven2/"
 
   // The many faces of Jetty
-  val jettyVersion = "7.4.0.v20110414"
+  val jettyVersion = "7.5.4.v20111024"
   val jettyWebapp = "org.eclipse.jetty" % "jetty-webapp" % jettyVersion
   val jettyServer = "org.eclipse.jetty" % "jetty-server" % jettyVersion
   val jettyServlet = "org.eclipse.jetty" % "jetty-servlet" % jettyVersion
   val jettyServlets = "org.eclipse.jetty" % "jetty-servlets" % jettyVersion
   val servletApi = "javax.servlet" % "servlet-api" % "2.5"
   // guice
-  val guice = "com.google.inject" % "guice" % "3.0"
-  val guiceServlet = "com.google.inject.extensions" % "guice-servlet" % "3.0"
+  val guiceVersion = "3.0"
+  val guice = "com.google.inject" % "guice" % guiceVersion
+  val guiceServlet = "com.google.inject.extensions" % "guice-servlet" % guiceVersion
   // Jersey
   val jerseyGuice = "com.sun.jersey.contribs" % "jersey-guice" % "1.9.1"
   val jerseyScala = "com.codahale" %% "jersey-scala" % "0.2.0"
@@ -37,24 +38,27 @@ class PersnicketlyWebProject(info: ProjectInfo) extends DefaultWebProject(info)
   // Velocity
   val simpleVelocity = "bryanjswift" %% "simple-velocity" % "0.3.5"
   // oauth
-  val oauth = "net.databinder" %% "dispatch-oauth" % "0.8.3"
-  val nio = "net.databinder" %% "dispatch-nio" % "0.8.3"
-  val jsonHttp = "net.databinder" %% "dispatch-http-json" % "0.8.3"
+  val dispatchVersion = "0.8.3"
+  val oauth = "net.databinder" %% "dispatch-oauth" % dispatchVersion
+  val nio = "net.databinder" %% "dispatch-nio" % dispatchVersion
+  val jsonHttp = "net.databinder" %% "dispatch-http-json" % dispatchVersion
   // Joda Time for nice immutable dates
   val jodaTime = "joda-time" % "joda-time" % "1.6.2"
   // Command line argument processing
   val cli = "commons-cli" % "commons-cli" % "1.2"
   // MongoDB
-  val casbahQuery = "com.mongodb.casbah" %% "casbah-query" % "2.1.5-1"
-  val casbahCore = "com.mongodb.casbah" %% "casbah-core" % "2.1.5-1"
-  val casbahCommons = "com.mongodb.casbah" %% "casbah-commons" % "2.1.5-1"
+  val casbahVersion = "2.1.5-1"
+  val casbahQuery = "com.mongodb.casbah" %% "casbah-query" % casbahVersion
+  val casbahCore = "com.mongodb.casbah" %% "casbah-core" % casbahVersion
+  val casbahCommons = "com.mongodb.casbah" %% "casbah-commons" % casbahVersion
   // RabbitMQ
   val rabbitmq = "com.rabbitmq" % "amqp-client" % "2.4.1"
   // Metrics
   val metricsScala = "com.yammer.metrics" %% "metrics-scala" % "2.0.0-BETA17"
 
   // for specs via ScalaTest
-  val scalatest = "org.scalatest" % "scalatest" % "1.2" % "test"
+  val junit = "junit" % "junit" % "4.10" % "test"
+  val scalatest = "org.scalatest" %% "scalatest" % "1.5.1" % "test"
 
   // produce a jar
   override protected def defaultMainArtifact = Artifact(artifactID, "jar", "jar")
