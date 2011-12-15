@@ -20,8 +20,8 @@ object Api extends Logging {
   val datePattern = "YYYY-MM-dd HH:mm:ss"
 
   object Bookmarks {
-    def add(consumer: Consumer, user: User, article: Article): Unit = add(consumer, user, article.url)
-    def add(consumer: Consumer, user: User, pageUrl: String): Unit = {
+    def add(consumer: Consumer, user: User, article: Article) { add(consumer, user, article.url) }
+    def add(consumer: Consumer, user: User, pageUrl: String) {
       val url = bookmarksUrl << Map("url" -> pageUrl)
       // article adding gives an empty response which dispatch translates to null
       request(url, consumer, user) { response => response }
