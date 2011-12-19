@@ -10,7 +10,7 @@ object ScoredArticleDao extends Dao {
 
   val computeTimer = metrics.timer("articles-compute")
   val recentTimer = metrics.timer("articles-recent")
-  val saveTimer = metrics.timer("save-timer")
+  val saveTimer = metrics.timer("articles-save")
 
   // DBObject types for getting aggregate data
   private val key = MongoDBObject("article_id" -> 1, "article_title" -> 1, "article_domain" -> 1, "article_url" -> 1, "article_excerpt" -> 1, "article_processed" -> 1)
