@@ -19,9 +19,9 @@ object ScoredArticleDao extends Dao {
 
   private val defaultSort = MongoDBObject("favorite_count" -> -1, "count" -> -1, "score" -> -1)
 
-  // Initialize indexes
+  // Initialize indices
   collection.ensureIndex(MongoDBObject("article_id" -> 1))
-  collection.ensureIndex(MongoDBObject("favorite_count" -> -1, "count" -> -1, "score" -> -1))
+  collection.ensureIndex(defaultSort)
 
   def all(): List[ScoredArticle] = {
     log.debug("Fetching all scored articles")
@@ -67,8 +67,8 @@ object ScoredArticleDao extends Dao {
     collection.findOne(query).get
   }
 
-  def update(): Unit = {
-    val articles = compute
+  def update() {
+    val articles = compute()
     articles.foreach(save)
   }
 }
