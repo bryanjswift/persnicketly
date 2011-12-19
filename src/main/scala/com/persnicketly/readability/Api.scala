@@ -10,14 +10,19 @@ import com.persnicketly.Logging
 import com.persnicketly.readability.model.{Article, Bookmark, Meta, User, UserData}
 import com.persnicketly.readability.api._
 import org.joda.time.DateTime
+import com.yammer.metrics.Instrumented
 
-object Api extends Logging {
+object Api extends Logging with Instrumented {
   private val articlesUrl = url("https://www.readability.com/api/rest/v1/articles")
   private val bookmarksUrl = url("https://www.readability.com/api/rest/v1/bookmarks")
   private val userUrl = url("https://www.readability.com/api/rest/v1/users/_current")
   private val statusCodes = { code: Int => List(200, 201, 202, 203, 204, 400, 401, 403, 404, 409, 500) contains code }
   private val errorExtractor = 'error ?? bool
+
   val datePattern = "YYYY-MM-dd HH:mm:ss"
+
+  lazy val apiMeter = metrics.meter("api-calls", "requests")
+  lazy val apiErrorMeter = metrics.meter("api-errors", "errors")
 
   object Bookmarks {
     def add(consumer: Consumer, user: User, article: Article) { add(consumer, user, article.url) }
@@ -73,9 +78,10 @@ object Api extends Logging {
     val responseStr = if (response == null) { "null" } else { response.toString() }
     log.debug("Request to '{}' responded with '{}'", request.path, responseStr)
     try {
-      val result = if (isError(response)) { None } else { Some(thunk(response)) }
+      val result = if (isError(response)) { apiErrorMeter.mark(); None } else { Some(thunk(response)) }
       result
     } finally {
+      apiMeter.mark()
       http.shutdown()
     }
   }
