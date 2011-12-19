@@ -233,7 +233,6 @@
           </execution>
         </executions>
         <configuration>
-          <encoding>UTF-8</encoding>
           <scalaVersion>${scala.version}</scalaVersion>
         </configuration>
       </plugin>
