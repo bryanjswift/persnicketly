@@ -35,31 +35,31 @@ class ArticleServlet extends Servlet with Logging {
     }
   }
 
-  def list(helper: HttpHelper) =
+  def list(helper: HttpHelper) {
     ArticleController.renderArticles(helper, ScoredArticleDao.find(10), "/templates/articleList.vm")
+  }
 
-  def read(helper: HttpHelper, articleId: String): Unit = {
+  def read(helper: HttpHelper, articleId: String) {
     ArticleController.addArticleForUser(articleId, helper.cookie(Constants.UserCookie))
     // it would be nice to say an article wasn't found or you're not logged in
     val url = "http://www.readability.com/articles/%s".format(articleId)
     helper.response.sendRedirect(url)
   }
 
-  def recent(helper: HttpHelper) =
+  def recent(helper: HttpHelper) {
     ArticleController.renderArticles(helper, ScoredArticleDao.recent(10), "/templates/articleRecent.vm")
-
-  def star(helper: HttpHelper, articleId: String): Unit = {
-    ArticleController.updateBookmark(articleId, helper.cookie(Constants.UserCookie), toFavorite = true)
-    // it would be nice to say an article wasn't found or you're not logged in
-    if (helper.isAjax) {
-      helper.write(Constants.ApplicationJson, generate(JsonResponse(200)))
-    } else {
-      helper.response.sendRedirect(ArticleServlet.listUrl)
-    }
   }
 
-  def unstar(helper: HttpHelper, articleId: String): Unit = {
-    ArticleController.updateBookmark(articleId, helper.cookie(Constants.UserCookie), toFavorite = false)
+  def star(helper: HttpHelper, articleId: String) {
+    handleStar(helper, articleId, toFavorite = true)
+  }
+
+  def unstar(helper: HttpHelper, articleId: String) {
+    handleStar(helper, articleId, toFavorite = false)
+  }
+
+  private def handleStar(helper: HttpHelper,  articleId: String, toFavorite: Boolean) {
+    ArticleController.updateBookmark(articleId, helper.cookie(Constants.UserCookie), toFavorite = toFavorite)
     // it would be nice to say an article wasn't found or you're not logged in
     if (helper.isAjax) {
       helper.write(Constants.ApplicationJson, generate(JsonResponse(200)))
@@ -71,6 +71,5 @@ class ArticleServlet extends Servlet with Logging {
 }
 
 object ArticleServlet {
-  val listParts = Array("article", "list")
-  val listUrl = listParts.mkString("/", "/", "")
+  val listUrl = Array("article", "list").mkString("/", "/", "")
 }
