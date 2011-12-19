@@ -1,14 +1,9 @@
 package com.persnicketly.persistence
 
 import com.mongodb.casbah.Imports._
-import com.mongodb.casbah.commons.conversions.scala._
-import com.persnicketly.Persnicketly
 import com.persnicketly.readability.model.{Article, Bookmark, User, UserData}
-import org.bson.types.ObjectId
-import org.joda.time.DateTime
 
 object BookmarkDao extends Dao {
-  import BookmarkDao._
   val collectionName = "bookmarks"
 
   // Initialize indexes
