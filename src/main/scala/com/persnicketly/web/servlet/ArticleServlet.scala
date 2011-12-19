@@ -7,10 +7,13 @@ import com.persnicketly.persistence.ScoredArticleDao
 import com.persnicketly.web.{JsonResponse, Servlet}
 import com.persnicketly.web.controller.ArticleController
 import org.apache.http.HttpStatus
-import javax.ws.rs.core.MediaType
+import com.yammer.metrics.Instrumented
 
 @Singleton
-class ArticleServlet extends Servlet with Logging {
+class ArticleServlet extends Servlet with Logging with Instrumented {
+
+  val addTimer = metrics.timer("add-article")
+  val starTimer = metrics.timer("(un)star-article")
 
   override def doGet(helper: HttpHelper) {
     log.info("Parts for uri :: '{}' for '{}'", helper.parts, helper.uri)
@@ -25,13 +28,15 @@ class ArticleServlet extends Servlet with Logging {
     }
   }
 
-  def add(helper: HttpHelper, articleId: String): Unit = {
-    ArticleController.addArticleForUser(articleId, helper.cookie(Constants.UserCookie))
-    // it would be nice to say an article wasn't found or you're not logged in
-    if (helper.isAjax) {
-      helper.write(Constants.ApplicationJson, generate(JsonResponse(200)))
-    } else {
-      helper.response.sendRedirect(ArticleServlet.listUrl)
+  def add(helper: HttpHelper, articleId: String) {
+    addTimer.time {
+      ArticleController.addArticleForUser(articleId, helper.cookie(Constants.UserCookie))
+      // it would be nice to say an article wasn't found or you're not logged in
+      if (helper.isAjax) {
+        helper.write(Constants.ApplicationJson, generate(JsonResponse(200)))
+      } else {
+        helper.response.sendRedirect(ArticleServlet.listUrl)
+      }
     }
   }
 
@@ -59,12 +64,14 @@ class ArticleServlet extends Servlet with Logging {
   }
 
   private def handleStar(helper: HttpHelper,  articleId: String, toFavorite: Boolean) {
-    ArticleController.updateBookmark(articleId, helper.cookie(Constants.UserCookie), toFavorite = toFavorite)
-    // it would be nice to say an article wasn't found or you're not logged in
-    if (helper.isAjax) {
-      helper.write(Constants.ApplicationJson, generate(JsonResponse(200)))
-    } else {
-      helper.response.sendRedirect(ArticleServlet.listUrl)
+    starTimer.time {
+      ArticleController.updateBookmark(articleId, helper.cookie(Constants.UserCookie), toFavorite = toFavorite)
+      // it would be nice to say an article wasn't found or you're not logged in
+      if (helper.isAjax) {
+        helper.write(Constants.ApplicationJson, generate(JsonResponse(200)))
+      } else {
+        helper.response.sendRedirect(ArticleServlet.listUrl)
+      }
     }
   }
 
