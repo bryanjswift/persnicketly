@@ -11,8 +11,12 @@ import org.joda.time.DateTime
 import org.scala_tools.time.Imports._
 import velocity.VelocityView
 import javax.ws.rs.core.MediaType
+import com.yammer.metrics.Instrumented
 
-object ArticleController extends Logging {
+object ArticleController extends Logging with Instrumented {
+
+  lazy val renderTimer = metrics.timer("render")
+
   /**
    * Add article to reader's reading list
    * @param articleId to add
@@ -61,25 +65,27 @@ object ArticleController extends Logging {
    * @param template name of template to use for rendering
    */
   def renderArticles(helper: Servlet#HttpHelper, articles: List[ScoredArticle], template: String) {
-    val userId = helper.cookie(Constants.UserCookie)
-    val view = new VelocityView(template)
-    val now = new DateTime()
-    val scored = UserDao.getById(userId) match {
-      case Some(u) =>
-        articles.map(s => {
-          val b = BookmarkDao.get(u, s.article)
-          s.copy(isBookmarked = b.isDefined, isFavorited = b.map(_.isFavorite).getOrElse(false))
-        })
-      case None => articles
+    renderTimer.time {
+      val userId = helper.cookie(Constants.UserCookie)
+      val view = new VelocityView(template)
+      val now = new DateTime()
+      val scored = UserDao.getById(userId) match {
+        case Some(u) =>
+          articles.map(s => {
+            val b = BookmarkDao.get(u, s.article)
+            s.copy(isBookmarked = b.isDefined, isFavorited = b.map(_.isFavorite).getOrElse(false))
+          })
+        case None => articles
+      }
+      helper.response.setContentType(MediaType.TEXT_HTML)
+      view.render(Map[String,Any](
+        "articles" -> scored,
+        "user" -> userId,
+        "uri" -> helper.uri,
+        "today" -> now,
+        "yesterday" -> (now - 1.day),
+        "weekAgo" -> (now - 8.days)
+      ), helper.response)
     }
-    helper.response.setContentType(MediaType.TEXT_HTML)
-    view.render(Map[String,Any](
-      "articles" -> scored,
-      "user" -> userId,
-      "uri" -> helper.uri,
-      "today" -> now,
-      "yesterday" -> (now - 1.day),
-      "weekAgo" -> (now - 8.days)
-    ), helper.response)
   }
 }
