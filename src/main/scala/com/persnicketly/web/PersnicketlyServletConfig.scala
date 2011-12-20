@@ -11,14 +11,13 @@ import com.persnicketly.web.servlet.{HomeServlet, ArticleServlet, TemplateServle
 import com.persnicketly.web.servlet.readability.{CallbackServlet, LoginServlet, LogoutServlet}
 
 class PersnicketlyServletConfig extends GuiceServletContextListener {
-  private val log = LoggerFactory.getLogger(classOf[PersnicketlyServletConfig])
-  override protected def getInjector():Injector = Guice.createInjector(new PersnicketlyServletModule)
+  override protected def getInjector:Injector = Guice.createInjector(new PersnicketlyServletModule)
 }
 
 private class PersnicketlyServletModule extends ServletModule {
   private val log = LoggerFactory.getLogger(classOf[PersnicketlyServletModule])
-  override protected def configureServlets(): Unit = {
-    val conf = Persnicketly.Config // Really just to read configs on startup
+  override protected def configureServlets() {
+    Persnicketly.Config // Read configs on startup
     val jerseyParams = Map(PackagesResourceConfig.PROPERTY_PACKAGES -> "com.persnicketly.web.resource,com.codahale.jersey.providers,com.codahale.jersey.providers,com.codahale.jersey.inject")
     serve("/", "/home", "/thanks").`with`(classOf[HomeServlet])
     serve("/readability/login").`with`(classOf[LoginServlet])
@@ -27,6 +26,7 @@ private class PersnicketlyServletModule extends ServletModule {
     serve("/learn-more", "/about").`with`(classOf[TemplateServlet])
     serve("/article/*").`with`(classOf[ArticleServlet])
     serve("/d/*").`with`(classOf[JerseyServletContainer], jerseyParams)
+    log.info("** Servlets Ready **")
   }
 }
 
