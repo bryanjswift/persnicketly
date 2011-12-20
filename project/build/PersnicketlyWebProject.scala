@@ -55,6 +55,7 @@ class PersnicketlyWebProject(info: ProjectInfo) extends DefaultWebProject(info)
   val rabbitmq = "com.rabbitmq" % "amqp-client" % "2.4.1"
   // Metrics
   val metricsScala = "com.yammer.metrics" %% "metrics-scala" % "2.0.0-BETA18"
+  val metricsServlet = "com.yammer.metrics" % "metrics-servlet" % "2.0.0-BETA18"
 
   // for specs via ScalaTest
   val junit = "junit" % "junit" % "4.10" % "test"
