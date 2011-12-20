@@ -7,7 +7,6 @@ import com.persnicketly.readability.model.User
 import com.persnicketly.web.Servlet
 import com.persnicketly.web.servlet.readability.CallbackServlet
 import velocity.VelocityView
-import org.slf4j.LoggerFactory
 import javax.ws.rs.core.MediaType
 
 @Singleton
