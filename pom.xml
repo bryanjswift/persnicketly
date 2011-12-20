@@ -10,9 +10,9 @@
   <name>persnicketly-web</name>
 
   <properties>
-    <scala.version>2.8.1</scala.version>
+    <scala.version>2.9.1</scala.version>
     <jetty.version>7.5.4.v20111024</jetty.version>
-    <dispatch.version>0.8.3</dispatch.version>
+    <dispatch.version>0.8.6</dispatch.version>
     <guice.version>3.0</guice.version>
     <casbah.version>2.1.5-1</casbah.version>
   </properties>
@@ -203,7 +203,7 @@
     <dependency>
       <groupId>org.scalatest</groupId>
       <artifactId>scalatest_${scala.version}</artifactId>
-      <version>1.5.1</version>
+      <version>1.6.1</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

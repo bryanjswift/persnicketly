@@ -14,7 +14,7 @@ object ScoredArticleDao extends Dao {
 
   // DBObject types for getting aggregate data
   private val key = MongoDBObject("article_id" -> 1, "article_title" -> 1, "article_domain" -> 1, "article_url" -> 1, "article_excerpt" -> 1, "article_processed" -> 1)
-  private val cond = "article_domain" $not ".*persnicket(ly.com|yapp.com|lyapp.com)".r + ("article_processed" -> true)
+  private val cond = ("article_domain" $not ".*persnicket(ly.com|yapp.com|lyapp.com)".r) ++ ("article_processed" -> true)
   private val initial = MongoDBObject("count" -> 0, "favorite_count" -> 0, "score" -> 0)
   private val reduce = """function(o,p) { if (o.favorite) { p.favorite_count++; p.score++; } p.count++; p.score++; }"""
 

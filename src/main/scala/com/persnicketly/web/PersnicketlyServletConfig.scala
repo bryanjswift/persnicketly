@@ -5,7 +5,7 @@ import com.google.inject.servlet.{GuiceServletContextListener, ServletModule}
 import com.google.inject.{Guice, Injector, Singleton}
 import com.sun.jersey.spi.container.servlet.ServletContainer
 import com.sun.jersey.api.core.PackagesResourceConfig
-import scala.collection.JavaConversions.asJavaMap
+import scala.collection.JavaConversions._
 import com.persnicketly.Persnicketly
 import com.persnicketly.web.servlet.{HomeServlet, ArticleServlet, TemplateServlet}
 import com.persnicketly.web.servlet.readability.{CallbackServlet, LoginServlet, LogoutServlet}

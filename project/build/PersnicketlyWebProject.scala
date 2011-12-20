@@ -38,7 +38,7 @@ class PersnicketlyWebProject(info: ProjectInfo) extends DefaultWebProject(info)
   // Velocity
   val simpleVelocity = "bryanjswift" %% "simple-velocity" % "0.3.5"
   // oauth
-  val dispatchVersion = "0.8.3"
+  val dispatchVersion = "0.8.6"
   val oauth = "net.databinder" %% "dispatch-oauth" % dispatchVersion
   val nio = "net.databinder" %% "dispatch-nio" % dispatchVersion
   val jsonHttp = "net.databinder" %% "dispatch-http-json" % dispatchVersion
@@ -54,11 +54,11 @@ class PersnicketlyWebProject(info: ProjectInfo) extends DefaultWebProject(info)
   // RabbitMQ
   val rabbitmq = "com.rabbitmq" % "amqp-client" % "2.4.1"
   // Metrics
-  val metricsScala = "com.yammer.metrics" %% "metrics-scala" % "2.0.0-BETA17"
+  val metricsScala = "com.yammer.metrics" %% "metrics-scala" % "2.0.0-BETA18"
 
   // for specs via ScalaTest
   val junit = "junit" % "junit" % "4.10" % "test"
-  val scalatest = "org.scalatest" %% "scalatest" % "1.5.1" % "test"
+  val scalatest = "org.scalatest" %% "scalatest" % "1.6.1" % "test"
 
   // produce a jar
   override protected def defaultMainArtifact = Artifact(artifactID, "jar", "jar")
