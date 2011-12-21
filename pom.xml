@@ -318,6 +318,8 @@
           <mavenExecutorId>forked-path</mavenExecutorId>
           <tagNameFormat>v@{project.version}</tagNameFormat>
           <preparationGoals>clean verify gpg:sign</preparationGoals>
+          <localCheckout>true</localCheckout>
+          <pushChanges>false</pushChanges>
         </configuration>
       </plugin>
       <plugin>
