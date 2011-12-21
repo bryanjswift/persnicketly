@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.persnicketly</groupId>
-  <artifactId>persnicketly-web_2.8.1</artifactId>
+  <artifactId>persnicketly-web</artifactId>
   <version>1.1.1-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>persnicketly-web</name>
@@ -226,6 +226,15 @@
         </configuration>
       </plugin>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.5</version>
+        <configuration>
+          <outputDirectory />
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.scala-tools</groupId>
         <artifactId>maven-scala-plugin</artifactId>
         <version>2.14.1</version>
@@ -263,9 +272,11 @@
               <goal>single</goal>
             </goals>
             <configuration>
+              <finalName>${project.artifactId}-${project.version}-assembly</finalName>
               <descriptorRefs>
                 <descriptorRef>jar-with-dependencies</descriptorRef>
               </descriptorRefs>
+              <appendAssemblyId>false</appendAssemblyId>
               <archive>
                 <manifest>
                   <mainClass>com.persnicketly.Persnicketly</mainClass>
