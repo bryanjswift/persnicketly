@@ -285,26 +285,25 @@
         </configuration>
       </plugin>
       <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <version>2.2</version>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>1.4</version>
+        <configuration>
+          <createDependencyReducedPom>true</createDependencyReducedPom>
+        </configuration>
         <executions>
           <execution>
-            <id>create-executable-jar</id>
             <phase>package</phase>
             <goals>
-              <goal>single</goal>
+              <goal>shade</goal>
             </goals>
             <configuration>
-              <finalName>${project.artifactId}-${project.version}-assembly</finalName>
-              <descriptorRefs>
-                <descriptorRef>jar-with-dependencies</descriptorRef>
-              </descriptorRefs>
-              <appendAssemblyId>false</appendAssemblyId>
-              <archive>
-                <manifest>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                   <mainClass>com.persnicketly.Persnicketly</mainClass>
-                </manifest>
-              </archive>
+                </transformer>
+              </transformers>
             </configuration>
           </execution>
         </executions>
@@ -321,27 +320,6 @@
           <localCheckout>true</localCheckout>
           <pushChanges>false</pushChanges>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>appassembler-maven-plugin</artifactId>
-        <version>1.1.1</version>
-        <executions>
-            <execution>
-            <phase>package</phase>
-            <goals><goal>assemble</goal></goals>
-            <configuration>
-              <assembleDirectory>target</assembleDirectory>
-              <generateRepository>false</generateRepository>
-              <programs>
-                <program>
-                  <mainClass>Persnicketly</mainClass>
-                  <name>webapp</name>
-                </program>
-              </programs>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>
