@@ -32,6 +32,17 @@
       el.async = 1;
       if (isLive) { sib.parentNode.insertBefore(el, sib); }
     })(document, 'script');
+    var _gauges = _gauges || [];
+    (function() {
+      var t   = document.createElement('script');
+      t.type  = 'text/javascript';
+      t.async = true;
+      t.id    = 'gauges-tracker';
+      t.setAttribute('data-site-id', '4ddd5ac1613f5d7fca000001');
+      t.src = '//secure.gaug.es/track.js';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(t, s);
+    })();
     </script>
   </head>
   <body>
