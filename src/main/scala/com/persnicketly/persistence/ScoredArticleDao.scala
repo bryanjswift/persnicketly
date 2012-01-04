@@ -49,11 +49,14 @@ object ScoredArticleDao extends Dao {
   }
 
   def recent(count: Int): List[ScoredArticle] = {
+    val now = new DateTime
+    recent(count, now - 7.days, now - 1.day)
+  }
+
+  def recent(count: Int, since: DateTime, until: DateTime): List[ScoredArticle] = {
     recentTimer.time {
       val bookmarks = BookmarkDao.collection
-      val now = (new DateTime) - 1.day
-      val yesterday = now - 7.days
-      val c = cond + ("update_date" -> MongoDBObject("$gt" -> yesterday, "$lt" -> now))
+      val c = cond + ("update_date" -> MongoDBObject("$gt" -> since, "$lt" -> until))
       val articles = bookmarks.group(key, c, initial, reduce)
       articles.map(ScoredArticle.apply).toList.sorted.take(count)
     }
