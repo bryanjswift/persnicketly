@@ -2,7 +2,7 @@ import sbt._
 import assembly._
 import maven._
 
-class PersnicketlyWebProject(info: ProjectInfo) extends DefaultWebProject(info)
+class PersnicketlyWebProject(info: ProjectInfo) extends DefaultProject(info)
                                                         with IdeaProject
                                                         with MavenDependencies
                                                         with AssemblyBuilder {
@@ -69,8 +69,4 @@ class PersnicketlyWebProject(info: ProjectInfo) extends DefaultWebProject(info)
   override def managedDependencyPath = "project" / "lib_managed"
   // java compile options
   override def javaCompileOptions = super.javaCompileOptions ++ List(JavaCompileOption("-Xlint:unchecked"), JavaCompileOption("-g"))
-  // manually define jetty classpath
-  override def jettyClasspath = managedDependencyPath / "compile" * "*.jar"
-  // don't scan directories - using JRebel
-  override def scanDirectories = Nil
 }
