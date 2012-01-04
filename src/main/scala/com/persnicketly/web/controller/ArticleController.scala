@@ -81,11 +81,8 @@ object ArticleController extends Logging with Instrumented {
       view.render(Map[String,Any](
         "articles" -> scored,
         "user" -> userId,
-        "uri" -> helper.uri,
-        "today" -> now,
-        "yesterday" -> (now - 1.day),
-        "weekAgo" -> (now - 8.days)
-      ), helper.response)
+        "uri" -> helper.uri
+      ) ++ helper.extras, helper.response)
     }
   }
 }

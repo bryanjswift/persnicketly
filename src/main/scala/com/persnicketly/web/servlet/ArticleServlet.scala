@@ -7,6 +7,7 @@ import com.persnicketly.persistence.ScoredArticleDao
 import com.persnicketly.web.{JsonResponse, Servlet}
 import com.persnicketly.web.controller.ArticleController
 import org.apache.http.HttpStatus
+import org.scala_tools.time.Imports._
 import com.yammer.metrics.Instrumented
 
 @Singleton
@@ -41,7 +42,11 @@ class ArticleServlet extends Servlet with Logging with Instrumented {
   }
 
   def list(helper: HttpHelper) {
-    ArticleController.renderArticles(helper, ScoredArticleDao.find(10), "/templates/articleList.vm")
+    //ArticleController.renderArticles(helper, ScoredArticleDao.find(10), "/templates/articleList.vm")
+    val until = new DateTime
+    val since = until - 60.days
+    helper.addExtra("since", since).addExtra("until", until)
+    ArticleController.renderArticles(helper, ScoredArticleDao.recent(10, since, until), "/templates/articleList.vm")
   }
 
   def read(helper: HttpHelper, articleId: String) {
@@ -52,7 +57,10 @@ class ArticleServlet extends Servlet with Logging with Instrumented {
   }
 
   def recent(helper: HttpHelper) {
-    ArticleController.renderArticles(helper, ScoredArticleDao.recent(10), "/templates/articleRecent.vm")
+    val until = new DateTime
+    val since = until - 14.days
+    helper.addExtra("since", since).addExtra("until", until)
+    ArticleController.renderArticles(helper, ScoredArticleDao.recent(10, since, until), "/templates/articleRecent.vm")
   }
 
   def star(helper: HttpHelper, articleId: String) {

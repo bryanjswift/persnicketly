@@ -23,7 +23,7 @@
         <section>
           <header>
             <h2>Top Bookmarks</h2>
-            <h3 class="generated">for ${today.toString("MMMM dd, yyyy")}</h3>
+            <h3 class="generated">from ${since.toString("MMMM dd, yyyy")} to ${until.toString("MMMM dd, yyyy")}</h3>
           </header>
           #renderArticles($articles $user)
         </section>
