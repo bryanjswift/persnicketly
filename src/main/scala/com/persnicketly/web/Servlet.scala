@@ -14,6 +14,7 @@ trait Servlet extends HttpServlet {
     // pretty impossible to not match this RE
     private val uriMatch = Servlet.uriRE.findFirstMatchIn(request.getRequestURI).get
     val uri = uriMatch.group("uri")
+    private var _extras = Map[String, Any]()
     val format = uriMatch.group("format") match {
       case null => "html"
       case s:String => s
@@ -21,7 +22,11 @@ trait Servlet extends HttpServlet {
     }
     val parts = uri.split("/").filter(_.length > 0)
     val isAjax = header("X-Requested-With").isDefined
-    def apply(param:String, default:String = "") = {
+    def addExtra(key: String, value: Any) = {
+      _extras += (key -> value)
+      this
+    }
+    def apply(param: String, default: String = "") = {
       val value = request.getParameter(param)
       if (value == null || value == "" || value == default) None else Some(value)
     }
@@ -34,6 +39,7 @@ trait Servlet extends HttpServlet {
       }
     }
     def cookies = new Cookies(request, response)
+    def extras = _extras
     def header(name: String): Option[String] = {
       val headerNames = request.getHeaderNames.asInstanceOf[java.util.Enumeration[String]]
       if (headerNames == null) {
