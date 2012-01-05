@@ -1,6 +1,6 @@
 package com.persnicketly.readability
 
-import dispatch.{nio, Request, url}
+import dispatch.{Request, url}
 import dispatch.json.JsObject
 import dispatch.json.Js._
 import dispatch.json.JsHttp.requestToJsHandlers
@@ -88,13 +88,3 @@ object Api extends Logging with Instrumented {
   private def isError(response: JsObject): Boolean = errorExtractor(response).getOrElse(false)
 }
 
-class Log4jHttp extends nio.Http {
-  import org.slf4j.LoggerFactory
-  private val logger = LoggerFactory.getLogger(getClass)
-  override def make_logger: dispatch.Logger = {
-    new dispatch.Logger {
-      def info(msg: String, items: Any*) { logger.info(msg.format(items:_*)) }
-      def warn(msg: String, items: Any*) { logger.warn(msg.format(items:_*)) }
-    }
-  }
-}
