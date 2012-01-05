@@ -26,10 +26,10 @@
     <script src="/js/libs/modernizr-custom.js"></script>
     <script src="http://use.typekit.com/cyx7hbi.js"></script>
     <script>
+    var isLive = (location.host || location.hostname).match(/.*persnicket(ly|lyapp|yapp).com/i);
     (function(d,t) {
       try{Typekit.load();}catch(e){}
-      var isLive = (location.host || location.hostname).match(/.*persnicket(ly|lyapp|yapp).com/i)
-        , el = d.createElement(t)
+      var el = d.createElement(t)
         , sib = d.getElementsByTagName(t)[0];
       el.src = '//mint.persnicketly.com/?js';
       el.async = 1;
@@ -44,7 +44,7 @@
       t.setAttribute('data-site-id', '4ddd5ac1613f5d7fca000001');
       t.src = '//secure.gaug.es/track.js';
       var s = document.getElementsByTagName('script')[0];
-      s.parentNode.insertBefore(t, s);
+      if (isLive) { s.parentNode.insertBefore(t, s); }
     })();
     </script>
 
