@@ -9,7 +9,7 @@ object BookmarkDao extends Dao {
   // Initialize indexes
   collection.ensureIndex(MongoDBObject("article_id" -> 1, "user_id" -> 1))
   collection.ensureIndex(MongoDBObject("bookmark_id" -> 1))
-  collection.ensureIndex(MongoDBObject("article_procecced" -> 1,
+  collection.ensureIndex(MongoDBObject("article_processed" -> 1,
                                        "update_date" -> 1))
 
   /**
