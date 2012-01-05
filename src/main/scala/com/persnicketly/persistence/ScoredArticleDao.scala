@@ -1,12 +1,15 @@
 package com.persnicketly.persistence
 
 import com.mongodb.casbah.Imports._
+import com.persnicketly.Persnicketly.Config
 import com.persnicketly.model.ScoredArticle
 import org.scala_tools.time.Imports._
 import org.joda.time.DateTime
 
 object ScoredArticleDao extends Dao {
   val collectionName = "articles"
+
+  val scored = Connection.mongo(Config("db.name").or("persnicketly_test"))("scored")
 
   val computeTimer = metrics.timer("articles-compute")
   val recentTimer = metrics.timer("articles-recent")
@@ -33,17 +36,19 @@ object ScoredArticleDao extends Dao {
   function (k, v) {
     v.score = v.favorite_count + v.count;
     return v;
-  }"""  
+  }"""
   private val out = MapReduceReduceOutput("scored")
-  private val q = "article_domain" $not ".*persnicket(ly.com|yapp.com|lyapp.com)".r + ("article_processed" -> true)
+  private val q = ("article_domain" $not ".*persnicket(ly.com|yapp.com|lyapp.com)".r) + ("article_processed" -> true)
   private val s = MongoDBObject("article_id" -> 1)
   private val c = MapReduceCommand("bookmarks", m, r, out, query = Some(q), sort = Some(s), finalizeFunction = Some(f))
 
   private val defaultSort = MongoDBObject("favorite_count" -> -1, "count" -> -1, "score" -> -1)
+  private val scoredSort = MongoDBObject("value.favorite_count" -> -1, "value.count" -> -1, "value.score" -> -1)
 
   // Initialize indices
   collection.ensureIndex(MongoDBObject("article_id" -> 1))
   collection.ensureIndex(defaultSort)
+  scored.ensureIndex(scoredSort)
 
   def all(): List[ScoredArticle] = {
     log.debug("Fetching all scored articles")
@@ -59,6 +64,8 @@ object ScoredArticleDao extends Dao {
 
   def compute(): List[ScoredArticle] = {
     computeTimer.time {
+      BookmarkDao.collection.mapReduce(c)
+
       val bookmarks = BookmarkDao.collection
       val articles = bookmarks.group(key, cond, initial, reduce)
       articles.map(ScoredArticle.apply).toList
@@ -69,11 +76,8 @@ object ScoredArticleDao extends Dao {
     collection.findOne(MongoDBObject("article_id" -> articleId)).map(ScoredArticle.apply)
   }
 
-  def mr(): List[ScoredArticle] = {
-    import Persnicketly.Config
-    BookmarkDao.collection.mapReduce(c)
-    val scored = Connection.mongo(Config("db.name").or("persnicketly_test"))("scored")
-    val articles = scored.find().map(_.getAs[DBObject]("value").get)
+  def mr(count: Int): List[ScoredArticle] = {
+    val articles = scored.find().limit(count).sort(scoredSort).map(_.getAs[DBObject]("value").get)
     articles.map(ScoredArticle.apply).toList
   }
 

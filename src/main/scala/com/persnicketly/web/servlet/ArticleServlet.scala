@@ -47,7 +47,7 @@ class ArticleServlet extends Servlet with Logging with Instrumented {
     val until = new DateTime
     val since = until - 60.days
     helper.addExtra("since", since).addExtra("until", until)
-    ArticleController.renderArticles(helper, ScoredArticleDao.recent(10, since, until), "/templates/articleList.vm")
+    ArticleController.renderArticles(helper, ScoredArticleDao.mr(10), "/templates/articleList.vm")
   }
 
   def read(helper: HttpHelper, articleId: String) {
