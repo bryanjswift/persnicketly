@@ -15,6 +15,7 @@ class ArticleServlet extends Servlet with Logging with Instrumented {
 
   val addTimer = metrics.timer("add-article")
   val starTimer = metrics.timer("(un)star-article")
+  val readMeter = metrics.meter("read-article", "requests")
 
   override def doGet(helper: HttpHelper) {
     log.info("Parts for uri :: '{}' for '{}'", helper.parts, helper.uri)
@@ -50,6 +51,7 @@ class ArticleServlet extends Servlet with Logging with Instrumented {
   }
 
   def read(helper: HttpHelper, articleId: String) {
+    readMeter.mark()
     ArticleController.addArticleForUser(articleId, helper.cookie(Constants.UserCookie))
     // it would be nice to say an article wasn't found or you're not logged in
     val url = "http://www.readability.com/articles/%s".format(articleId)
