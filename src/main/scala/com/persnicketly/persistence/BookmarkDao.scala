@@ -9,10 +9,8 @@ object BookmarkDao extends Dao {
   // Initialize indexes
   collection.ensureIndex(MongoDBObject("article_id" -> 1, "user_id" -> 1))
   collection.ensureIndex(MongoDBObject("bookmark_id" -> 1))
-  collection.ensureIndex(MongoDBObject("article_domain" -> 1,
-                                       "article_procecced" -> 1,
-                                       "update_date" -> 1,
-                                       "favorite" -> 1))
+  collection.ensureIndex(MongoDBObject("article_procecced" -> 1,
+                                       "update_date" -> 1))
 
   /**
    * Determine whether a user has a Bookmark for a given article
