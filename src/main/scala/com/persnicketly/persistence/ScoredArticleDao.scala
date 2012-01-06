@@ -67,6 +67,12 @@ object ScoredArticleDao extends Dao {
     }
   }
 
+  def select(from: Int, count: Int): List[ScoredArticle] = {
+    val collection = db("scored_" + from)
+    val articles = collection.find().limit(count).sort(scoredSort)
+    articles.map(o => ScoredArticle(o.getAs[DBObject]("value").get)).toList
+  }
+
   def save(scored: ScoredArticle): ScoredArticle = {
     saveTimer.time {
       val query = scored.id match {

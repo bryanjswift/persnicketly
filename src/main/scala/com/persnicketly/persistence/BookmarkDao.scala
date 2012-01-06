@@ -1,7 +1,10 @@
 package com.persnicketly.persistence
 
 import com.mongodb.casbah.Imports._
+import com.persnicketly.IOUtils
 import com.persnicketly.readability.model.{Article, Bookmark, User, UserData}
+import org.scala_tools.time.Imports._
+import org.joda.time.DateTime
 
 object BookmarkDao extends Dao {
   val collectionName = "bookmarks"
@@ -11,6 +14,25 @@ object BookmarkDao extends Dao {
   collection.ensureIndex(MongoDBObject("bookmark_id" -> 1))
   collection.ensureIndex(MongoDBObject("article_processed" -> 1,
                                        "update_date" -> 1))
+
+  val m = IOUtils.read("mapreduce/bookmark-map.js")
+  val r = IOUtils.read("mapreduce/bookmark-reduce.js")
+  val q = MongoDBObject("article_processed" -> true)
+  val s = MongoDBObject("article_id" -> 1)
+  val f = IOUtils.read("mapreduce/bookmark-finalize.js")
+
+  private def command(out: MapReduceReduceOutput, q: MongoDBObject) =
+    MapReduceCommand("bookmarks", m, r, out, query = Some(q), sort = Some(s), finalizeFunction = Some(f))
+
+  def compute(numDays: Int) = {
+    val scored = db("scored_" + numDays)
+    collection.ensureIndex(ScoredArticleDao.scoredSort)
+    val out = MapReduceReduceOutput(scored.name)
+    val until = new DateTime
+    val since = until - numDays.days
+    val query = q ++ ("update_date" -> MongoDBObject("$gt" -> since, "$lt" -> until))
+    collection.mapReduce(command(out, query))
+  }
 
   /**
    * Determine whether a user has a Bookmark for a given article
