@@ -55,7 +55,7 @@ object Persnicketly {
     }
     var threads: List[Thread] = Nil
     // start the mill
-    if (options.hasOption("mill")) {
+    if (options.hasOption("mill") || options.hasOption("scheduled")) {
       Foreman.start(args) ::: threads
     }
     // start the web

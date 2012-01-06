@@ -12,9 +12,13 @@ object Foreman extends Command {
 
   def start(options: CliOpts): List[Thread] = {
     val config = Persnicketly.Config
+    var threads = Array[Thread]()
     // start up consumers
-    val userConsumer = async("User Consumer", UserQueue.startConsumer)
-    val bookmarkRequestConsumer = async("Bookmark Reqeusts Consumer", BookmarkRequestsQueue.startConsumer)
+    if (options.hasOption("mill")) {
+      val userConsumer = async("User Consumer", UserQueue.startConsumer)
+      val bookmarkRequestConsumer = async("Bookmark Reqeusts Consumer", BookmarkRequestsQueue.startConsumer)
+      threads = Array(userConsumer, bookmarkRequestConsumer)
+    }
     // Schedule tasks
     if (options.hasOption("scheduled")) {
       log.info("Scheduling Mill updates")
@@ -28,12 +32,12 @@ object Foreman extends Command {
           override def run() {
             log.info("Updating article scores")
             ScoredArticleDao.update()
-            Array(14, 30, 60).foreach(c => BookmarkDao.compute(c))
+            config("compute").or(Array(14)).foreach(c => BookmarkDao.compute(c))
           }
         }, 0L, 5L, TimeUnit.HOURS)
     }
     // join consumers to main thread
-    List(userConsumer, bookmarkRequestConsumer)
+    threads.toList
   }
 
   def usersToUpdate: List[User] = {
