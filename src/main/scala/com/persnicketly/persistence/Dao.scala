@@ -10,7 +10,8 @@ trait Dao extends Logging with Instrumented {
 
   def collectionName: String
 
-  lazy val collection = mongo(Config("db.name").or("persnicketly_test"))(collectionName)
+  lazy val db = mongo(Config("db.name").or("persnicketly_test"))
+  lazy val collection = db(collectionName)
 
   RegisterJodaTimeConversionHelpers()
 }
