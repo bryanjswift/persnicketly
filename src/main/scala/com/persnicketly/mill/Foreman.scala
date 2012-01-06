@@ -24,17 +24,25 @@ object Foreman extends Command {
       log.info("Scheduling Mill updates")
       executor.scheduleWithFixedDelay(new Runnable {
           override def run() {
-            log.info("Processing users")
-            Foreman.usersToUpdate.foreach(UserQueue.add)
+            try {
+              log.info("Processing users")
+              Foreman.usersToUpdate.foreach(UserQueue.add)
+            } catch {
+              case e: Exception => log.error("Unable to compute scores", e)
+              case _ => log.error("Mystery exception")
+            }
           }
         }, 0L, 4L, TimeUnit.HOURS)
       executor.scheduleWithFixedDelay(new Runnable {
           override def run() {
-            log.info("Computing recent scores")
-            config("compute").or(Array(14)).foreach(c => BookmarkDao.compute(c))
-            log.info("Updating articles")
-            ScoredArticleDao.update()
-            log.info("Finished with articles and scores")
+            try {
+              log.info("Computing recent scores")
+              config("compute").or(Array(14)).foreach(c => BookmarkDao.compute(c))
+              log.info("Finished with articles and scores")
+            } catch {
+              case e: Exception => log.error("Unable to compute scores", e)
+              case _ => log.error("Mystery exception")
+            }
           }
         }, 0L, 5L, TimeUnit.HOURS)
     }
