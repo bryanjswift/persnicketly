@@ -15,6 +15,8 @@ object BookmarkDao extends Dao {
   collection.ensureIndex(MongoDBObject("article_processed" -> 1,
                                        "update_date" -> 1))
 
+  val scoredSort = MongoDBObject("value.favorite_count" -> -1, "value.count" -> -1, "value.score" -> -1)
+
   val m = IOUtils.read("mapreduce/bookmark-map.js")
   val r = IOUtils.read("mapreduce/bookmark-reduce.js")
   val q = MongoDBObject("article_processed" -> true)
@@ -26,7 +28,7 @@ object BookmarkDao extends Dao {
 
   def compute(numDays: Int) = {
     val scored = db("scored_" + numDays)
-    collection.ensureIndex(ScoredArticleDao.scoredSort)
+    collection.ensureIndex(scoredSort)
     val out = MapReduceReduceOutput(scored.name)
     val until = new DateTime
     val since = until - numDays.days
