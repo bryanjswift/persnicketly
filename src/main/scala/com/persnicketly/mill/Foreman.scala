@@ -1,7 +1,7 @@
 package com.persnicketly.mill
 
 import com.persnicketly.{Command,Persnicketly}
-import com.persnicketly.persistence.{ScoredArticleDao, UserDao}
+import com.persnicketly.persistence.{BookmarkDao, ScoredArticleDao, UserDao}
 import com.persnicketly.readability.model.User
 import org.joda.time.DateTime
 import java.util.concurrent.{ScheduledThreadPoolExecutor, TimeUnit}
@@ -28,6 +28,9 @@ object Foreman extends Command {
           override def run() {
             log.info("Updating article scores")
             ScoredArticleDao.update()
+            BookmarkDao.compute(14)
+            BookmarkDao.compute(30)
+            BookmarkDao.compute(60)
           }
         }, 0L, 5L, TimeUnit.HOURS)
     }
