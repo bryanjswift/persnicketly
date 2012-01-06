@@ -30,9 +30,11 @@ object Foreman extends Command {
         }, 0L, 4L, TimeUnit.HOURS)
       executor.scheduleWithFixedDelay(new Runnable {
           override def run() {
-            log.info("Updating article scores")
-            ScoredArticleDao.update()
+            log.info("Computing recent scores")
             config("compute").or(Array(14)).foreach(c => BookmarkDao.compute(c))
+            log.info("Updating articles")
+            ScoredArticleDao.update()
+            log.info("Finished with articles and scores")
           }
         }, 0L, 5L, TimeUnit.HOURS)
     }

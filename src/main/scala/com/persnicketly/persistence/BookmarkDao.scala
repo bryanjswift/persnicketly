@@ -30,6 +30,7 @@ object BookmarkDao extends Dao {
     val out = MapReduceReduceOutput(scored.name)
     val until = new DateTime
     val since = until - numDays.days
+    log.info("Computing scores for {} through {}", since, until)
     val query = q ++ ("update_date" -> MongoDBObject("$gt" -> since, "$lt" -> until))
     collection.mapReduce(command(out, query))
   }
