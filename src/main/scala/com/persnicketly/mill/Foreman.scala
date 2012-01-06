@@ -28,9 +28,7 @@ object Foreman extends Command {
           override def run() {
             log.info("Updating article scores")
             ScoredArticleDao.update()
-            BookmarkDao.compute(14)
-            BookmarkDao.compute(30)
-            BookmarkDao.compute(60)
+            Array(14, 30, 60).foreach(c => BookmarkDao.compute(c))
           }
         }, 0L, 5L, TimeUnit.HOURS)
     }
