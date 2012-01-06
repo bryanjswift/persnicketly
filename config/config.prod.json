@@ -69,6 +69,8 @@
     "context": "/"
   },
 
+  "compute": [14, 60],
+
   "metrics": {
     // The TCP/IP port Jetty will expose your metrics on.
     "port": 8081
