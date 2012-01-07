@@ -10,6 +10,8 @@ import org.joda.time.DateTime
 object BookmarkDao extends Dao {
   val collectionName = "bookmarks"
 
+  val computeTimer = metrics.timer("bookmark-compute")
+
   // Initialize indexes
   collection.ensureIndex(MongoDBObject("article_id" -> 1, "user_id" -> 1))
   collection.ensureIndex(MongoDBObject("bookmark_id" -> 1))
@@ -27,15 +29,19 @@ object BookmarkDao extends Dao {
   private def command(out: MapReduceStandardOutput, q: MongoDBObject) =
     MapReduceCommand("bookmarks", m, r, out, query = Some(q), sort = Some(s), finalizeFunction = Some(f))
 
-  def compute(numDays: Int) = {
-    val scored = db("scored_" + numDays)
-    collection.ensureIndex(scoredSort)
-    val out = MapReduceStandardOutput(scored.name)
-    val until = new DateTime
-    val since = until - numDays.days
-    log.info("Computing scores for {} through {}", since, until)
-    val query = q ++ ("update_date" -> MongoDBObject("$gt" -> since, "$lt" -> until))
-    collection.mapReduce(command(out, query))
+  def compute(numDays: Int) {
+    computeTimer.time {
+      val scored = db("scored_" + numDays)
+      collection.ensureIndex(scoredSort)
+      val out = MapReduceStandardOutput(scored.name)
+      val until = new DateTime
+      val since = until - numDays.days
+      log.info("Computing scores for {} through {}", since, until)
+      val query = q ++ ("update_date" -> MongoDBObject("$gt" -> since, "$lt" -> until))
+      collection.mapReduce(command(out, query)).errorMessage.foreach(m => {
+        log.error("MapReduce failed with message '{}'", m)
+      })
+    }
   }
 
   /**
