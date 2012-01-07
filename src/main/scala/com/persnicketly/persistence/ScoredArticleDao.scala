@@ -10,7 +10,7 @@ object ScoredArticleDao extends Dao {
   val collectionName = "articles"
 
   val saveTimer = metrics.timer("articles-save")
-  val selectTimer = metrics.timer("articles-compute")
+  val selectTimer = metrics.timer("articles-select")
 
   val defaultSort = MongoDBObject("favorite_count" -> -1, "count" -> -1, "score" -> -1)
   val scoredSort = MongoDBObject("value.favorite_count" -> -1, "value.count" -> -1, "value.score" -> -1)
