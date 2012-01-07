@@ -1,6 +1,7 @@
 package com.persnicketly.persistence
 
 import com.mongodb.casbah.Imports._
+import com.mongodb.casbah.map_reduce.MapReduceStandardOutput
 import com.persnicketly.IOUtils
 import com.persnicketly.readability.model.{Article, Bookmark, User, UserData}
 import org.scala_tools.time.Imports._
@@ -23,13 +24,13 @@ object BookmarkDao extends Dao {
   val s = MongoDBObject("article_id" -> 1)
   val f = IOUtils.read("mapreduce/bookmark-finalize.js")
 
-  private def command(out: MapReduceReduceOutput, q: MongoDBObject) =
+  private def command(out: MapReduceStandardOutput, q: MongoDBObject) =
     MapReduceCommand("bookmarks", m, r, out, query = Some(q), sort = Some(s), finalizeFunction = Some(f))
 
   def compute(numDays: Int) = {
     val scored = db("scored_" + numDays)
     collection.ensureIndex(scoredSort)
-    val out = MapReduceReduceOutput(scored.name)
+    val out = MapReduceStandardOutput(scored.name)
     val until = new DateTime
     val since = until - numDays.days
     log.info("Computing scores for {} through {}", since, until)
