@@ -72,16 +72,27 @@ object Api extends Logging with Instrumented {
   }
 
   private def request[T](url: Request, consumer: Consumer, user: User)(thunk: JsObject => T): Option[T] = {
+    apiMeter.mark()
     val http = new Log4jHttp
     val request = url <@ (consumer, user.accessToken.get)
-    val response = http.when(statusCodes)(request ># obj)()
-    val responseStr = if (response == null) { "null" } else { response.toString() }
+    val response = try {
+      http.when(statusCodes)(request ># obj)()
+    } catch {
+      case e: Exception => { log.error("Error performing request to '{}'", request.path, e); JsObject(); }
+    }
+    val responseStr = if (response == null || response == JsObject()) { "null || {}" } else { response.toString() }
     log.debug("Request to '{}' responded with '{}'", request.path, responseStr)
     try {
-      val result = if (isError(response)) { apiErrorMeter.mark(); None } else { Some(thunk(response)) }
+      val result = if (response == null || isError(response)) {
+        apiErrorMeter.mark();
+        None
+      } else {
+        Some(thunk(response))
+      }
       result
+    } catch {
+      case e: Exception => { log.error("Error performing operation for \n {}", response, e); None }
     } finally {
-      apiMeter.mark()
       http.shutdown()
     }
   }
