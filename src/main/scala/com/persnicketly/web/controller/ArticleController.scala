@@ -11,7 +11,7 @@ import org.joda.time.DateTime
 import org.scala_tools.time.Imports._
 import velocity.VelocityView
 import javax.ws.rs.core.MediaType
-import com.yammer.metrics.Instrumented
+import com.yammer.metrics.scala.Instrumented
 
 object ArticleController extends Logging with Instrumented {
 

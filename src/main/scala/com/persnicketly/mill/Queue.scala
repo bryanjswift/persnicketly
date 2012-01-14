@@ -2,7 +2,7 @@ package com.persnicketly.mill
 
 import com.persnicketly.{Logging,Persnicketly}
 import com.rabbitmq.client.{Channel,ConnectionFactory,QueueingConsumer}
-import com.yammer.metrics.Instrumented
+import com.yammer.metrics.scala.Instrumented
 import scala.collection.mutable.Set
 import scala.util.control.Exception.catching
 

@@ -8,7 +8,7 @@ import com.persnicketly.web.{JsonResponse, Servlet}
 import com.persnicketly.web.controller.ArticleController
 import org.apache.http.HttpStatus
 import org.scala_tools.time.Imports._
-import com.yammer.metrics.Instrumented
+import com.yammer.metrics.scala.Instrumented
 
 @Singleton
 class ArticleServlet extends Servlet with Logging with Instrumented {

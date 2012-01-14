@@ -3,7 +3,7 @@ package com.persnicketly.persistence
 import com.mongodb.casbah.commons.conversions.scala._
 import com.persnicketly.{Persnicketly, Logging}
 import Persnicketly.Config
-import com.yammer.metrics.Instrumented
+import com.yammer.metrics.scala.Instrumented
 
 trait Dao extends Logging with Instrumented {
   import Connection.mongo

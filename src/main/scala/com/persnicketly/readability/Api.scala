@@ -10,7 +10,7 @@ import com.persnicketly.Logging
 import com.persnicketly.readability.model.{Article, Bookmark, Meta, User, UserData}
 import com.persnicketly.readability.api._
 import org.joda.time.DateTime
-import com.yammer.metrics.Instrumented
+import com.yammer.metrics.scala.Instrumented
 
 object Api extends Logging with Instrumented {
   private val articlesUrl = url("https://www.readability.com/api/rest/v1/articles")
