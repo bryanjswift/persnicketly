@@ -15,7 +15,7 @@ object UserQueue extends Queue {
       if (user.id.isDefined) {
         log.info("Adding User({}) to queue", user.id.get)
         channel.basicPublish(exchange, config.name, config.message.properties, user.id.get.toByteArray)
-        counter += 1
+        counter.inc()
       }
       user
     }
@@ -32,7 +32,7 @@ object UserQueue extends Queue {
     val meta = Api.Bookmarks.meta(Persnicketly.oauthConsumer, user, user.lastProcessed)
     val added = meta.flatMap(m => BookmarkRequestsQueue.addAll(m, user, user.lastProcessed))
     UserDao.save(user.copy(lastProcessed = Some(new DateTime)))
-    counter -= 1
+    counter.dec()
     added.isDefined
   }
 }

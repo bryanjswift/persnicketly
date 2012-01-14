@@ -2,6 +2,7 @@ package com.persnicketly.mill
 
 import com.persnicketly.{Logging,Persnicketly}
 import com.rabbitmq.client.{Channel,ConnectionFactory,QueueingConsumer}
+import com.yammer.metrics.Metrics
 import com.yammer.metrics.scala.Instrumented
 import scala.collection.mutable.Set
 import scala.util.control.Exception.catching
@@ -14,7 +15,7 @@ trait Queue extends Logging with Instrumented {
   def config = Persnicketly.Config("queue." + queueName).as[QueueConfig]
   def processDelivery(delivery: QueueingConsumer.Delivery): Boolean
   private val rejectedDeliveries = Set[Long]()
-  lazy val counter = metrics.counter(queueName)
+  lazy val counter = Metrics.defaultRegistry().newCounter(getClass, queueName, null)
 
   /** Process something within a try/catch/finally with a Channel
     * @param queue configuration used when declaring the channel
