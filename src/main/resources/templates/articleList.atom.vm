@@ -4,7 +4,7 @@
   <title><![CDATA[Top Articles on Persnicketly]]></title>
   <link href="${uri_base}/article/list.atom" rel="self"/>
   <link href="${uri_base}/"/>
-  <updated>{{ site.time | date_to_xmlschema }}</updated>
+  <!--<updated></updated>-->
   <id>${uri_base}${uri}</id>
 
   <generator uri="${uri_base}${uri}">Persnicketly</generator>
