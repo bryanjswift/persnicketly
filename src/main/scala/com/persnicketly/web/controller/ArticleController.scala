@@ -77,7 +77,7 @@ object ArticleController extends Logging with Instrumented {
           })
         case None => articles
       }
-      helper.response.setContentType(MediaType.TEXT_HTML)
+      helper.response.setContentType(helper.mime)
       view.render(Map[String,Any](
         "articles" -> scored,
         "user" -> userId,
