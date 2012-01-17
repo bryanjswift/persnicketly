@@ -49,6 +49,7 @@ class ArticleServlet extends Servlet with Logging with Instrumented {
     helper.addExtra("since", since).addExtra("until", until)
     val template = helper.format match {
       case "atom" => "/templates/articleList.atom.vm"
+      case "rss" => "/templates/articleList.atom.vm"
       case _ => "/templates/articleList.vm"
     }
     ArticleController.renderArticles(helper, ScoredArticleDao.select(from, count = 10), template)
@@ -69,6 +70,7 @@ class ArticleServlet extends Servlet with Logging with Instrumented {
     helper.addExtra("since", since).addExtra("until", until)
     val template = helper.format match {
       case "atom" => "/templates/articleList.atom.vm"
+      case "rss" => "/templates/articleList.atom.vm"
       case _ => "/templates/articleRecent.vm"
     }
     ArticleController.renderArticles(helper, ScoredArticleDao.select(from, count = 10), "/templates/articleRecent.vm")
