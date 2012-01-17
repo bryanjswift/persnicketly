@@ -47,7 +47,11 @@ class ArticleServlet extends Servlet with Logging with Instrumented {
     val until = new DateTime
     val since = until - from.days
     helper.addExtra("since", since).addExtra("until", until)
-    ArticleController.renderArticles(helper, ScoredArticleDao.select(from, count = 10), "/templates/articleList.vm")
+    val template = helper.format match {
+      case "atom" => "/templates/articleList.atom.vm"
+      case _ => "/templates/articleList.vm"
+    }
+    ArticleController.renderArticles(helper, ScoredArticleDao.select(from, count = 10), template)
   }
 
   def read(helper: HttpHelper, articleId: String) {
@@ -63,6 +67,10 @@ class ArticleServlet extends Servlet with Logging with Instrumented {
     val until = new DateTime
     val since = until - from.days
     helper.addExtra("since", since).addExtra("until", until)
+    val template = helper.format match {
+      case "atom" => "/templates/articleList.atom.vm"
+      case _ => "/templates/articleRecent.vm"
+    }
     ArticleController.renderArticles(helper, ScoredArticleDao.select(from, count = 10), "/templates/articleRecent.vm")
   }
 
