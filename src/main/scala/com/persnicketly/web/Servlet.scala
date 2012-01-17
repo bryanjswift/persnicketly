@@ -2,6 +2,7 @@ package com.persnicketly.web
 
 import com.persnicketly.Persnicketly
 import javax.servlet.http.{Cookie, HttpServlet, HttpServletRequest => Request, HttpServletResponse => Response}
+import javax.ws.rs.core.MediaType
 import scala.util.matching.Regex
 
 trait Servlet extends HttpServlet {
@@ -15,10 +16,15 @@ trait Servlet extends HttpServlet {
     private val uriMatch = Servlet.uriRE.findFirstMatchIn(request.getRequestURI).get
     val uri = uriMatch.group("uri")
     private var _extras = Map[String, Any]()
-    val format = uriMatch.group("format") match {
+    lazy val format = uriMatch.group("format") match {
       case null => "html"
       case s:String => s
       case _ => "html"
+    }
+    lazy val mime = format match {
+      case "atom" => MediaType.APPLICATION_ATOM_XML
+      case "rss" => MediaType.APPLICATION_ATOM_XML
+      case _ => MediaType.TEXT_HTML
     }
     val parts = uri.split("/").filter(_.length > 0)
     val isAjax = header("X-Requested-With").isDefined
