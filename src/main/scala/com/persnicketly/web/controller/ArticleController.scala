@@ -81,6 +81,7 @@ object ArticleController extends Logging with Instrumented {
       view.render(Map[String,Any](
         "articles" -> scored,
         "user" -> userId,
+        "uri_base" -> ("http://" + Persnicketly.Config("http.domain").or("persnicketly.com") + "/"),
         "uri" -> helper.uri
       ) ++ helper.extras, helper.response)
     }

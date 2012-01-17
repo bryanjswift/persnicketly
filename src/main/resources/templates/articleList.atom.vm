@@ -2,19 +2,19 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Top Articles on Persnicketly]]></title>
-  <link href="${site_base}/article/list.atom" rel="self"/>
-  <link href="${site_base}/"/>
+  <link href="${uri_base}/article/list.atom" rel="self"/>
+  <link href="${uri_base}/"/>
   <updated>{{ site.time | date_to_xmlschema }}</updated>
-  <id>${site_base}${uri}</id>
+  <id>${uri_base}${uri}</id>
 
-  <generator uri="${site_base}${uri}">Persnicketly</generator>
+  <generator uri="${uri_base}${uri}">Persnicketly</generator>
 
   #foreach( $scored in $articles )
     #set( $article = $scored.article() )
 
     <entry>
       <title type="html"><![CDATA[${article.title()}]]></title>
-      <link href="${site_base}/article/read/${article.articleId()}"/>
+      <link href="${uri_base}/article/read/${article.articleId()}"/>
       <!--<updated></updated>-->
       <id>${article.articleId()}</id>
       <content type="html"><![CDATA[
