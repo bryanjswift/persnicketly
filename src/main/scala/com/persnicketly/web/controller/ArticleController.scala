@@ -3,7 +3,7 @@ package com.persnicketly.web.controller
 import com.persnicketly.{Constants, Logging, Persnicketly}
 import com.persnicketly.mill.UserQueue
 import com.persnicketly.model.ScoredArticle
-import com.persnicketly.persistence.{BookmarkDao, ScoredArticleDao, UserDao}
+import com.persnicketly.persistence.{BookmarkDao, ArticleDao, UserDao}
 import com.persnicketly.readability.Api
 import com.persnicketly.readability.model.Bookmark
 import com.persnicketly.web.Servlet
@@ -25,7 +25,7 @@ object ArticleController extends Logging with Instrumented {
   def addArticleForUser(articleId: String, userId: Option[String]) {
     UserDao.getById(userId) match {
       case Some(user) =>
-        ScoredArticleDao.get(articleId) match {
+        ArticleDao.get(articleId) match {
           // Add article to reading list
           case Some(scored) => {
             Api.Bookmarks.add(Persnicketly.oauthConsumer, user, scored.article)
@@ -47,7 +47,7 @@ object ArticleController extends Logging with Instrumented {
    */
   def updateBookmark(articleId: String, userId: Option[String], toFavorite: Boolean): Option[Bookmark] = {
     UserDao.getById(userId).flatMap(u => {
-      ScoredArticleDao.get(articleId).flatMap(s => {
+      ArticleDao.get(articleId).flatMap(s => {
         BookmarkDao.get(u, s.article).flatMap(mark => {
           val result = Api.Bookmarks.update(Persnicketly.oauthConsumer, u, mark.copy(isFavorite = toFavorite))
           // this should trigger a rescore (?)
