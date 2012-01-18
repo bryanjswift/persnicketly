@@ -9,11 +9,14 @@ import scala.util.control.Exception.catching
 
 trait Queue extends Logging with Instrumented {
   type Delivery = QueueingConsumer.Delivery
+
   def queueName: String
+  def processDelivery(delivery: QueueingConsumer.Delivery): Boolean
+
+  def config = Persnicketly.Config("queue." + queueName).as[QueueConfig]
+
   val args: java.util.Map[String, Object] = null
   val exchange = ""
-  def config = Persnicketly.Config("queue." + queueName).as[QueueConfig]
-  def processDelivery(delivery: QueueingConsumer.Delivery): Boolean
   private val rejectedDeliveries = Set[Long]()
   lazy val counter = Metrics.defaultRegistry().newCounter(getClass, queueName, null)
 
@@ -25,8 +28,8 @@ trait Queue extends Logging with Instrumented {
     */
   def withChannel[T](queue: QueueConfig)(thunk: Channel => T): Option[T] = {
     val factory = new ConnectionFactory()
-    factory.setHost(Persnicketly.Config("queue.host").or("localhost"))
-    factory.setPort(Persnicketly.Config("queue.port").or(5672))
+    factory.setHost(config.host)
+    factory.setPort(config.port)
     // result is immediately matched as Either[Exception, T]
     catching(classOf[java.net.ConnectException], classOf[java.io.IOException], classOf[Exception]).either {
       val connection = factory.newConnection()

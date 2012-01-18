@@ -26,9 +26,9 @@
   },
 
   "queue": {
-    "host": "web1.persnicketly.com",
-    "port": 5672,
     "bookmarks-requests": {
+      "host": "web1.persnicketly.com",
+      "port": 5672,
       "name": "bookmarks-requests",
       "durable": true,
       "exclusive": false,
@@ -42,6 +42,8 @@
       }
     },
     "new-users": {
+      "host": "web1.persnicketly.com",
+      "port": 5672,
       "name": "new-users",
       "durable": true,
       "exclusive": false,
