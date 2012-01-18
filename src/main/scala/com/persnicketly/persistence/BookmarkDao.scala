@@ -32,7 +32,7 @@ object BookmarkDao extends Dao {
   def compute(numDays: Int) {
     computeTimer.time {
       val scored = db("scored_" + numDays)
-      collection.ensureIndex(scoredSort)
+      scored.ensureIndex(scoredSort)
       val out = MapReduceStandardOutput(scored.name)
       val until = new DateTime
       val since = until - numDays.days
