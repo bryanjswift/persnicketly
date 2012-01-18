@@ -26,29 +26,14 @@
   },
 
   "queue": {
-    "bookmarks-requests": {
+    "default": {
       "host": "localhost",
       "port": 5672,
-      "name": "bookmarks-requests",
       "durable": true,
       "exclusive": false,
       "autodelete": false,
       "prefetch": 1,
       "perpage": 25,
-      "message": {
-        "contentType": "application/octet-stream",
-        "persistent": true,
-        "priority": 0
-      }
-    },
-    "new-users": {
-      "host": "localhost",
-      "port": 5672,
-      "name": "new-users",
-      "durable": true,
-      "exclusive": false,
-      "autodelete": false,
-      "prefetch": 1,
       "message": {
         "contentType": "application/octet-stream",
         "persistent": true,
