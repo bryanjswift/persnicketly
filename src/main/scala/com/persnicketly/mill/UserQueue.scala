@@ -14,7 +14,7 @@ object UserQueue extends Queue {
     withChannel(config) { channel =>
       if (user.id.isDefined) {
         log.info("Adding User({}) to queue", user.id.get)
-        channel.basicPublish(exchange, config.name, config.message.properties, user.id.get.toByteArray)
+        channel.basicPublish(exchange, queueName, config.message.properties, user.id.get.toByteArray)
         counter.inc()
       }
       user

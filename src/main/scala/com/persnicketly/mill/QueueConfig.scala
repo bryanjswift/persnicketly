@@ -5,7 +5,6 @@ import com.rabbitmq.client.AMQP
 case class QueueConfig(
   host: String,
   port: Int,
-  name: String,
   durable: Boolean,
   exclusive: Boolean,
   autodelete: Boolean,

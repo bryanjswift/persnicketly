@@ -13,7 +13,10 @@ trait Queue extends Logging with Instrumented {
   def queueName: String
   def processDelivery(delivery: QueueingConsumer.Delivery): Boolean
 
-  def config = Persnicketly.Config("queue." + queueName).as[QueueConfig]
+  def config = {
+    val c = Persnicketly.Config("queue." + queueName).as[QueueConfig]
+    if (c == null) { Persnicketly.Config("queue.default").as[QueueConfig] } else { c }
+  }
 
   val args: java.util.Map[String, Object] = null
   val exchange = ""
@@ -35,7 +38,7 @@ trait Queue extends Logging with Instrumented {
       val connection = factory.newConnection()
       val channel = connection.createChannel()
       try {
-        channel.queueDeclare(config.name, config.durable, config.exclusive, config.autodelete, args)
+        channel.queueDeclare(queueName, config.durable, config.exclusive, config.autodelete, args)
         channel.basicQos(config.prefetch)
         thunk(channel)
       } finally {
