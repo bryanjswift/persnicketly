@@ -12,7 +12,7 @@ object ArticleDao extends Dao {
   val saveTimer = metrics.timer("article-save")
 
   // Initialize indices
-  collection.ensureIndex(MongoDBObject("article_id" -> 1))
+  collection.ensureIndex(MongoDBObject("article_id" -> 1), "article_id_1", true)
 
   def all(): List[Article] = {
     log.debug("Fetching all scored articles")

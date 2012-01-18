@@ -1,6 +1,6 @@
 db.articles.drop();
 db.createCollection('articles');
-db.articles.ensureIndex({ 'article_id': 1 }, { unique: true, dropDups: true });
+db.articles.ensureIndex({ 'article_id': 1 }, { unique: true });
 var marks = db.bookmarks.find();
 marks.forEach(function(mark) {
   var q = { 'article_id': mark.article_id };
