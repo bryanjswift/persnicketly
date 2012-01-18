@@ -1,5 +1,6 @@
 package com.persnicketly.readability.model
 
+import com.persnicketly.Serializer
 import com.mongodb.casbah.Imports._
 import org.joda.time.DateTime
 
@@ -13,7 +14,9 @@ case class Article(
   published: Option[DateTime],
   content: Option[String],
   size: Option[Int],
-  nextPage: Option[String]) {
+  nextPage: Option[String]) extends Serializer {
+
+  val serialVersionUID = 18263458790L
 
   val publishedDisplay = published.map(_.toString("MM/dd/yyyy"))
 }
