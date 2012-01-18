@@ -56,8 +56,7 @@ trait Queue extends Logging with Instrumented {
   }
 
   /**
-   * Start a QueueingConsumer that performs process method for each delivery. If
-   * process returns false then the consumer finishes.
+   * Start a QueueingConsumer that performs processDelivery method for each delivery.
    * @return Option containing the number of deliveries to be processed
    */
   def startConsumer: Option[Long] = {
