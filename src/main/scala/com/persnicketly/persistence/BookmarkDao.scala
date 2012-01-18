@@ -3,6 +3,7 @@ package com.persnicketly.persistence
 import com.mongodb.casbah.Imports._
 import com.mongodb.casbah.map_reduce.MapReduceStandardOutput
 import com.persnicketly.IOUtils
+import com.persnicketly.mill.ArticleQueue
 import com.persnicketly.readability.model.{Article, Bookmark, User, UserData}
 import org.scala_tools.time.Imports._
 import org.joda.time.DateTime
@@ -68,6 +69,7 @@ object BookmarkDao extends Dao {
       case Some(id) => MongoDBObject("_id" -> id)
       case None => MongoDBObject("bookmark_id" -> bookmark.bookmarkId)
     }
+    ArticleQueue.add(bookmark)
     collection.update(query, bookmark, upsert = true, multi = false)
     collection.findOne(query).get
   }
