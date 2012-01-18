@@ -27,7 +27,7 @@ object Article {
     excerpt: Option[String],
     processed: Boolean): Article = Article(articleId, title, domain, url, excerpt, processed, None, None, None, None)
 
-  def apply(o: DBObject): Article = {
+  implicit def apply(o: DBObject): Article = {
     Article(
       o.getAsOrElse("article_id", ""),
       o.getAsOrElse("article_title", ""),
@@ -38,7 +38,7 @@ object Article {
     )
   }
 
-  implicit def article2dbobject(article: Article): MongoDBObject = {
+  implicit def article2mongodbobject(article: Article): MongoDBObject = {
     val builder = MongoDBObject.newBuilder
     builder += "article_id" -> article.articleId
     builder += "article_title" -> article.title
@@ -48,4 +48,6 @@ object Article {
     builder += "article_processed" -> article.processed
     builder.result
   }
+
+  implicit def article2dbobject(article: Article): DBObject = article2mongodbobject(article)
 }

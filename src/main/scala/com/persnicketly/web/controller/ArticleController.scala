@@ -27,8 +27,8 @@ object ArticleController extends Logging with Instrumented {
       case Some(user) =>
         ArticleDao.get(articleId) match {
           // Add article to reading list
-          case Some(scored) => {
-            Api.Bookmarks.add(Persnicketly.oauthConsumer, user, scored.article)
+          case Some(article) => {
+            Api.Bookmarks.add(Persnicketly.oauthConsumer, user, article)
             UserQueue.add(user)
           }
           // show article not found page
@@ -47,8 +47,8 @@ object ArticleController extends Logging with Instrumented {
    */
   def updateBookmark(articleId: String, userId: Option[String], toFavorite: Boolean): Option[Bookmark] = {
     UserDao.getById(userId).flatMap(u => {
-      ArticleDao.get(articleId).flatMap(s => {
-        BookmarkDao.get(u, s.article).flatMap(mark => {
+      ArticleDao.get(articleId).flatMap(a => {
+        BookmarkDao.get(u, a).flatMap(mark => {
           val result = Api.Bookmarks.update(Persnicketly.oauthConsumer, u, mark.copy(isFavorite = toFavorite))
           // this should trigger a rescore (?)
           result.foreach(BookmarkDao.save)
