@@ -2,8 +2,8 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Top Articles on Persnicketly]]></title>
-  <link href="${uri_base}/article/list.atom" rel="self"/>
-  <link href="${uri_base}/article/list/"/>
+  <link href="${uri_base}${uri}.atom" rel="self"/>
+  <link href="${uri_base}${uri}"/>
   <!--<updated></updated>-->
   <id>${uri_base}${uri}</id>
 
