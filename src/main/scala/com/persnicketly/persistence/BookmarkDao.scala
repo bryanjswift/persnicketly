@@ -45,6 +45,8 @@ object BookmarkDao extends Dao {
     }
   }
 
+  def count: Long = collection.count
+
   /**
    * Determine whether a user has a Bookmark for a given article
    * @param user to check for

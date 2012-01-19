@@ -10,7 +10,7 @@ import com.persnicketly.persistence._
 @Singleton
 class StatsResource() {
   @GET
-  def stats() = Stats(UserDao.all().size, ArticleDao.all().size, BookmarkDao.collection.count)
+  def stats() = Stats(UserDao.all().size, ArticleDao.count, BookmarkDao.count)
 
   @GET @Path("/users")
   def userStats() = {
@@ -19,10 +19,10 @@ class StatsResource() {
   }
 
   @GET @Path("/articles")
-  def articleStats() = Stats(-1, ArticleDao.all().size, -1)
+  def articleStats() = Stats(-1, ArticleDao.count, -1)
 
   @GET @Path("/bookmarks")
-  def bookmarkStats() = Stats(-1, -1, BookmarkDao.collection.count)
+  def bookmarkStats() = Stats(-1, -1, BookmarkDao.count)
 }
 
-case class Stats(users: Int, articles: Int, bookmarks: Long)
+case class Stats(users: Long, articles: Long, bookmarks: Long)

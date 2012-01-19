@@ -1,10 +1,7 @@
 package com.persnicketly.persistence
 
 import com.mongodb.casbah.Imports._
-import com.persnicketly.Persnicketly.Config
 import com.persnicketly.readability.model.Article
-import org.scala_tools.time.Imports._
-import org.joda.time.DateTime
 
 object ArticleDao extends Dao {
   val collectionName = "articles"
@@ -19,6 +16,8 @@ object ArticleDao extends Dao {
     val articles = collection.find()
     articles.map(Article.apply).toList
   }
+
+  def count: Long = collection.count
 
   def get(articleId: String): Option[Article] = {
     collection.findOne(MongoDBObject("article_id" -> articleId)).map(Article.apply)
