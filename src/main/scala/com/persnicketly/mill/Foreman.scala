@@ -12,12 +12,13 @@ object Foreman extends Command {
 
   def start(options: CliOpts): List[Thread] = {
     val config = Persnicketly.Config
-    var threads = Array[Thread]()
+    var threads = List[Thread]()
     // start up consumers
     if (options.hasOption("mill")) {
-      val userConsumer = async("User Consumer", UserQueue.startConsumer)
+      val articleConsumer = async("Article Save Consumer", ArticleQueue.startConsumer)
       val bookmarkRequestConsumer = async("Bookmark Reqeusts Consumer", BookmarkRequestsQueue.startConsumer)
-      threads = Array(userConsumer, bookmarkRequestConsumer)
+      val userConsumer = async("User Consumer", UserQueue.startConsumer)
+      threads = articleConsumer :: bookmarkRequestConsumer :: userConsumer :: threads
     }
     // Schedule tasks
     if (options.hasOption("scheduled")) {
@@ -47,7 +48,7 @@ object Foreman extends Command {
         }, 0L, 5L, TimeUnit.HOURS)
     }
     // join consumers to main thread
-    threads.toList
+    threads
   }
 
   def usersToUpdate: List[User] = {
