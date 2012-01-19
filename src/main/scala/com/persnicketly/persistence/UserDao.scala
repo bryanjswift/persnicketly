@@ -8,6 +8,7 @@ object UserDao extends Dao {
   val collectionName = "users"
   
   val saveTimer = metrics.timer("user-save")
+  val usersGauge = metrics.gauge("num-users")(all.size)
 
   // Initialize indexes
   collection.ensureIndex(MongoDBObject("user_id" -> 1))
@@ -17,7 +18,7 @@ object UserDao extends Dao {
    * Provide a way to get all the verified users in the DB
    * @return an Iterator of Users
    */
-  def all(): List[User] =
+  def all: List[User] =
     collection.distinct("user_id").filter(_ != null).map(i => this.get(i.asInstanceOf[Int]).get).toList
 
   /**

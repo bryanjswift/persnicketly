@@ -12,6 +12,7 @@ object BookmarkDao extends Dao {
   val collectionName = "bookmarks"
 
   val computeTimer = metrics.timer("bookmark-compute")
+  val bookmarksGauge = metrics.gauge("num-bookmarks")(count)
 
   // Initialize indexes
   collection.ensureIndex(MongoDBObject("article_id" -> 1, "user_id" -> 1))

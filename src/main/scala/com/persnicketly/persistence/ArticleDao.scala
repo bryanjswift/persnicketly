@@ -7,6 +7,7 @@ object ArticleDao extends Dao {
   val collectionName = "articles"
 
   val saveTimer = metrics.timer("article-save")
+  val articlesGauge = metrics.gauge("num-articles")(count)
 
   // Initialize indices
   collection.ensureIndex(MongoDBObject("article_id" -> 1), "article_id_1", true)
