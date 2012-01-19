@@ -28,6 +28,6 @@ object ArticleQueue extends Queue {
     ArticleDao.save(article)
     val retrieved = ArticleDao.get(article.articleId)
     counter.dec()
-    retrieved == article
+    retrieved.isDefined
   }
 }
