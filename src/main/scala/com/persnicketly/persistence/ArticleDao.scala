@@ -27,7 +27,7 @@ object ArticleDao extends Dao {
   def save(article: Article): Article = {
     saveTimer.time {
       val query = MongoDBObject("article_id" -> article.articleId)
-      log.info("Saving query -- {}", query)
+      log.debug("Saving query -- {}", query)
       collection.update(query, article, upsert = true, multi = false)
       collection.findOne(query).get
     }
