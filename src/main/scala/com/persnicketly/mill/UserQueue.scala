@@ -11,13 +11,11 @@ object UserQueue extends Queue {
   val queueName = "new-users";
 
   def add(user: User): Option[User] = {
-    withChannel(config) { channel =>
-      if (user.id.isDefined) {
-        log.info("Adding User({}) to queue", user.id.get)
-        channel.basicPublish(exchange, queueName, config.message.properties, user.id.get.toByteArray)
-        counter.inc()
-      }
-      user
+    if (user.id.isDefined) {
+      log.info("Adding User({}) to queue", user.id.get)
+      publish(user.id.get.toByteArray, user)
+    } else {
+      None
     }
   }
 
@@ -31,8 +29,7 @@ object UserQueue extends Queue {
   def process(user: User): Boolean = {
     val meta = Api.Bookmarks.meta(Persnicketly.oauthConsumer, user, user.lastProcessed)
     val added = meta.flatMap(m => BookmarkRequestsQueue.addAll(m, user, user.lastProcessed))
-    UserDao.save(user.copy(lastProcessed = Some(new DateTime)))
-    counter.dec()
+    if (added.isDefined) { UserDao.save(user.copy(lastProcessed = Some(new DateTime))) }
     added.isDefined
   }
 }

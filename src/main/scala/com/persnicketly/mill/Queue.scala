@@ -21,6 +21,20 @@ trait Queue extends Logging with Instrumented {
   val exchange = ""
   lazy val counter = Metrics.defaultRegistry().newCounter(getClass, queueName, null)
 
+  /**
+   * Add data to the queue
+   * @param bytes to add to the queue
+   * @param result to return when publish finishes
+   * @return Option[T] where T is result's type
+   */
+  def publish[T](bytes: Array[Byte], result: T): Option[T] = {
+    withChannel(config) { channel =>
+      channel.basicPublish(exchange, queueName, config.message.properties, bytes)
+      counter.inc()
+      result
+    }
+  }
+
   /** Process something within a try/catch/finally with a Channel
     * @param queue configuration used when declaring the channel
     * @param thunk to process with a channel. This is excpected to throw an
