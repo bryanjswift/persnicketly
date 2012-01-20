@@ -16,7 +16,11 @@ object Api extends Logging with Instrumented {
   private val articlesUrl = url("https://www.readability.com/api/rest/v1/articles")
   private val bookmarksUrl = url("https://www.readability.com/api/rest/v1/bookmarks")
   private val userUrl = url("https://www.readability.com/api/rest/v1/users/_current")
-  private val statusCodes = { code: Int => List(200, 201, 202, 203, 204, 400, 401, 403, 404, 409, 500) contains code }
+  private val statusCodes = { code: Int => {
+      log.debug("Received code: {}", code)
+      List(200, 201, 202, 203, 204, 400, 403, 404, 409, 500) contains code
+    }
+  }
   private val errorExtractor = 'error ?? bool
 
   val datePattern = "YYYY-MM-dd HH:mm:ss"
@@ -79,26 +83,27 @@ object Api extends Logging with Instrumented {
       http.when(statusCodes)(request ># obj)()
     } catch {
       case e: Exception => {
-        log.error("Error performing request to '{}' for {}", Array(request.path, user), e)
-        JsObject()
+        apiErrorMeter.mark()
+        log.error("Error performing request to '{}'", request.path, e)
+        null
       }
     }
-    val responseStr = if (response == null || response == JsObject()) { "null || {}" } else { response.toString() }
+    val responseStr = if (response == null) { "null || {}" } else { response.toString() }
     log.debug("Request to '{}' responded with '{}'", request.path, responseStr)
     try {
-      val result = if (response == null || isError(response)) {
-        apiErrorMeter.mark();
-        None
-      } else {
+      if (response == null || isError(response)) { None }
+      else {
+        log.debug("Trying thunk on {}", response)
         Some(thunk(response))
       }
-      result
     } catch {
-      case e: Exception => { log.error("Error performing operation for \n {}", response, e); None }
+      case e: Exception => {
+        log.error("Error performing operation for {}", response)
+        None
+      }
     } finally {
       http.shutdown()
     }
   }
   private def isError(response: JsObject): Boolean = errorExtractor(response).getOrElse(false)
 }
-
