@@ -17,7 +17,7 @@ object BookmarkRequestsQueue extends Queue {
     val conditions = for (i <- 1 to numPages) yield BookmarkRequestConditions(i, pageSize, since, user)
     withChannel(config) { channel =>
       conditions.foreach(condition => {
-        log.info("Adding {} to {} queue", condition, queueName)
+        log.debug("Adding {} to {} queue", condition, queueName)
         channel.basicPublish(exchange, queueName, config.message.properties, condition.toByteArray)
         counter.inc()
       })

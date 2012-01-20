@@ -16,11 +16,7 @@ object Api extends Logging with Instrumented {
   private val articlesUrl = url("https://www.readability.com/api/rest/v1/articles")
   private val bookmarksUrl = url("https://www.readability.com/api/rest/v1/bookmarks")
   private val userUrl = url("https://www.readability.com/api/rest/v1/users/_current")
-  private val statusCodes = { code: Int => {
-      log.debug("Received code: {}", code)
-      List(200, 201, 202, 203, 204, 400, 403, 404, 409, 500) contains code
-    }
-  }
+  private val statusCodes = { code: Int => List(200, 201, 202, 203, 204, 400, 403, 404, 409, 500) contains code }
   private val errorExtractor = 'error ?? bool
 
   val datePattern = "YYYY-MM-dd HH:mm:ss"

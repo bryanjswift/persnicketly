@@ -14,13 +14,13 @@ object ArticleQueue extends Queue {
   }
 
   def add(article: Article): Option[Article] = {
-    log.info("Adding Article({}) to queue", article.articleId)
+    log.debug("Adding Article({}) to queue", article.articleId)
     publish(article.toByteArray, article)
   }
 
   def processDelivery(delivery: Delivery): Boolean = {
     val article = Serializer[Article](delivery.getBody)
-    log.info("Processing delivery of Article({})", article.articleId)
+    log.debug("Processing delivery of Article({})", article.articleId)
     ArticleDao.save(article)
     val retrieved = ArticleDao.get(article.articleId)
     retrieved.isDefined
