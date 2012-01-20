@@ -78,7 +78,10 @@ object Api extends Logging with Instrumented {
     val response = try {
       http.when(statusCodes)(request ># obj)()
     } catch {
-      case e: Exception => { log.error("Error performing request to '{}'", request.path, e); JsObject(); }
+      case e: Exception => {
+        log.error("Error performing request to '{}' for {}", Array(request.path, user), e)
+        JsObject()
+      }
     }
     val responseStr = if (response == null || response == JsObject()) { "null || {}" } else { response.toString() }
     log.debug("Request to '{}' responded with '{}'", request.path, responseStr)
