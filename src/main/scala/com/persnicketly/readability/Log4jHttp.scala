@@ -1,6 +1,6 @@
 package com.persnicketly.readability
 
-import dispatch.{nio, Request, url}
+import dispatch.nio
 
 class Log4jHttp extends nio.Http {
   import org.slf4j.LoggerFactory
