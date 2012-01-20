@@ -17,8 +17,10 @@ trait Command extends Logging {
 
   def async(name: String, work: => Unit): Thread = {
     log.info("Starting thread '{}'", name)
-    val t = new Thread(group, name) { override def run() = work }
-    t.start
+    val t = new Thread(group, name) {
+      override def run() { work }
+    }
+    t.start()
     t
   }
 }
