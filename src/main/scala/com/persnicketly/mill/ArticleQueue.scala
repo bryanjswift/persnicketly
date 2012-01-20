@@ -14,12 +14,8 @@ object ArticleQueue extends Queue {
   }
 
   def add(article: Article): Option[Article] = {
-    withChannel(config) { channel =>
-      log.info("Adding Article({}) to queue", article.articleId)
-      channel.basicPublish(exchange, queueName, config.message.properties, article.toByteArray)
-      counter.inc()
-      article
-    }
+    log.info("Adding Article({}) to queue", article.articleId)
+    publish(article.toByteArray, article)
   }
 
   def processDelivery(delivery: Delivery): Boolean = {
@@ -27,7 +23,6 @@ object ArticleQueue extends Queue {
     log.info("Processing delivery of Article({})", article.articleId)
     ArticleDao.save(article)
     val retrieved = ArticleDao.get(article.articleId)
-    counter.dec()
     retrieved.isDefined
   }
 }
