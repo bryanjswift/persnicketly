@@ -13,14 +13,14 @@ case class QueueConfig(
 
 case class MessageConfig(contentType: String, persistent: Boolean, priority: Int) {
   val properties = {
-    val props = new AMQP.BasicProperties()
-    props.setContentType(contentType)
+    val builder = new AMQP.BasicProperties.Builder()
+    builder.contentType(contentType)
     if (persistent) {
-      props.setDeliveryMode(2)
+      builder.deliveryMode(2)
     } else {
-      props.setDeliveryMode(1)
+      builder.deliveryMode(1)
     }
-    props.setPriority(priority)
-    props
+    builder.priority(priority)
+    builder.build
   }
 }
