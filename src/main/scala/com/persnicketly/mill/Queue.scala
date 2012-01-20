@@ -4,7 +4,6 @@ import com.persnicketly.{Logging,Persnicketly}
 import com.rabbitmq.client.{Channel,ConnectionFactory,QueueingConsumer}
 import com.yammer.metrics.Metrics
 import com.yammer.metrics.scala.Instrumented
-import scala.collection.mutable.Set
 import scala.util.control.Exception.catching
 
 trait Queue extends Logging with Instrumented {
@@ -67,16 +66,19 @@ trait Queue extends Logging with Instrumented {
       channel.basicConsume(queueName, false, consumer)
       while (true) {
         val delivery = consumer.nextDelivery
+        val envelope = delivery.getEnvelope
         val result =
           try { processDelivery(delivery) }
           catch { case e: Exception => { log.error("Unable to process {}", delivery, e); false } }
 
-        val tag = delivery.getEnvelope.getDeliveryTag
+        val tag = envelope.getDeliveryTag
         if (result) {
           channel.basicAck(tag, false)
+          counter.dec()
         } else {
-          log.warn("Rejected delivery of {}", tag)
-          channel.basicNack(tag, false, true)
+          log.warn("Rejected delivery of {} -- requeueing {}", tag, !envelope.isRedeliver)
+          channel.basicNack(tag, false, !envelope.isRedeliver)
+          if (envelope.isRedeliver) { counter.dec() }
         }
       }
       log.warn("Consumer quitting with {} jobs remaining", counter.count)
