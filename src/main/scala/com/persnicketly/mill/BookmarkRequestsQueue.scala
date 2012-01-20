@@ -41,7 +41,6 @@ object BookmarkRequestsQueue extends Queue {
     val bookmarks = Api.Bookmarks.fetch(Persnicketly.oauthConsumer, conditions)
     val saved = bookmarks.map(_.map(mark => BookmarkDao.save(mark))).getOrElse(List())
     saved.forall(_.id.isDefined)
-    counter.dec()
     bookmarks.isDefined
   }
 }
