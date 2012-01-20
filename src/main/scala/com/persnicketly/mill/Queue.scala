@@ -20,7 +20,6 @@ trait Queue extends Logging with Instrumented {
 
   val args: java.util.Map[String, Object] = null
   val exchange = ""
-  private val rejectedDeliveries = Set[Long]()
   lazy val counter = Metrics.defaultRegistry().newCounter(getClass, queueName, null)
 
   /** Process something within a try/catch/finally with a Channel
@@ -77,8 +76,7 @@ trait Queue extends Logging with Instrumented {
           channel.basicAck(tag, false)
         } else {
           log.warn("Rejected delivery of {}", tag)
-          channel.basicNack(tag, false, rejectedDeliveries.contains(tag))
-          rejectedDeliveries += tag
+          channel.basicNack(tag, false, true)
         }
       }
       log.warn("Consumer quitting with {} jobs remaining", counter.count)
