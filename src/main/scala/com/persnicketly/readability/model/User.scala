@@ -3,7 +3,6 @@ package com.persnicketly.readability.model
 import com.mongodb.casbah.Imports._
 import org.bson.types.ObjectId
 import org.joda.time.DateTime
-import org.scribe.model.Token
 
 case class User(
   id: Option[ObjectId],
@@ -39,11 +38,11 @@ object User {
   implicit def user2dbobject(user: User): DBObject = {
     val builder = MongoDBObject.newBuilder
     user.id.foreach(id => builder += ("_id" -> id))
-    builder += "request_token_value" -> user.requestToken.getToken
-    builder += "request_token_secret" -> user.requestToken.getSecret
+    builder += "request_token_value" -> user.requestToken.value
+    builder += "request_token_secret" -> user.requestToken.secret
     user.accessToken.foreach(t => {
-      builder += "access_token_value" -> t.getToken
-      builder += "access_token_secret" -> t.getSecret
+      builder += "access_token_value" -> t.value
+      builder += "access_token_secret" -> t.secret
     })
     user.verifier.foreach(v => builder += ("verifier" -> v))
     user.personalInfo.foreach(info => {
@@ -61,7 +60,7 @@ object User {
 object TokenHelper {
   def apply(value: Option[String], secret: Option[String]): Option[Token] = {
     if (value.isDefined && secret.isDefined) {
-      Some(new Token(value.get, secret.get))
+      Some(Token(value.get, secret.get))
     } else {
       None
     }

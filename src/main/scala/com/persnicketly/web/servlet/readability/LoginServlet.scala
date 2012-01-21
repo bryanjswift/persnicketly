@@ -7,7 +7,6 @@ import com.persnicketly.readability.model.User
 import com.persnicketly.Persnicketly
 import com.persnicketly.web.Servlet
 import org.slf4j.LoggerFactory
-import org.scribe.model.Token
 import scala.collection.mutable
 
 @Singleton

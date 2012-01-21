@@ -1,7 +1,8 @@
 package com.persnicketly.readability
 
 import api.ReadabilityApi
-import org.scribe.model.{Verifier, Token}
+import model.Token
+import org.scribe.model.Verifier
 
 object Auth {
   private val svc = "https://www.readability.com/api/rest/v1/oauth/"

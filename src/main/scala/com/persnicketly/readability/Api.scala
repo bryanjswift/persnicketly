@@ -75,7 +75,7 @@ object Api extends Logging with Instrumented {
     apiMeter.mark()
     val http = new Log4jHttp
     val access = user.accessToken.get
-    val request = url <@ (consumer, Token(access.getToken, access.getSecret))
+    val request = url <@ (consumer, Token(access.value, access.secret))
     val response = try {
       http.when(statusCodes)(request ># obj)()
     } catch {
