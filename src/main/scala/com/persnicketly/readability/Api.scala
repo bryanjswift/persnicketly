@@ -4,7 +4,7 @@ import dispatch.{Request, url}
 import dispatch.json.JsObject
 import dispatch.json.Js._
 import dispatch.json.JsHttp.requestToJsHandlers
-import dispatch.oauth.Consumer
+import dispatch.oauth.{Consumer, Token}
 import dispatch.oauth.OAuth.Request2RequestSigner
 import com.persnicketly.Logging
 import com.persnicketly.readability.model.{Article, Bookmark, Meta, User, UserData}
@@ -74,7 +74,8 @@ object Api extends Logging with Instrumented {
   private def request[T](url: Request, consumer: Consumer, user: User)(thunk: JsObject => T): Option[T] = {
     apiMeter.mark()
     val http = new Log4jHttp
-    val request = url <@ (consumer, user.accessToken.get)
+    val access = user.accessToken.get
+    val request = url <@ (consumer, Token(access.getToken, access.getSecret))
     val response = try {
       http.when(statusCodes)(request ># obj)()
     } catch {

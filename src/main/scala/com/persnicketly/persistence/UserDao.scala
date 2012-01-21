@@ -68,10 +68,10 @@ object UserDao extends Dao {
     saveTimer.time {
       val query = user.id match {
         case Some(id) => MongoDBObject("_id" -> id)
-        case None => MongoDBObject("request_token_value" -> user.requestToken.value)
+        case None => MongoDBObject("request_token_value" -> user.requestToken.getToken)
       }
       collection.update(query, user, upsert = true, multi = false)
-      get(user.requestToken.value).get
+      get(user.requestToken.getToken).get
     }
   }
 }

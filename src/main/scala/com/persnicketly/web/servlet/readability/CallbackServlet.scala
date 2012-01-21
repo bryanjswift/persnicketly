@@ -27,7 +27,7 @@ class CallbackServlet extends Servlet with Logging {
     log.info("auth_token - {} :: verifier - {}", token, verifier)
 
     // Request an access token
-    val accessToken = Auth.access_token(Persnicketly.oauthConsumer, token, verifier)
+    val accessToken = Auth.accessToken(token, verifier)
     log.info("access_token - {}", accessToken)
 
     // Get username, first name, last name and userId
