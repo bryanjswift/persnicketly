@@ -11,17 +11,21 @@ class ScoredArticleDao(from: Int) extends Dao {
 
   val selectTimer = metrics.timer("scored_" + from + "-select")
 
-  def select(from: Int, count: Int): List[ScoredArticle] = {
+  def select(count: Int): List[ScoredArticle] = {
     selectTimer.time {
-      val collection = db("scored_" + from)
       val articles = collection.find().limit(count).sort(BookmarkDao.scoredSort)
       articles.map(o => ScoredArticle(o.getAs[DBObject]("value").get)).toList
     }
+  }
+
+  def get(id: String): Option[ScoredArticle] = {
+    collection.findOne(MongoDBObject("_id" -> id)).map(o => ScoredArticle(o.getAs[DBObject]("value").get))
   }
 }
 
 object ScoredArticleDao {
   private val daos = Map(14 -> new ScoredArticleDao(14), 60 -> new ScoredArticleDao(60))
 
-  def select(from: Int, count: Int): List[ScoredArticle] = daos.get(from).get.select(from, count)
+  def select(from: Int, count: Int): List[ScoredArticle] = daos.get(from).get.select(count)
+  def get(from: Int, id: String): Option[ScoredArticle] = daos.get(from).get.get(id)
 }
