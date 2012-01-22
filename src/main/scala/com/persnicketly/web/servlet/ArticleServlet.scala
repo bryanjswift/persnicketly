@@ -3,7 +3,7 @@ package com.persnicketly.web.servlet
 import com.codahale.jerkson.Json._
 import com.google.inject.Singleton
 import com.persnicketly.{Constants, Logging}
-import com.persnicketly.persistence.ScoredArticleDao
+import com.persnicketly.persistence.{RssArticleDao, ScoredArticleDao}
 import com.persnicketly.web.{JsonResponse, Servlet}
 import com.persnicketly.web.controller.ArticleController
 import org.apache.http.HttpStatus
@@ -47,12 +47,14 @@ class ArticleServlet extends Servlet with Logging with Instrumented {
     val until = new DateTime
     val since = until - from.days
     helper.addExtra("since", since).addExtra("until", until)
-    val template = helper.format match {
-      case "atom" => "/templates/articleList.atom.vm"
-      case "rss" => "/templates/articleList.atom.vm"
-      case _ => "/templates/articleList.vm"
+    helper.format match {
+      case "atom" =>
+        ArticleController.renderRssArticles(helper, RssArticleDao.select(10))
+      case "rss" =>
+        ArticleController.renderRssArticles(helper, RssArticleDao.select(10))
+      case _ => 
+        ArticleController.renderArticles(helper, ScoredArticleDao.select(from, count = 10), "/templates/articleList.vm")
     }
-    ArticleController.renderArticles(helper, ScoredArticleDao.select(from, count = 10), template)
   }
 
   def read(helper: HttpHelper, articleId: String) {
