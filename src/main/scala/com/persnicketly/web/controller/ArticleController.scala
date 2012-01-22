@@ -2,8 +2,8 @@ package com.persnicketly.web.controller
 
 import com.persnicketly.{Constants, Logging, Persnicketly}
 import com.persnicketly.mill.UserQueue
-import com.persnicketly.model.ScoredArticle
-import com.persnicketly.persistence.{BookmarkDao, ArticleDao, UserDao}
+import com.persnicketly.model.{RssArticle, ScoredArticle}
+import com.persnicketly.persistence.{BookmarkDao, ArticleDao, ScoredArticleDao, UserDao}
 import com.persnicketly.readability.Api
 import com.persnicketly.readability.model.Bookmark
 import com.persnicketly.web.Servlet
@@ -85,5 +85,20 @@ object ArticleController extends Logging with Instrumented {
         "uri" -> helper.uri
       ) ++ helper.extras, helper.response)
     }
+  }
+
+  /**
+   * Render RssArticle instances into an RSS feed
+   * @param helper wrapping HttpServletRequest and HttpServletResponse
+   * @param articles to be rendered
+   */
+  def renderRssArticles(helper: Servlet#HttpHelper, articles: List[RssArticle]) {
+    val view = new VelocityView("/templates/articleList.atom.vm")
+    helper.response.setContentType(helper.mime)
+    view.render(Map[String,Any](
+      "articles" -> articles.map(rss => { rss.copy(scored = ScoredArticleDao.get(60, rss.id.get)) }),
+      "uri_base" -> ("http://" + Persnicketly.Config("http.domain").or("persnicketly.com") + "/"),
+      "uri" -> helper.uri
+    ) ++ helper.extras, helper.response)
   }
 }
