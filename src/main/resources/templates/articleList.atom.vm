@@ -9,16 +9,19 @@
 
   <generator uri="${uri_base}${uri}">Persnicketly</generator>
 
-  #foreach( $scored in $articles )
-    #set( $article = $scored.article() )
+  #foreach( $rssArticle in $articles )
+    #set( $articleId = ${rssArticle.id().get()} )
+    #set( $date = ${rssArticle.updated().get()} )
+    #set( $scored = ${rssArticle.scored().get()} )
+    #set( $article = ${scored.article()} )
 
     <entry>
       <title type="html"><![CDATA[${article.title()}]]></title>
-      <link href="${uri_base}/article/read/${article.articleId()}"/>
-      <!--<updated></updated>-->
-      <id>${article.articleId()}</id>
+      <link href="${uri_base}/article/read/${articleId}"/>
+      <updated>${date.toString()}</updated>
+      <id>${articleId}</id>
       <content type="html"><![CDATA[
-        <div class="excerpt">${article.excerpt().get()}</div>
+        <div class="excerpt">#if(${article.excerpt().isDefined()})${article.excerpt().get()}#end</div>
         <div class="data">
           <p>
             <span>Times Favorited: ${scored.numFavorites()}</span>
