@@ -24,7 +24,6 @@ object Api extends Logging with Instrumented {
     def add(user: User, pageUrl: String): ApiResponse[String] = {
       val request = new OAuthRequest(Verb.POST, bookmarksUrl)
       request.addBodyParameter("url", pageUrl)
-      // article adding gives an empty response which dispatch translates to null
       send(request, user) {
         response => { response.getBody }
       }

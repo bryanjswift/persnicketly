@@ -2,8 +2,6 @@ package com.persnicketly.readability.api
 
 import org.scalatest.WordSpec
 import org.scalatest.matchers.ShouldMatchers
-import dispatch.json.{JsValue, JsObject}
-import dispatch.json.Js._
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 
