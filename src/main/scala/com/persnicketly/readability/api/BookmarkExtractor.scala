@@ -38,8 +38,8 @@ object BookmarkExtractor extends Extract[Bookmark] {
   def apply(o: JObject): Bookmark = {
     Bookmark(
       None,
-      (o \ "id").valueAs[Int],
-      (o \ "user_id").valueAs[Int],
+      (o \ "id").valueAs[BigInt].toInt,
+      (o \ "user_id").valueAs[BigInt].toInt,
       (o \ "favorite").valueAs[Boolean],
       (o \ "archive").valueAs[Boolean],
       ArticleExtractor((o \ "article").asInstanceOf[JObject]),
