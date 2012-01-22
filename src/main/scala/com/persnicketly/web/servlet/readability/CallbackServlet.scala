@@ -1,9 +1,5 @@
 package com.persnicketly.web.servlet.readability
 
-import dispatch.url
-import dispatch.oauth.OAuth.Request2RequestSigner
-import dispatch.json.Js.obj
-import dispatch.json.JsHttp.requestToJsHandlers
 import com.google.inject.Singleton
 import com.persnicketly.{Constants, Logging, Persnicketly}
 import com.persnicketly.mill.UserQueue
@@ -32,7 +28,7 @@ class CallbackServlet extends Servlet with Logging {
 
     // Get username, first name, last name and userId
     var updatedUser = user.copy(accessToken = Some(accessToken), verifier = Some(verifier))
-    val dbUser = UserDao.save(updatedUser.copy(personalInfo = Api.currentUser(Persnicketly.oauthConsumer, updatedUser)))
+    val dbUser = UserDao.save(updatedUser.copy(personalInfo = Api.currentUser(updatedUser)))
     log.info("setting _user cookie to {}", dbUser.id.get.toString)
     helper.cookies + (Constants.UserCookie, dbUser.id.get.toString)
     UserQueue.add(dbUser)

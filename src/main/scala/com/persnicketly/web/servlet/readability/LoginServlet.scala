@@ -13,7 +13,7 @@ import scala.collection.mutable
 class LoginServlet extends Servlet {
   private val log = LoggerFactory.getLogger(classOf[LoginServlet])
   override def doGet(helper: HttpHelper) {
-    val token = Auth.requestToken(Persnicketly.oauthCallback)
+    val token = Auth.requestToken
     // save user
     val user = UserDao.save(User(None, token, None, None, None, None))
     // set cookie to ObjectId of User

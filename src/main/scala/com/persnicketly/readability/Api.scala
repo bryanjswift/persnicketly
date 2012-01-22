@@ -1,6 +1,5 @@
 package com.persnicketly.readability
 
-import dispatch.oauth.Consumer
 import com.codahale.jerkson.AST._
 import com.codahale.jerkson.Json._
 import com.persnicketly.Logging
@@ -21,8 +20,8 @@ object Api extends Logging with Instrumented {
   lazy val apiErrorMeter = metrics.meter("api-errors", "errors")
 
   object Bookmarks {
-    def add(consumer: Consumer, user: User, article: Article) { add(consumer, user, article.url) }
-    def add(consumer: Consumer, user: User, pageUrl: String): ApiResponse[String] = {
+    def add(user: User, article: Article) { add(user, article.url) }
+    def add(user: User, pageUrl: String): ApiResponse[String] = {
       val request = new OAuthRequest(Verb.POST, bookmarksUrl)
       request.addBodyParameter("url", pageUrl)
       // article adding gives an empty response which dispatch translates to null
@@ -30,7 +29,7 @@ object Api extends Logging with Instrumented {
         response => { response.getBody }
       }
     }
-    def fetch(consumer: Consumer, conditions: BookmarkRequestConditions): Option[List[Bookmark]] = {
+    def fetch(conditions: BookmarkRequestConditions): Option[List[Bookmark]] = {
       val request = new OAuthRequest(Verb.GET, bookmarksUrl)
       conditions.map.foreach(p => request.addQuerystringParameter(p._1, p._2))
       val apiResponse = send(request, conditions.user) {
@@ -45,7 +44,7 @@ object Api extends Logging with Instrumented {
       }
       apiResponse.body
     }
-    def meta(consumer: Consumer, user: User, since: Option[DateTime] = None): Option[Meta] = {
+    def meta(user: User, since: Option[DateTime] = None): Option[Meta] = {
       val request = new OAuthRequest(Verb.GET, bookmarksUrl)
       request.addQuerystringParameter("per_page", "1")
       since.foreach(s => request.addQuerystringParameter("updated_since", s.toString(datePattern)))
@@ -56,7 +55,7 @@ object Api extends Logging with Instrumented {
       }
       apiResponse.body
     }
-    def update(consumer: Consumer, user: User, mark: Bookmark): Option[Bookmark] = {
+    def update(user: User, mark: Bookmark): Option[Bookmark] = {
       val request = new OAuthRequest(Verb.GET, bookmarksUrl + "/" + mark.bookmarkId)
       request.addBodyParameter("favorite", (if (mark.isFavorite) "1" else "0"))
       request.addBodyParameter("archive", (if (mark.isArchived) "1" else "0"))
@@ -81,10 +80,10 @@ object Api extends Logging with Instrumented {
     }
   }
 
-  def currentUser(consumer: Consumer, user: User): Option[UserData] = {
+  def currentUser(user: User): Option[UserData] = {
     val request = new OAuthRequest(Verb.GET, userUrl)
     import scala.actors.Futures.future
-    val marks = future { Bookmarks.fetch(consumer, BookmarkRequestConditions(1, user)) }
+    val marks = future { Bookmarks.fetch(BookmarkRequestConditions(1, user)) }
     val apiResponse = send(request, user) {
       response => {
         UserDataExtractor(parse[JObject](response.getBody)).get.copy(userId = marks().flatMap(_.headOption.map(_.userId)))

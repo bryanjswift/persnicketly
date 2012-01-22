@@ -7,7 +7,7 @@ import org.scribe.model.Verifier
 object Auth {
   private val svc = "https://www.readability.com/api/rest/v1/oauth/"
 
-  def requestToken(callback_url: String): Token = ReadabilityApi.service.getRequestToken
+  def requestToken: Token = ReadabilityApi.service.getRequestToken
 
   def authorizeUrl(token: Token): String = ReadabilityApi.service.getAuthorizationUrl(token)
 

@@ -8,7 +8,6 @@ import org.apache.commons.cli.{Options => CliOptions, GnuParser}
 import org.apache.log4j.PropertyConfigurator
 import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
-import dispatch.oauth.Consumer
 import velocity.VelocityHelper
 
 object Persnicketly {
@@ -24,8 +23,6 @@ object Persnicketly {
   }
   private var confResource = new WatchedResource("config.json")(confProducer)
   private var log4jResource = new WatchedResource("log4j.properties")(log4jProducer)
-  lazy val oauthConsumer = new Consumer("Persnicketly", "ynbCCZ5q7ggBGAkaAGFngRDAChg4pbYm")
-  lazy val oauthCallback = String.format("http://%s/readability/callback", Config("http.domain").or("persnicketly.com"))
 
   val cliOpts = new CliOptions
   cliOpts.addOption("v", "velocity", true, "Path to velocity configuration file (velocity.properties)")
