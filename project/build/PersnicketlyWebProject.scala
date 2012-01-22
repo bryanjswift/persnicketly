@@ -38,10 +38,6 @@ class PersnicketlyWebProject(info: ProjectInfo) extends DefaultWebProject(info)
   // Velocity
   val simpleVelocity = "bryanjswift" %% "simple-velocity" % "0.3.5"
   // oauth
-  val dispatchVersion = "0.8.6"
-  val oauth = "net.databinder" %% "dispatch-oauth" % dispatchVersion
-  val nio = "net.databinder" %% "dispatch-nio" % dispatchVersion
-  val jsonHttp = "net.databinder" %% "dispatch-http-json" % dispatchVersion
   val scribe = "org.scribe" % "scribe" % "1.3.0"
   // Joda Time for nice immutable dates
   val jodaTime = "joda-time" % "joda-time" % "1.6.2"
