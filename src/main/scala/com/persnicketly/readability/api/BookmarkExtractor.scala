@@ -3,8 +3,10 @@ package com.persnicketly.readability.api
 import dispatch.json.Js._
 import dispatch.json.{Js, JsString, Obj}
 import dispatch.json.{Extract, JsValue, JsObject}
+import com.codahale.jerkson.AST._
 import com.persnicketly.readability.Api
 import com.persnicketly.readability.model.{Article, Bookmark}
+import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 
 object BookmarkExtractor extends Extract[Bookmark] {
@@ -31,6 +33,30 @@ object BookmarkExtractor extends Extract[Bookmark] {
       }
     case _ =>
       None
+  }
+
+  def apply(o: JObject): Bookmark = {
+    Bookmark(
+      None,
+      (o \ "id").valueAs[Int],
+      (o \ "user_id").valueAs[Int],
+      (o \ "favorite").valueAs[Boolean],
+      (o \ "archive").valueAs[Boolean],
+      ArticleExtractor((o \ "article").asInstanceOf[JObject]),
+      DateExtractor((o \ "date_archived")),
+      DateExtractor((o \ "date_favorited")),
+      DateExtractor((o \ "date_updated"))
+    )
+  }
+}
+
+object DateExtractor {
+  private val format = DateTimeFormat.forPattern(Api.datePattern)
+  def apply(v: JValue): Option[DateTime] = {
+    v match {
+      case JString(s) => Some(format.parseDateTime(s))
+      case _ => None
+    }
   }
 }
 

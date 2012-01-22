@@ -3,6 +3,7 @@ package com.persnicketly.readability.api
 import dispatch.json.Js._
 import dispatch.json.{Js, JsString, Obj}
 import dispatch.json.{Extract, JsValue, JsObject}
+import com.codahale.jerkson.AST._
 import com.persnicketly.readability.model.Article
 
 object ArticleExtractor extends Extract[Article] {
@@ -24,6 +25,26 @@ object ArticleExtractor extends Extract[Article] {
       }
     case _ =>
       None
+  }
+
+  def apply(o: JObject): Article = {
+    Article(
+      (o \ "id").valueAs[String],
+      (o \ "title").valueAs[String],
+      (o \ "domain").valueAs[String],
+      (o \ "url").valueAs[String],
+      StringExtractor((o \ "excerpt")),
+      (o \ "processed").valueAs[Boolean]
+    )
+  }
+}
+
+object StringExtractor {
+  def apply(v: JValue): Option[String] = {
+    v match {
+      case JString(s) => Some(s)
+      case _ => None
+    }
   }
 }
 
