@@ -1,23 +1,19 @@
 package com.persnicketly.readability
 
-import dispatch.{Request, url}
-import dispatch.json.JsObject
-import dispatch.json.Js._
-import dispatch.json.JsHttp.requestToJsHandlers
-import dispatch.oauth.{Consumer, Token}
-import dispatch.oauth.OAuth.Request2RequestSigner
+import dispatch.oauth.Consumer
+import com.codahale.jerkson.AST._
+import com.codahale.jerkson.Json._
 import com.persnicketly.Logging
 import com.persnicketly.readability.model.{Article, Bookmark, Meta, User, UserData}
 import com.persnicketly.readability.api._
-import org.joda.time.DateTime
 import com.yammer.metrics.scala.Instrumented
+import org.joda.time.DateTime
+import org.scribe.model.{Response, OAuthRequest, Verb}
 
 object Api extends Logging with Instrumented {
-  private val articlesUrl = url("https://www.readability.com/api/rest/v1/articles")
-  private val bookmarksUrl = url("https://www.readability.com/api/rest/v1/bookmarks")
-  private val userUrl = url("https://www.readability.com/api/rest/v1/users/_current")
-  private val statusCodes = { code: Int => List(200, 201, 202, 203, 204, 400, 403, 404, 409, 500) contains code }
-  private val errorExtractor = 'error ?? bool
+  private val articlesUrl = "https://www.readability.com/api/rest/v1/articles"
+  private val bookmarksUrl = "https://www.readability.com/api/rest/v1/bookmarks"
+  private val userUrl = "https://www.readability.com/api/rest/v1/users/_current"
 
   val datePattern = "YYYY-MM-dd HH:mm:ss"
 
@@ -26,81 +22,94 @@ object Api extends Logging with Instrumented {
 
   object Bookmarks {
     def add(consumer: Consumer, user: User, article: Article) { add(consumer, user, article.url) }
-    def add(consumer: Consumer, user: User, pageUrl: String) {
-      val url = bookmarksUrl << Map("url" -> pageUrl)
+    def add(consumer: Consumer, user: User, pageUrl: String): ApiResponse[String] = {
+      val request = new OAuthRequest(Verb.POST, bookmarksUrl)
+      request.addBodyParameter("url", pageUrl)
       // article adding gives an empty response which dispatch translates to null
-      request(url, consumer, user) { response => response }
+      send(request, user) {
+        response => { response.getBody }
+      }
     }
     def fetch(consumer: Consumer, conditions: BookmarkRequestConditions): Option[List[Bookmark]] = {
-      var url = bookmarksUrl <<? conditions.map
-      request(url, consumer, conditions.user) { response =>
-        val bookmarkObjects = ('bookmarks ! (list ! obj))(response)
-        bookmarkObjects map BookmarkExtractor
+      val request = new OAuthRequest(Verb.GET, bookmarksUrl)
+      conditions.map.foreach(p => request.addQuerystringParameter(p._1, p._2))
+      val apiResponse = send(request, conditions.user) {
+        response => {
+          val body = response.getBody
+          val marks = (parse[JObject](body) \ "bookmarks") match {
+            case JArray(els) => els
+            case _ => List[JValue]()
+          }
+          marks.map(m => BookmarkExtractor(m).get)
+        }
       }
+      apiResponse.body
     }
     def meta(consumer: Consumer, user: User, since: Option[DateTime] = None): Option[Meta] = {
-      var url = bookmarksUrl <<? Map("per_page" -> "1")
-      since.foreach(s => url = url <<? Map("updated_since" -> s.toString(datePattern)))
-      request(url, consumer, user) { response =>
-        val metaObject = ('meta ! obj)(response)
-        MetaExtractor(metaObject)
+      val request = new OAuthRequest(Verb.GET, bookmarksUrl)
+      request.addQuerystringParameter("per_page", "1")
+      since.foreach(s => request.addQuerystringParameter("updated_since", s.toString(datePattern)))
+      val apiResponse = send(request, user) {
+        response => {
+          MetaExtractor((parse[JObject](response.getBody) \ "meta")).get
+        }
       }
+      apiResponse.body
     }
     def update(consumer: Consumer, user: User, mark: Bookmark): Option[Bookmark] = {
-      val url = bookmarksUrl / mark.bookmarkId.toString << mark
-      request(url, consumer, user) { response =>
-        BookmarkExtractor(response)
+      val request = new OAuthRequest(Verb.GET, bookmarksUrl + "/" + mark.bookmarkId)
+      request.addBodyParameter("favorite", (if (mark.isFavorite) "1" else "0"))
+      request.addBodyParameter("archive", (if (mark.isArchived) "1" else "0"))
+      val apiResponse = send(request, user) {
+        response => {
+          BookmarkExtractor(parse[JObject](response.getBody)).get
+        }
       }
+      apiResponse.body
     }
   }
 
   object Articles {
-    def apply(consumer: Consumer, user: User, articleId: String): Option[Article] = {
-      val url = articlesUrl / articleId
-      request(url, consumer, user) { response =>
-        ArticleExtractor(response)
+    def apply(user: User, articleId: String): Option[Article] = {
+      val request = new OAuthRequest(Verb.GET, articlesUrl + "/" + articleId)
+      val apiResponse = send(request, user) {
+        response => {
+          ArticleExtractor(parse[JObject](response.getBody)).get
+        }
       }
+      apiResponse.body
     }
   }
 
   def currentUser(consumer: Consumer, user: User): Option[UserData] = {
+    val request = new OAuthRequest(Verb.GET, userUrl)
     import scala.actors.Futures.future
     val marks = future { Bookmarks.fetch(consumer, BookmarkRequestConditions(1, user)) }
-    request(userUrl, consumer, user) { response =>
-      UserDataExtractor(response).copy(userId = marks().flatMap(_.headOption.map(_.userId)))
+    val apiResponse = send(request, user) {
+      response => {
+        UserDataExtractor(parse[JObject](response.getBody)).get.copy(userId = marks().flatMap(_.headOption.map(_.userId)))
+      }
     }
+    apiResponse.body
   }
 
-  private def request[T](url: Request, consumer: Consumer, user: User)(thunk: JsObject => T): Option[T] = {
+  private def send[T](request: OAuthRequest, user: User)(thunk: Response => T): ApiResponse[T] = {
     apiMeter.mark()
-    val http = new Log4jHttp
-    val access = user.accessToken.get
-    val request = url <@ (consumer, Token(access.value, access.secret))
-    val response = try {
-      http.when(statusCodes)(request ># obj)()
-    } catch {
-      case e: Exception => {
-        apiErrorMeter.mark()
-        log.error("Error performing request to '{}'", request.path, e)
-        null
-      }
-    }
-    val responseStr = if (response == null) { "null || {}" } else { response.toString() }
-    log.debug("Request to '{}' responded with '{}'", request.path, responseStr)
-    try {
-      if (response == null || isError(response)) { None }
-      else {
-        log.debug("Trying thunk on {}", response)
-        Some(thunk(response))
-      }
-    } catch {
-      case e: Exception => {
-        log.error("Error performing operation for {}", response)
-        None
-      }
-    } finally {
-      http.shutdown()
+    ReadabilityApi.service.signRequest(user.accessToken.get, request)
+    val response: Response = request.send
+
+    log.debug("Request to '{}' responded with {}", request.getUrl, response.getBody)
+
+    response.getCode match {
+      case 200 => ApiResponse(response.getCode, thunk(response))
+      case _ => ApiResponse(response.getCode)
     }
   }
-  private def isError(response: JsObject): Boolean = errorExtractor(response).getOrElse(false)
+}
+
+case class ApiResponse[+T](status: Int, body: Option[T])
+
+object ApiResponse {
+  def apply(status: Int): ApiResponse[Nothing] = ApiResponse(status, None)
+  def apply[T](status: Int, body: T): ApiResponse[T] = ApiResponse(status, Some(body))
 }

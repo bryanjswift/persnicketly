@@ -19,6 +19,9 @@ class ReadabilityApi extends DefaultApi10a {
 object ReadabilityApi {
   import Persnicketly.{oauthCallback => callback,oauthConsumer => consumer}
 
+  private val oauthKey = "Persnicketly"
+  private val oauthSecret = "ynbCCZ5q7ggBGAkaAGFngRDAChg4pbYm"
+
   def service: OAuthService = new ServiceBuilder().provider(classOf[ReadabilityApi])
       .callback(callback)
       .apiKey(consumer.key)

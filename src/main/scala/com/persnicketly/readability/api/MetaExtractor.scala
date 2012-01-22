@@ -1,35 +1,20 @@
 package com.persnicketly.readability.api
 
-import dispatch.json.Js._
-import dispatch.json.{Js, JsString}
-import dispatch.json.{Extract, JsValue, JsObject}
+import com.codahale.jerkson.AST._
 import com.persnicketly.readability.model.Meta
 
-object MetaJson extends Js {
-  val totalPages = 'num_pages ? num
-  val page = 'page ? num
-  val totalCount = 'item_count_total ? num
-  val count = 'item_count ? num
-  val keys = List(JsString('num_pages), JsString('page), JsString('item_count_total), JsString('item_count))
-}
-
-object MetaExtractor extends Extract[Meta] {
-  def unapply(js: JsValue) = js match {
-    case JsObject(m) => 
-      if (MetaJson.keys.forall(k => m.contains(k))) {
-        Some(
-          Meta(
-            MetaJson.totalPages(js).toInt,
-            MetaJson.page(js).toInt,
-            MetaJson.totalCount(js).toInt,
-            MetaJson.count(js).toInt
-          )
+object MetaExtractor {
+  def apply(v: JValue): Option[Meta] = v match {
+    case o: JObject =>
+      Some(
+        Meta(
+          (o \ "num_pages").valueAs[BigInt].toInt,
+          (o \ "page").valueAs[BigInt].toInt,
+          (o \ "item_count_total").valueAs[BigInt].toInt,
+          (o \ "item_count").valueAs[BigInt].toInt
         )
-      } else {
-        None
-      }
-    case _ =>
-      None
+      )
+    case _ => None
   }
 }
 

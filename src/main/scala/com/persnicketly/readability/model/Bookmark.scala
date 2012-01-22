@@ -30,11 +30,6 @@ object Bookmark {
     )
   }
 
-  implicit def asMap(mark: Bookmark) = Map(
-                  "favorite" -> (if (mark.isFavorite) "1" else "0"),
-                  "archive" -> (if (mark.isArchived) "1" else "0")
-                )
-
   implicit def bookmark2dbobject(bookmark: Bookmark): DBObject = {
     val builder = MongoDBObject.newBuilder
     builder += "bookmark_id" -> bookmark.bookmarkId
