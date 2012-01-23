@@ -1,6 +1,7 @@
 package com.persnicketly.persistence
 
 import com.mongodb.casbah.Imports._
+import com.persnicketly.Constants
 import com.persnicketly.model.RssArticle
 import org.joda.time.DateTime
 
@@ -50,6 +51,7 @@ object RssArticleDao extends Dao {
         }
       existing += (Some(id) -> article)
     })
+    Cache.put(Constants.RssUpdated, now)
     existing.values.map(save).toList
   }
 }
