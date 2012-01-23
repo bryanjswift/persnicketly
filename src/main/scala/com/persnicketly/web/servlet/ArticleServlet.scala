@@ -44,16 +44,17 @@ class ArticleServlet extends Servlet with Logging with Instrumented {
 
   def list(helper: HttpHelper) {
     val from = 60
+    val count = 10
     val until = new DateTime
     val since = until - from.days
     helper.addExtra("since", since).addExtra("until", until)
     helper.format match {
       case "atom" =>
-        ArticleController.renderRssArticles(helper, RssArticleDao.select(10))
+        ArticleController.renderRssArticles(helper, RssArticleDao.select(from, count))
       case "rss" =>
-        ArticleController.renderRssArticles(helper, RssArticleDao.select(10))
+        ArticleController.renderRssArticles(helper, RssArticleDao.select(from, count))
       case _ => 
-        ArticleController.renderArticles(helper, ScoredArticleDao.select(from, count = 10), "/templates/articleList.vm")
+        ArticleController.renderArticles(helper, ScoredArticleDao.select(from, count), "/templates/articleList.vm")
     }
   }
 
@@ -67,10 +68,18 @@ class ArticleServlet extends Servlet with Logging with Instrumented {
 
   def recent(helper: HttpHelper) {
     val from = 14
+    val count = 10
     val until = new DateTime
     val since = until - from.days
     helper.addExtra("since", since).addExtra("until", until)
-    ArticleController.renderArticles(helper, ScoredArticleDao.select(from, count = 10), "/templates/articleRecent.vm")
+    helper.format match {
+      case "atom" =>
+        ArticleController.renderRssArticles(helper, RssArticleDao.select(from, count))
+      case "rss" =>
+        ArticleController.renderRssArticles(helper, RssArticleDao.select(from, count))
+      case _ => 
+        ArticleController.renderArticles(helper, ScoredArticleDao.select(from, count), "/templates/articleRecent.vm")
+    }
   }
 
   def star(helper: HttpHelper, articleId: String) {
