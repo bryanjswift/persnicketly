@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Top Articles on Persnicketly]]></title>
+  <title><![CDATA[${title} on Persnicketly]]></title>
   <link href="${uri_base}${uri}.atom" rel="self"/>
   <link href="${uri_base}${uri}"/>
   <id>${uri_base}${uri}</id>

@@ -47,7 +47,7 @@ class ArticleServlet extends Servlet with Logging with Instrumented {
     val count = 10
     val until = new DateTime
     val since = until - from.days
-    helper.addExtra("since", since).addExtra("until", until)
+    helper.addExtra("since", since).addExtra("until", until).addExtra("title", "Top Articles")
     helper.format match {
       case "atom" =>
         ArticleController.renderRssArticles(helper, RssArticleDao.select(from, count))
@@ -71,7 +71,7 @@ class ArticleServlet extends Servlet with Logging with Instrumented {
     val count = 10
     val until = new DateTime
     val since = until - from.days
-    helper.addExtra("since", since).addExtra("until", until)
+    helper.addExtra("since", since).addExtra("until", until).addExtra("title", "Recent Articles")
     helper.format match {
       case "atom" =>
         ArticleController.renderRssArticles(helper, RssArticleDao.select(from, count))
