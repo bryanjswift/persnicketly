@@ -24,6 +24,8 @@
       <div class="data">
         <p>
           <span>Times Favorited: ${scored.numFavorites()}</span>
+        <p>
+        </p>
           <span>Times Bookmarked: ${scored.numBookmarks()}</span>
         </p>
       </div>
