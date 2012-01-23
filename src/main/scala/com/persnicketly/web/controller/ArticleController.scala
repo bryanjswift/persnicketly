@@ -97,7 +97,7 @@ object ArticleController extends Logging with Instrumented {
     helper.response.setContentType(helper.mime)
     view.render(Map[String,Any](
       "articles" -> articles.map(rss => { rss.copy(scored = ScoredArticleDao.get(60, rss.id.get)) }),
-      "uri_base" -> ("http://" + Persnicketly.Config("http.domain").or("persnicketly.com") + "/"),
+      "uri_base" -> ("http://" + Persnicketly.Config("http.domain").or("persnicketly.com")),
       "uri" -> helper.uri,
       "lastRssUpdate" -> Cache.get[DateTime](Constants.RssUpdated)
     ) ++ helper.extras, helper.response)
