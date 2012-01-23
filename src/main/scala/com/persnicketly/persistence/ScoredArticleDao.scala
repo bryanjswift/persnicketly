@@ -24,7 +24,7 @@ class ScoredArticleDao(from: Int) extends Dao {
 }
 
 object ScoredArticleDao {
-  private val daos = Map(14 -> new ScoredArticleDao(14), 60 -> new ScoredArticleDao(60))
+  private val daos = Config("compute").or(Array(14)).map(t => (t, new ScoredArticleDao(t))).toMap
 
   def select(from: Int, count: Int): List[ScoredArticle] = daos.get(from).get.select(count)
   def get(from: Int, id: String): Option[ScoredArticle] = daos.get(from).get.get(id)
