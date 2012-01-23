@@ -4,35 +4,31 @@
   <title><![CDATA[Top Articles on Persnicketly]]></title>
   <link href="${uri_base}${uri}.atom" rel="self"/>
   <link href="${uri_base}${uri}"/>
-  #if ($lastRssUpdate.isDefined())
-  <updated>${lastRssUpdate.toString}</updated>
-  #end
   <id>${uri_base}${uri}</id>
-
   <generator uri="${uri_base}${uri}">Persnicketly</generator>
+  #if ($lastRssUpdate.isDefined())<updated>${lastRssUpdate.get().toString()}</updated>#end
 
   #foreach( $rssArticle in $articles )
-    #set( $articleId = ${rssArticle.id().get()} )
-    #set( $date = ${rssArticle.updated().get()} )
-    #set( $scored = ${rssArticle.scored().get()} )
-    #set( $article = ${scored.article()} )
+  #set( $articleId = ${rssArticle.id().get()} )
+  #set( $date = ${rssArticle.updated().get()} )
+  #set( $scored = ${rssArticle.scored().get()} )
+  #set( $article = ${scored.article()} )
 
-    <entry>
-      <title type="html"><![CDATA[${article.title()}]]></title>
-      <link href="${uri_base}/article/read/${articleId}"/>
-      <updated>${date.toString()}</updated>
-      <id>${articleId}</id>
-      <content type="html"><![CDATA[
-        <div class="excerpt">#if(${article.excerpt().isDefined()})${article.excerpt().get()}#end</div>
-        <div class="data">
-          <p>
-            <span>Times Favorited: ${scored.numFavorites()}</span>
-            <span>Times Bookmarked: ${scored.numBookmarks()}</span>
-          </p>
-        </div>
-      ]]></content>
-    </entry>
+  <entry>
+    <title type="html"><![CDATA[${article.title()}]]></title>
+    <link href="${uri_base}/article/read/${articleId}"/>
+    <updated>${date.toString()}</updated>
+    <id>${articleId}</id>
+    <content type="html"><![CDATA[
+      <div class="excerpt">#if(${article.excerpt().isDefined()})${article.excerpt().get()}#end</div>
+      <div class="data">
+        <p>
+          <span>Times Favorited: ${scored.numFavorites()}</span>
+          <span>Times Bookmarked: ${scored.numBookmarks()}</span>
+        </p>
+      </div>
+    ]]></content>
+  </entry>
   #end
 
 </feed>
-
