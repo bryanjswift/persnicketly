@@ -4,7 +4,9 @@
   <title><![CDATA[Top Articles on Persnicketly]]></title>
   <link href="${uri_base}${uri}.atom" rel="self"/>
   <link href="${uri_base}${uri}"/>
-  <!--<updated></updated>-->
+  #if ($lastRssUpdate.isDefined())
+  <updated>${lastRssUpdate.toString}</updated>
+  #end
   <id>${uri_base}${uri}</id>
 
   <generator uri="${uri_base}${uri}">Persnicketly</generator>

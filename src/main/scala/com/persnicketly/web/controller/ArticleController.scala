@@ -3,7 +3,7 @@ package com.persnicketly.web.controller
 import com.persnicketly.{Constants, Logging, Persnicketly}
 import com.persnicketly.mill.UserQueue
 import com.persnicketly.model.{RssArticle, ScoredArticle}
-import com.persnicketly.persistence.{BookmarkDao, ArticleDao, ScoredArticleDao, UserDao}
+import com.persnicketly.persistence.{ArticleDao, BookmarkDao, Cache, ScoredArticleDao, UserDao}
 import com.persnicketly.readability.Api
 import com.persnicketly.readability.model.Bookmark
 import com.persnicketly.web.Servlet
@@ -98,7 +98,8 @@ object ArticleController extends Logging with Instrumented {
     view.render(Map[String,Any](
       "articles" -> articles.map(rss => { rss.copy(scored = ScoredArticleDao.get(60, rss.id.get)) }),
       "uri_base" -> ("http://" + Persnicketly.Config("http.domain").or("persnicketly.com") + "/"),
-      "uri" -> helper.uri
+      "uri" -> helper.uri,
+      "lastRssUpdate" -> Cache.get[DateTime](Constants.RssUpdated)
     ) ++ helper.extras, helper.response)
   }
 }
