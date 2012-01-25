@@ -39,3 +39,10 @@
             #end
           </ol>
 #end
+
+#macro(footer $klass)
+      <footer>
+        <p>Persnicketly &copy; 2011 - 2012</p>
+        <a class="$!{klass}" href="/about">about</a>
+      </footer>
+#end
