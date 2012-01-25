@@ -44,19 +44,7 @@ class ArticleServlet extends Servlet with Logging with Instrumented {
   }
 
   def list(helper: HttpHelper) {
-    val from = 60
-    val count = 10
-    val until = new DateTime
-    val since = until - from.days
-    helper.addExtra("since", since).addExtra("until", until).addExtra("title", "Top Articles")
-    helper.format match {
-      case "atom" =>
-        ArticleController.renderRssArticles(helper, RssArticleDao.select(from, count))
-      case "rss" =>
-        ArticleController.renderRssArticles(helper, RssArticleDao.select(from, count))
-      case _ => 
-        ArticleController.renderArticles(helper, ScoredArticleDao.select(from, count), "/templates/articleList.vm")
-    }
+    handleList(helper, from = 60, title = "Top Articles", template = "/templates/articleList.vm")
   }
 
   def read(helper: HttpHelper, articleId: String) {
@@ -68,19 +56,7 @@ class ArticleServlet extends Servlet with Logging with Instrumented {
   }
 
   def recent(helper: HttpHelper) {
-    val from = 14
-    val count = 10
-    val until = new DateTime
-    val since = until - from.days
-    helper.addExtra("since", since).addExtra("until", until).addExtra("title", "Recent Articles")
-    helper.format match {
-      case "atom" =>
-        ArticleController.renderRssArticles(helper, RssArticleDao.select(from, count))
-      case "rss" =>
-        ArticleController.renderRssArticles(helper, RssArticleDao.select(from, count))
-      case _ => 
-        ArticleController.renderArticles(helper, ScoredArticleDao.select(from, count), "/templates/articleRecent.vm")
-    }
+    handleList(helper, from = 14, title = "Recent Articles", template = "/templates/articleRecent.vm")
   }
 
   def star(helper: HttpHelper, articleId: String) {
@@ -92,18 +68,21 @@ class ArticleServlet extends Servlet with Logging with Instrumented {
   }
 
   def week(helper: HttpHelper) {
-    val from = 7
+    handleList(helper, from = 7, title = "Last Week's Top Articles", template = "/templates/articleWeek.vm")
+  }
+
+  private def handleList(helper: HttpHelper, from: Int, title: String, template: String) {
     val count = 10
     val until = new DateTime
     val since = until - from.days
-    helper.addExtra("since", since).addExtra("until", until).addExtra("title", "Last Week's Top Articles")
+    helper.addExtra("since", since).addExtra("until", until).addExtra("title", title)
     helper.format match {
       case "atom" =>
         ArticleController.renderRssArticles(helper, RssArticleDao.select(from, count))
       case "rss" =>
         ArticleController.renderRssArticles(helper, RssArticleDao.select(from, count))
       case _ => 
-        ArticleController.renderArticles(helper, ScoredArticleDao.select(from, count), "/templates/articleWeek.vm")
+        ArticleController.renderArticles(helper, ScoredArticleDao.select(from, count), template)
     }
   }
 
