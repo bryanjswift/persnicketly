@@ -31,10 +31,7 @@
         #set( $ogRef = $uri )
         #parse("templates/sharing.vm")
       </div>
-      <footer>
-        <p>Persnicketly &copy; 2011</p>
-        <a href="/about">about</a>
-      </footer>
+      #footer()
     </div>
     <script src="/js/libs/ender.min.js"></script>
     <script src="/js/libs/reqwest.min.js"></script>

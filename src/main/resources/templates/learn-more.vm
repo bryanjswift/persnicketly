@@ -52,10 +52,7 @@
           </div>
         </div>
       </section>
-      <footer>
-        <p>Persnicketly &copy; 2011</p>
-        <a class="active" href="/learn-more">about</a>
-      </footer>
+      #footer("active")
     </div>
     <script src="/js/libs/ender.min.js"></script>
     <script src="/js/persnicketly.js"></script>
