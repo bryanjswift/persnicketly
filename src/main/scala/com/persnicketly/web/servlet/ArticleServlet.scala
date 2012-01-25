@@ -26,6 +26,7 @@ class ArticleServlet extends Servlet with Logging with Instrumented {
       case Array("article", "recent") => recent(helper)
       case Array("article", "star", articleId) => star(helper, articleId)
       case Array("article", "unstar", articleId) => unstar(helper, articleId)
+      case Array("article", "week") => week(helper)
       case _ => helper.response.sendError(HttpStatus.SC_NOT_FOUND)
     }
   }
@@ -88,6 +89,22 @@ class ArticleServlet extends Servlet with Logging with Instrumented {
 
   def unstar(helper: HttpHelper, articleId: String) {
     handleStar(helper, articleId, toFavorite = false)
+  }
+
+  def week(helper: HttpHelper) {
+    val from = 7
+    val count = 10
+    val until = new DateTime
+    val since = until - from.days
+    helper.addExtra("since", since).addExtra("until", until).addExtra("title", "Last Week's Top Articles")
+    helper.format match {
+      case "atom" =>
+        ArticleController.renderRssArticles(helper, RssArticleDao.select(from, count))
+      case "rss" =>
+        ArticleController.renderRssArticles(helper, RssArticleDao.select(from, count))
+      case _ => 
+        ArticleController.renderArticles(helper, ScoredArticleDao.select(from, count), "/templates/articleWeek.vm")
+    }
   }
 
   private def handleStar(helper: HttpHelper,  articleId: String, toFavorite: Boolean) {
