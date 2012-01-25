@@ -121,6 +121,15 @@ p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6
 .recent .corner { background-color: #4eacca; }
 .recent .corner:hover { background-color: #3e8aa2; }
 .list.recent hr { background-position: center -20px; }
+/* Week's Articles */
+.list.week header h2:before { background-color: #119337; }
+.list.week h2 { color: #119337; }
+.list.week li h3:before { background-color: #119337; }
+.week .meta .favorited span { background-position: left -12px; }
+.week .meta .bookmarked span { background-position: left -12px; }
+.week .corner { background-color: #119337; }
+.week .corner:hover { background-color: #119337; }
+.list.week hr { background-position: center -40px; }
 /* About */
 #content {
   position: relative; margin: 0 2.507836991%; padding: 12px 10px 10px; background: #fafaf9;
