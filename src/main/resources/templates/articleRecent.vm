@@ -8,6 +8,7 @@
     #set( $description = "Higest rated recent articles according to our Readability users in the past week." )
     #set( $ogTitle = "Persnicketly" )
     #set( $ogDescription = "Collecting Readability stars since 2011" )
+    #set( $subscribeRss = "${uri_base}${uri}.rss" )
     #parse("templates/head.vm")
   </head>
   <body>

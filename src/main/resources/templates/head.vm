@@ -16,6 +16,10 @@
     <!-- Favicons -->
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
     <link rel="shortcut icon" href="/favicon.ico" />
+
+    #if ($subscribeRss && $title)
+    <link href="${subscribeRss}" rel="alternate" title="${title}" type="application/atom+xml" />
+    #end
     <link href="/humans.txt" rel="author" />
     <!-- Includes -->
     #if ($css)
