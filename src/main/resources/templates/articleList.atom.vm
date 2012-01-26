@@ -28,6 +28,7 @@
         </p>
           <span>Times Bookmarked: ${scored.numBookmarks()}</span>
         </p>
+        <p>[<a href="${article.url()}">original</a>]</p>
       </div>
     ]]></content>
   </entry>
