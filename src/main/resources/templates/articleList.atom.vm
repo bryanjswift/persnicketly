@@ -22,13 +22,9 @@
     <content type="html"><![CDATA[
       <div class="excerpt">#if(${article.excerpt().isDefined()})${article.excerpt().get()}#end</div>
       <div class="data">
-        <p>
-          <span>Times Favorited: ${scored.numFavorites()}</span>
-        <p>
-        </p>
-          <span>Times Bookmarked: ${scored.numBookmarks()}</span>
-        </p>
         <p>[<a href="${article.url()}">original</a>]</p>
+        <p><span>Times Favorited: ${scored.numFavorites()}</span></p>
+        <p><span>Times Bookmarked: ${scored.numBookmarks()}</span></p>
       </div>
     ]]></content>
   </entry>
