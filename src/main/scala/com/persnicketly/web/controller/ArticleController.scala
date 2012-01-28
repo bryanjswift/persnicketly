@@ -51,8 +51,8 @@ object ArticleController extends Logging with Instrumented {
         BookmarkDao.get(u, a).flatMap(mark => {
           val result = Api.Bookmarks.update(u, mark.copy(isFavorite = toFavorite))
           // this should trigger a rescore (?)
-          result.foreach(BookmarkDao.save)
-          result
+          UserQueue.add(u)
+          result.map(BookmarkDao.save)
         })
       })
     })
