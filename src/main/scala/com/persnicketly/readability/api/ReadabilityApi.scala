@@ -19,8 +19,8 @@ class ReadabilityApi extends DefaultApi10a {
 object ReadabilityApi {
   import com.persnicketly.Persnicketly.Config
 
-  private val key = "Persnicketly"
-  private val secret = "ynbCCZ5q7ggBGAkaAGFngRDAChg4pbYm"
+  private val key = Config("oauth.readability.key").or("")
+  private val secret = Config("oauth.readability.secret").or("")
   private val callback = String.format("http://%s/readability/callback", Config("http.domain").or("persnicketly.com"))
 
   def service: OAuthService = new ServiceBuilder().provider(classOf[ReadabilityApi])
