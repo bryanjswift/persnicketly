@@ -125,8 +125,8 @@ p.original { padding: 15px 0 0; height: 16px; font-size: 0.5em; line-height: 1.6
 .list.week header h2:before { background-color: #119337; }
 .list.week h2 { color: #119337; }
 .list.week li h3:before { background-color: #119337; }
-.week .meta .favorited span { background-position: left -12px; }
-.week .meta .bookmarked span { background-position: left -12px; }
+.week .meta .favorited span { background-position: -48px top; }
+.week .meta .bookmarked span { background-position: -48px top; }
 .week .corner { background-color: #119337; }
 .week .corner:hover { background-color: #119337; }
 .list.week hr { background-position: center -40px; }
