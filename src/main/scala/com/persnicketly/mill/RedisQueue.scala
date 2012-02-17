@@ -11,6 +11,8 @@ trait RedisQueue[T <: { def toByteArray(): Array[Byte] }] extends Logging with I
 
   type Delivery = T
 
+  val Parse = com.redis.serialization.Parse
+
   def queueName: String
 
   def parser: Parse[Delivery]
@@ -21,7 +23,7 @@ trait RedisQueue[T <: { def toByteArray(): Array[Byte] }] extends Logging with I
 
   def publish[K](delivery: Delivery): Option[Delivery] = {
     withClient {
-      client => client.lpush(queueName, delivery.toByteArray).map(_ => delivery)
+      client => client.lpush(queueName, delivery.toByteArray()).map(_ => delivery)
     } flatMap(o => o)
   }
 
