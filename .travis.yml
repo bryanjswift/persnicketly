@@ -1,1 +1,1 @@
-script: mvn install
+script: mvn package
