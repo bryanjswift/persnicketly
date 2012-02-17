@@ -1,17 +1,29 @@
 package com.persnicketly.mill
 
-import com.persnicketly.{Logging, Persnicketly, Serializer}
+import com.persnicketly.{Logging, Parse, Persnicketly, Serializer}
 import com.persnicketly.Persnicketly.Config
-import com.redis.RedisClient
-import com.redis.serialization.Parse
 import com.yammer.metrics.scala.Instrumented
+import org.joda.time.DateTime
+import redis.clients.jedis.Jedis
 import scala.util.control.Exception.catching
 
 trait RedisQueue[T <: { def toByteArray(): Array[Byte] }] extends Logging with Instrumented {
 
   type Delivery = T
 
-  val Parse = com.redis.serialization.Parse
+  class Envelope[Delivery](body: Delivery, started: DateTime) extends Serializer {
+    def this(body: Delivery) = this(body, new DateTime)
+    val serialVersionUID = 15987624L
+  }
+
+  object Envelope {
+    def apply(body: Delivery, started: DateTime) = new Envelope(body, started)
+    def apply(body: Delivery) = new Envelope(body)
+
+    implicit def envelope2bytearray(e: Envelope[Delivery]): Array[Byte] = e.toByteArray()
+  }
+
+  val Parse = com.persnicketly.Parse
 
   def queueName: String
 
@@ -19,19 +31,89 @@ trait RedisQueue[T <: { def toByteArray(): Array[Byte] }] extends Logging with I
 
   def process(delivery: Delivery): Boolean
 
-  implicit val p = parser
+  def queueAck = queueName + "-ack"
 
-  def publish[K](delivery: Delivery): Option[Delivery] = {
-    withClient {
-      client => client.lpush(queueName, delivery.toByteArray()).map(_ => delivery)
-    } flatMap(o => o)
+  def ack(delivery: Delivery): Unit = {
+    withClient { client =>
+      client.lrem(queueAck.getBytes, 1, delivery.toByteArray())
+    }
+  }
+
+  def nack(delivery: Delivery): Unit = {
+    withClient { client =>
+      val transaction = client.multi()
+      transaction.lpush(queueName.getBytes, delivery.toByteArray())
+      transaction.lrem(queueAck.getBytes, 1, delivery.toByteArray())
+      transaction.exec()
+    }
+  }
+
+  def publish(delivery: Delivery): Option[Delivery] = {
+    withClient { client =>
+      val count = client.lpush(queueName.getBytes, delivery.toByteArray())
+      if (count == 0) { throw new Exception("Failed to push delivery") }
+      else { delivery }
+    }
+  }
+
+  def startConsumer: Option[Long] = {
+    withClient { client =>
+      while (client != null) {
+        val bytes = client.brpoplpush(queueName.getBytes, queueAck.getBytes, timeout)
+        val delivery = 
+          if (bytes != null) { Some(parser(bytes)) }
+          else { None }
+        try {
+          delivery.map(data => {
+            val result = process(data) // should trigger an 'in threshold nack'
+            ack(data)
+            result
+          })
+        } catch {
+          case e: Exception =>
+            log.error("Unable to process {}", delivery, e)
+        }
+      }
+      log.warn("Consumer quitting")
+      client.llen(queueName)
+    }
+  }
+
+  def startHelper(threshold: Int): Option[Long] = {
+    withClient { client =>
+      var checked = Map[Delivery, DateTime]()
+      while (client != null) {
+        val now = new DateTime
+        val bytes = client.brpoplpush(queueAck.getBytes, queueAck.getBytes, timeout)
+        val delivery =
+          if (bytes != null) { Some(parser(bytes)) }
+          else { None }
+        try {
+          delivery.map(data => {
+            val started = checked.getOrElse(data, now)
+            val diff = now.getMillis - started.getMillis
+            if (diff > threshold) {
+              // been processing too long, requeue it
+              nack(data)
+            } else {
+              // do nothing, still working
+            }
+          })
+        } catch {
+          case e: Exception =>
+            log.error("Unable to process {}", delivery, e)
+        }
+      }
+      log.warn("Helper quitting")
+      client.llen(queueAck)
+    }
   }
 
   def timeout = Config("redis.timeout").or(60)
 
-  def withClient[K](thunk: RedisClient => K): Option[K] = {
+  def withClient[K](thunk: Jedis => K): Option[K] = {
     catching(classOf[Exception]).either {
-      val client = new RedisClient(Config("redis.host").or("localhost"), Config("redis.port").or(6379))
+      val client = new Jedis(Config("redis.host").or("localhost"), Config("redis.port").or(6379))
       try {
         thunk(client)
       } finally {
@@ -46,24 +128,4 @@ trait RedisQueue[T <: { def toByteArray(): Array[Byte] }] extends Logging with I
     }
   }
 
-  def startConsumer: Option[Long] = {
-    withClient { client =>
-      log.debug("client -- {}", client)
-      while (client != null) {
-        val delivery = 
-          client.brpop[String, Delivery](timeout, queueName) match {
-            case None => None
-            case Some((key, delivery)) => Some(delivery)
-          }
-        try {
-          delivery.map(process)
-        } catch {
-          case e: Exception =>
-            log.error("Unable to process {}", delivery, e)
-        }
-      }
-      log.warn("Consumer quitting")
-      client.llen(queueName).get.toLong
-    }
-  }
 }
