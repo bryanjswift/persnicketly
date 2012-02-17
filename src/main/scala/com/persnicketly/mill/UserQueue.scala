@@ -9,6 +9,7 @@ import org.joda.time.DateTime
 
 object UserQueue extends RedisQueue[ObjectId] {
   val queueName = "new-users";
+
   def parser = Parse(x => new ObjectId(x))
 
   def add(user: User): Option[ObjectId] = {

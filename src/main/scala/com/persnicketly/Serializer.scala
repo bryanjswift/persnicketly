@@ -18,3 +18,4 @@ object Serializer {
     in.readObject.asInstanceOf[T]
   }
 }
+
