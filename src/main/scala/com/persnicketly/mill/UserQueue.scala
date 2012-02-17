@@ -24,7 +24,7 @@ object UserQueue extends RedisQueue[ObjectId] {
     log.info("Processing delivery of {}", id)
     UserDao.get(id).map(user => {
       val meta = Api.Bookmarks.meta(user, user.lastProcessed)
-      val added = meta.flatMap(m => BookmarkRequestsQueue.addAll(m, user, user.lastProcessed))
+      val added = meta.map(m => BookmarkRequestsQueue.addAll(m, user, user.lastProcessed))
       if (added.isDefined) { UserDao.save(user.copy(lastProcessed = Some(new DateTime))) }
       added.isDefined
     }).getOrElse(false)
