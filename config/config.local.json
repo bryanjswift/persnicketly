@@ -25,6 +25,23 @@
     "forwarded": false
   },
 
+  "oauth": {
+    "readability": {
+      "key": "",
+      "secret": ""
+    },
+    "instapaper": {
+      "key": "",
+      "secret": ""
+    }
+  },
+
+  "redis": {
+    "host": "web1.persnicketly.com",
+    "port": 6379,
+    "timeout": 0
+  },
+
   "queue": {
     "default": {
       "host": "localhost",
