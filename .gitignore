@@ -11,6 +11,7 @@ target/
 # config files
 src/main/resources/velocity/velocity.properties
 /config.json
+/config.prod.json
 /log4j.properties
 /velocity.properties
 node_modules/
