@@ -19,6 +19,9 @@ object Foreman extends Command {
       val bookmarkRequestConsumer = async("Bookmark Reqeusts Consumer", BookmarkRequestsQueue.startConsumer)
       val userConsumer = async("User Consumer", UserQueue.startConsumer)
       threads = articleConsumer :: bookmarkRequestConsumer :: userConsumer :: threads
+      threads = async("Article Save Helper", ArticleQueue.startHelper(60000)) :: threads
+      threads = async("Bookmark Requests Helper", BookmarkRequestsQueue.startHelper(60000)) :: threads
+      threads = async("User Helper", UserQueue.startHelper(60000)) :: threads
     }
     // Schedule tasks
     if (options.hasOption("scheduled")) {
