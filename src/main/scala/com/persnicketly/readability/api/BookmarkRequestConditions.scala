@@ -21,7 +21,7 @@ case class BookmarkRequestConditions(
 }
 
 object BookmarkRequestConditions {
-  def apply(bytes: Array[Byte]) = Serializer.apply[BookmarkRequestConditions](bytes)
+  def apply(bytes: Array[Byte]) = Serializer[BookmarkRequestConditions](bytes)
   def apply(page: Int, count: Int, since: Option[DateTime], user: User) = {
     new BookmarkRequestConditions(Some(page), Some(count), since, user)
   }
