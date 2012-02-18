@@ -9,24 +9,42 @@ import scala.util.control.Exception.catching
 
 trait RedisQueue[T <: { def toByteArray(): Array[Byte] }] extends Logging with Instrumented {
 
+  /** Type of data being processed by this RedisQueue */
   type Delivery = T
 
+  /** Shortcut to Parse helper */
   val Parse = com.persnicketly.Parse
 
+  /** Name of queue in broker */
   def queueName: String
 
-  def parser: Parse[Delivery]
-
-  def process(delivery: Delivery): Boolean
-
+  /** Name of acknowledgement queue in broker */
   def queueAck = queueName + "-ack"
 
+  /** Parse instance for Delivery type */
+  def parser: Parse[Delivery]
+
+  /**
+   * Process the data in delivery and return if successful
+   * @param delivery to be processed
+   * @return true if delivery was processed successfully, false otherwise
+   */
+  def process(delivery: Delivery): Boolean
+
+  /**
+   * Acknowledge delivery has been handled
+   * @param delivery which was successfully handled
+   */
   def ack(delivery: Delivery): Unit = {
     withClient { client =>
       client.lrem(queueAck.getBytes, 1, delivery.toByteArray())
     }
   }
 
+  /**
+   * Inform broker delivery was handled unsuccessfully and must be requeued
+   * @param delivery to requeue
+   */
   def nack(delivery: Delivery): Unit = {
     withClient { client =>
       val transaction = client.multi()
@@ -36,6 +54,11 @@ trait RedisQueue[T <: { def toByteArray(): Array[Byte] }] extends Logging with I
     }
   }
 
+  /**
+   * Add data to be processed later
+   * @param delivery to be processed later
+   * @return Some(delivery) if successfully added to queue, None otherwise
+   */
   def publish(delivery: Delivery): Option[Delivery] = {
     withClient { client =>
       val count = client.lpush(queueName.getBytes, delivery.toByteArray())
@@ -44,6 +67,10 @@ trait RedisQueue[T <: { def toByteArray(): Array[Byte] }] extends Logging with I
     }
   }
 
+  /**
+   * Start a consumer process for this queue
+   * @return Option wrapping number of deliveries remaining in queue when quitting
+   */
   def startConsumer: Option[Long] = {
     withClient { client =>
       while (client != null) {
@@ -69,9 +96,15 @@ trait RedisQueue[T <: { def toByteArray(): Array[Byte] }] extends Logging with I
     }
   }
 
+  /** How long to wait for next delivery */
   def timeout = Config("redis.timeout").or(60)
 
-  def withClient[K](thunk: Jedis => K): Option[K] = {
+  /**
+   * Do some activity with the context of a Jedis instance
+   * @param thunk operation to perform with client
+   * @return Option wrapping result of thunk(client) if successful, None if there was an error
+   */
+  private def withClient[K](thunk: Jedis => K): Option[K] = {
     catching(classOf[Exception]).either {
       val client = new Jedis(Config("redis.host").or("localhost"), Config("redis.port").or(6379))
       try {
