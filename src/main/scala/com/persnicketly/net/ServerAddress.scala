@@ -1,4 +1,4 @@
-package com.persnicketly.persistence
+package com.persnicketly.net
 
 import com.mongodb.{ServerAddress => MongoDBAddress}
 
