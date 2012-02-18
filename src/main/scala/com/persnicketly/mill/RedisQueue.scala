@@ -15,6 +15,9 @@ trait RedisQueue[T <: { def toByteArray(): Array[Byte] }] extends Logging with I
   /** Shortcut to Parse helper */
   val Parse = com.persnicketly.Parse
 
+  /** Track queue size */
+  val gauge = metrics.gauge(queueName)(withClient({ _.llen(queueName) }).getOrElse(0))
+
   /** Name of queue in broker */
   def queueName: String
 
