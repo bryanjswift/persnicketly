@@ -48,8 +48,6 @@ class PersnicketlyWebProject(info: ProjectInfo) extends DefaultWebProject(info)
   val casbahQuery = "com.mongodb.casbah" %% "casbah-query" % casbahVersion
   val casbahCore = "com.mongodb.casbah" %% "casbah-core" % casbahVersion
   val casbahCommons = "com.mongodb.casbah" %% "casbah-commons" % casbahVersion
-  // RabbitMQ
-  val rabbitmq = "com.rabbitmq" % "amqp-client" % "2.7.1"
   // Redis
   val redis = "redis.clients" % "jedis" % "2.0.0"
   // Metrics
