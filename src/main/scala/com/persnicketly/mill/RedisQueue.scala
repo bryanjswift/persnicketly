@@ -11,18 +11,6 @@ trait RedisQueue[T <: { def toByteArray(): Array[Byte] }] extends Logging with I
 
   type Delivery = T
 
-  class Envelope[Delivery](body: Delivery, started: DateTime) extends Serializer {
-    def this(body: Delivery) = this(body, new DateTime)
-    val serialVersionUID = 15987624L
-  }
-
-  object Envelope {
-    def apply(body: Delivery, started: DateTime) = new Envelope(body, started)
-    def apply(body: Delivery) = new Envelope(body)
-
-    implicit def envelope2bytearray(e: Envelope[Delivery]): Array[Byte] = e.toByteArray()
-  }
-
   val Parse = com.persnicketly.Parse
 
   def queueName: String
