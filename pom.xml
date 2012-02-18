@@ -13,7 +13,7 @@
     <jetty.version>7.5.4.v20111024</jetty.version>
     <guice.version>3.0</guice.version>
     <casbah.version>2.1.5-1</casbah.version>
-    <metrics.version>2.0.0-BETA19</metrics.version>
+    <metrics.version>2.0.2</metrics.version>
   </properties>
 
   <developers>
