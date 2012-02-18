@@ -70,42 +70,14 @@ trait RedisQueue[T <: { def toByteArray(): Array[Byte] }] extends Logging with I
             result
           })
         } catch {
-          case e: Exception =>
+          case e: Exception => {
             log.error("Unable to process {}", delivery, e)
+            delivery.map(data => { nack(data) })
+          }
         }
       }
       log.warn("Consumer quitting")
       client.llen(queueName)
-    }
-  }
-
-  def startHelper(threshold: Int): Option[Long] = {
-    withClient { client =>
-      var checked = Map[Delivery, DateTime]()
-      while (client != null) {
-        val now = new DateTime
-        val bytes = client.brpoplpush(queueAck.getBytes, queueAck.getBytes, timeout)
-        val delivery =
-          if (bytes != null) { Some(parser(bytes)) }
-          else { None }
-        try {
-          delivery.map(data => {
-            val started = checked.getOrElse(data, now)
-            val diff = now.getMillis - started.getMillis
-            if (diff > threshold) {
-              // been processing too long, requeue it
-              nack(data)
-            } else {
-              // do nothing, still working
-            }
-          })
-        } catch {
-          case e: Exception =>
-            log.error("Unable to process {}", delivery, e)
-        }
-      }
-      log.warn("Helper quitting")
-      client.llen(queueAck)
     }
   }
 
