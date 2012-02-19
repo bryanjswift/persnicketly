@@ -7,7 +7,7 @@ import com.persnicketly.redis.ArticleCodec
 
 object ArticleQueue extends RedisQueue[Article] {
 
-  val queueName = "articles"
+  def queueName = "articles"
 
   val codec = new ArticleCodec
 

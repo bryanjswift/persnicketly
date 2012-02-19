@@ -10,7 +10,7 @@ import org.joda.time.DateTime
 
 object BookmarkRequestsQueue extends RedisQueue[BookmarkRequestConditions] {
 
-  val queueName = "bookmarks-requests";
+  def queueName = "bookmarks-requests"
 
   val codec = new BookmarkRequestConditionsCodec()
 

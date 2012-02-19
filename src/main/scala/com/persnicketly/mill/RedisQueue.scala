@@ -22,7 +22,7 @@ trait RedisQueue[T] extends Logging with Instrumented {
   def queueAck = queueName + "-ack"
 
   /** Track queue size */
-  //val gauge = metrics.gauge(queueName)(size)
+  def gauge = metrics.gauge(queueName)(size)
 
   /**
    * Process the data in delivery and return if successful

@@ -10,7 +10,7 @@ import org.joda.time.DateTime
 
 object UserQueue extends RedisQueue[ObjectId] {
 
-  val queueName = "new-users";
+  def queueName = "new-users"
 
   val codec = new ObjectIdCodec()
 
