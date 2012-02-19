@@ -37,9 +37,11 @@
   },
 
   "redis": {
-    "host": "web1.persnicketly.com",
-    "port": 6379,
-    "timeout": 0
+    "hosts": [
+      { "host": "127.0.0.1", "port": 6379 },
+      { "host": "127.0.0.1", "port": 6380 }
+    ],
+    "timeout": 10
   },
 
   "queue": {
