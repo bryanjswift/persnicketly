@@ -3,6 +3,7 @@ package com.persnicketly.redis
 import com.lambdaworks.redis.RedisConnection
 import com.lambdaworks.redis.codec.RedisCodec
 import com.persnicketly.Logging
+import scala.util.control.Exception.catching
 
 class RedisWithCodec[K, V](codec: RedisCodec[K, V], redis: Redis) extends Logging {
 
@@ -21,8 +22,20 @@ class RedisWithCodec[K, V](codec: RedisCodec[K, V], redis: Redis) extends Loggin
   }
 
   def exec[T](thunk: RedisConnection[K, V] => T): Option[T] = {
-    connection.map({ connection =>
-      try { thunk(connection) } finally { connection.close }
+    connection.flatMap({ conn =>
+      catching(classOf[Exception]).either {
+        try {
+          thunk(conn)
+        } finally {
+          conn.close
+        }
+      } match {
+        case Left(e) => {
+          log.error("Unexpected error occured during processing", e)
+          None
+        }
+        case Right(t) => Some(t)
+      }
     })
   }
 
