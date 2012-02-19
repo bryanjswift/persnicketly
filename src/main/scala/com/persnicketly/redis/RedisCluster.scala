@@ -13,25 +13,39 @@ object RedisCluster {
 
   val clients = addresses.map(address => { address.redis })
 
-  def in[K, V, T](codec: RedisCodec[K, V])(thunk: RedisConnection[K, V] => T): Option[T] = master.in(codec)(thunk)
+  def using[K, V](codec: RedisCodec[K, V]) = master.using(codec)
 
   def master: Redis = {
+    // Find potential masters
     val (masters, slaves) = clients.partition({ client =>
-      val info = client.in(utf)(_.info).getOrElse("")
+      val info = client.using(utf).exec(_.info).getOrElse("")
       info.contains("role:master")
     })
-    masters match {
+
+    // Select master and designate other potential masters as slaves
+    val king = masters match {
       case master :: Nil => master
       case master :: newSlaves => {
-        newSlaves.foreach({ slave => slave.in(utf)(_.slaveof(master.host, master.port)) })
+        newSlaves.foreach({ slave => slave.using(utf).exec(_.slaveof(master.host, master.port)) })
         master
       }
       case Nil => {
         val master :: newSlaves = slaves
-        newSlaves.foreach({ slave => slave.in(utf)(_.slaveof(master.host, master.port)) })
+        newSlaves.foreach({ slave => slave.using(utf).exec(_.slaveof(master.host, master.port)) })
         master
       }
     }
+
+    // Make sure slaves have the right master
+    slaves.foreach({ slave =>
+      val info = slave.using(utf).exec(_.info).getOrElse("")
+      if (!(info.contains("master_host:" + king.host) || info.contains("master_port:" + king.port))) {
+        slave.using(utf).exec(_.slaveof(king.host, king.port))
+      }
+    })
+
+    // Return the selected master
+    king
   }
 
 }
