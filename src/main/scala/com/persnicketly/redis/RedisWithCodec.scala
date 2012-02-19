@@ -39,4 +39,8 @@ class RedisWithCodec[K, V](codec: RedisCodec[K, V], redis: Redis) extends Loggin
     })
   }
 
+  def isAlive: Boolean = exec({ connection => connection.ping == "PONG" }).getOrElse(false)
+
+  override def toString(): String = redis.toString
+
 }
