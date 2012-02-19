@@ -22,6 +22,8 @@ case class Article(
 }
 
 object Article {
+  def apply(bytes: Array[Byte]) = Serializer[Article](bytes)
+
   def apply(
     articleId: String,
     title: String,

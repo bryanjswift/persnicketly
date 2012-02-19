@@ -3,7 +3,7 @@ package com.persnicketly
 trait Serializer {
   def serialVersionUID: Long
 
-  def toByteArray: Array[Byte] = {
+  def toByteArray(): Array[Byte] = {
     val bos = new java.io.ByteArrayOutputStream()
     val out = new java.io.ObjectOutputStream(bos)
     out.writeObject(this)
@@ -18,3 +18,4 @@ object Serializer {
     in.readObject.asInstanceOf[T]
   }
 }
+

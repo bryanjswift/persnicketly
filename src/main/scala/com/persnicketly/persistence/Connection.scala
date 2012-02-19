@@ -2,6 +2,7 @@ package com.persnicketly.persistence
 
 import com.mongodb.{ServerAddress => MongoDBAddress}
 import com.mongodb.casbah.Imports._
+import com.persnicketly.net.ServerAddress
 import com.persnicketly.Persnicketly.Config
 
 object Connection {

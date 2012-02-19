@@ -4,32 +4,32 @@ import com.persnicketly.Persnicketly
 import com.persnicketly.persistence.UserDao
 import com.persnicketly.readability.Api
 import com.persnicketly.readability.model.User
+import com.persnicketly.redis.ObjectIdCodec
 import org.bson.types.ObjectId
 import org.joda.time.DateTime
 
-object UserQueue extends Queue {
-  val queueName = "new-users";
+object UserQueue extends RedisQueue[ObjectId] {
 
-  def add(user: User): Option[User] = {
+  def queueName = "new-users"
+
+  val codec = new ObjectIdCodec()
+
+  def add(user: User): Option[ObjectId] = {
     if (user.id.isDefined) {
       log.info("Adding User({}) to queue", user.id.get)
-      publish(user.id.get.toByteArray, user)
+      publish(user.id.get)
     } else {
       None
     }
   }
 
-  def processDelivery(delivery: Delivery): Boolean = {
-    val id = new ObjectId(delivery.getBody)
-    val user = UserDao.get(id)
+  def process(id: ObjectId): Boolean = {
     log.info("Processing delivery of {}", id)
-    user.map(process).getOrElse(false)
-  }
-
-  def process(user: User): Boolean = {
-    val meta = Api.Bookmarks.meta(user, user.lastProcessed)
-    val added = meta.flatMap(m => BookmarkRequestsQueue.addAll(m, user, user.lastProcessed))
-    if (added.isDefined) { UserDao.save(user.copy(lastProcessed = Some(new DateTime))) }
-    added.isDefined
+    UserDao.get(id).map(user => {
+      val meta = Api.Bookmarks.meta(user, user.lastProcessed)
+      val added = meta.map(m => BookmarkRequestsQueue.addAll(m, user, user.lastProcessed))
+      if (added.isDefined) { UserDao.save(user.copy(lastProcessed = Some(new DateTime))) }
+      added.isDefined
+    }).getOrElse(false)
   }
 }
