@@ -175,11 +175,6 @@
     </dependency>
     <!-- Redis -->
     <dependency>
-      <groupId>redis.clients</groupId>
-      <artifactId>jedis</artifactId>
-      <version>2.0.0</version>
-    </dependency>
-    <dependency>
       <groupId>com.lambdaworks</groupId>
       <artifactId>lettuce</artifactId>
       <version>2.0.0</version>
