@@ -4,12 +4,15 @@ import com.persnicketly.Persnicketly
 import com.persnicketly.readability.Api
 import com.persnicketly.readability.api.BookmarkRequestConditions
 import com.persnicketly.readability.model.{Meta,User,UserData}
+import com.persnicketly.redis.BookmarkRequestConditionsCodec
 import com.persnicketly.persistence.BookmarkDao
 import org.joda.time.DateTime
 
 object BookmarkRequestsQueue extends RedisQueue[BookmarkRequestConditions] {
+
   val queueName = "bookmarks-requests";
-  def parser = Parse(x => BookmarkRequestConditions(x))
+
+  val codec = new BookmarkRequestConditionsCodec()
 
   def addAll(meta: Meta, user: User, since: Option[DateTime] = None): Seq[BookmarkRequestConditions] = {
     val pageSize = Persnicketly.Config("queue." + queueName + ".perpage").or(25)

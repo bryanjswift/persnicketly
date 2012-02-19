@@ -3,10 +3,13 @@ package com.persnicketly.mill
 import com.persnicketly.{Persnicketly, Serializer}
 import com.persnicketly.persistence.ArticleDao
 import com.persnicketly.readability.model.{Bookmark, Article}
+import com.persnicketly.redis.ArticleCodec
 
 object ArticleQueue extends RedisQueue[Article] {
+
   val queueName = "articles"
-  def parser = Parse(x => Article(x))
+
+  val codec = new ArticleCodec
 
   def add(bookmark: Bookmark): Option[Bookmark] =
     add(bookmark.article).map(_ => bookmark)

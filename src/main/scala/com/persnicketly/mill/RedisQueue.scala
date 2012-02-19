@@ -1,31 +1,28 @@
 package com.persnicketly.mill
 
+import com.lambdaworks.redis.RedisConnection
 import com.persnicketly.{Logging, Parse, Persnicketly, Serializer}
 import com.persnicketly.Persnicketly.Config
+import com.persnicketly.redis.{RedisCluster, StringKeyCodec}
 import com.yammer.metrics.scala.Instrumented
 import org.joda.time.DateTime
-import redis.clients.jedis.Jedis
-import scala.util.control.Exception.catching
 
-trait RedisQueue[T <: { def toByteArray(): Array[Byte] }] extends Logging with Instrumented {
+trait RedisQueue[T] extends Logging with Instrumented {
 
   /** Type of data being processed by this RedisQueue */
   type Delivery = T
 
-  /** Shortcut to Parse helper */
-  val Parse = com.persnicketly.Parse
-
-  /** Track queue size */
-  val gauge = metrics.gauge(queueName)(withClient({ _.llen(queueName) }).getOrElse(0))
-
   /** Name of queue in broker */
   def queueName: String
+
+  /** RedisCodec to handle transformation from Array[Byte] to model object */
+  def codec: StringKeyCodec[Delivery]
 
   /** Name of acknowledgement queue in broker */
   def queueAck = queueName + "-ack"
 
-  /** Parse instance for Delivery type */
-  def parser: Parse[Delivery]
+  /** Track queue size */
+  //val gauge = metrics.gauge(queueName)(size)
 
   /**
    * Process the data in delivery and return if successful
@@ -40,7 +37,7 @@ trait RedisQueue[T <: { def toByteArray(): Array[Byte] }] extends Logging with I
    */
   def ack(delivery: Delivery): Unit = {
     withClient { client =>
-      client.lrem(queueAck.getBytes, 1, delivery.toByteArray())
+      client.lrem(queueAck, 1, delivery)
     }
   }
 
@@ -51,9 +48,9 @@ trait RedisQueue[T <: { def toByteArray(): Array[Byte] }] extends Logging with I
   def nack(delivery: Delivery): Unit = {
     withClient { client =>
       val transaction = client.multi()
-      transaction.lpush(queueName.getBytes, delivery.toByteArray())
-      transaction.lrem(queueAck.getBytes, 1, delivery.toByteArray())
-      transaction.exec()
+      client.lpush(queueName, delivery)
+      client.lrem(queueAck, 1, delivery)
+      client.exec()
     }
   }
 
@@ -64,22 +61,28 @@ trait RedisQueue[T <: { def toByteArray(): Array[Byte] }] extends Logging with I
    */
   def publish(delivery: Delivery): Option[Delivery] = {
     withClient { client =>
-      val count = client.lpush(queueName.getBytes, delivery.toByteArray())
+      val count = client.lpush(queueName, delivery)
       if (count == 0) { throw new Exception("Failed to push delivery") }
       else { delivery }
     }
   }
+
+  def size: java.lang.Long =
+    try { withClient({ c => c.llen(queueName) }).getOrElse(0L) }
+    catch {
+      case e: NullPointerException => -1L
+    }
 
   /**
    * Start a consumer process for this queue
    * @return Option wrapping number of deliveries remaining in queue when quitting
    */
   def startConsumer: Option[Long] = {
-    withClient { client =>
-      while (client != null) {
-        val bytes = client.brpoplpush(queueName.getBytes, queueAck.getBytes, timeout)
+    RedisCluster.using(codec).exec { client =>
+      while (true) {
+        val value = client.brpoplpush(timeout, queueName, queueAck)
         val delivery = 
-          if (bytes != null) { Some(parser(bytes)) }
+          if (value != null) { Some(value) }
           else { None }
         try {
           delivery.map(data => {
@@ -100,28 +103,15 @@ trait RedisQueue[T <: { def toByteArray(): Array[Byte] }] extends Logging with I
   }
 
   /** How long to wait for next delivery */
-  def timeout = Config("redis.timeout").or(60)
+  def timeout = Config("redis.timeout").or(60L)
 
   /**
-   * Do some activity with the context of a Jedis instance
+   * Do some activity within the context of a Redis connection
    * @param thunk operation to perform with client
    * @return Option wrapping result of thunk(client) if successful, None if there was an error
    */
-  private def withClient[K](thunk: Jedis => K): Option[K] = {
-    catching(classOf[Exception]).either {
-      val client = new Jedis(Config("redis.host").or("localhost"), Config("redis.port").or(6379))
-      try {
-        thunk(client)
-      } finally {
-        client.disconnect
-      }
-    } match {
-      case Left(e) => {
-        log.error("Unexpected error occured during processing", e)
-        None
-      }
-      case Right(t) => Some(t)
-    }
+  private def withClient[K](thunk: RedisConnection[String, Delivery] => K): Option[K] = {
+    RedisCluster.using(codec).exec(thunk)
   }
 
 }

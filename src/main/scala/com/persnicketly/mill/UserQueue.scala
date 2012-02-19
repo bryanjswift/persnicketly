@@ -4,13 +4,15 @@ import com.persnicketly.Persnicketly
 import com.persnicketly.persistence.UserDao
 import com.persnicketly.readability.Api
 import com.persnicketly.readability.model.User
+import com.persnicketly.redis.ObjectIdCodec
 import org.bson.types.ObjectId
 import org.joda.time.DateTime
 
 object UserQueue extends RedisQueue[ObjectId] {
+
   val queueName = "new-users";
 
-  def parser = Parse(x => new ObjectId(x))
+  val codec = new ObjectIdCodec()
 
   def add(user: User): Option[ObjectId] = {
     if (user.id.isDefined) {
