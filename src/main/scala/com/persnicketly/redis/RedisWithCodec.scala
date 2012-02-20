@@ -11,7 +11,7 @@ class RedisWithCodec[K, V](codec: RedisCodec[K, V], redis: Redis) extends Loggin
   val host = redis.host
   val port = redis.port
 
-  def connection: Option[RedisConnection[K, V]] = {
+  private def connection: Option[RedisConnection[K, V]] = {
     try { Some(client.connect(codec)) }
     catch {
       case e: Exception => {
