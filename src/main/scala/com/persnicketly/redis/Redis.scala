@@ -13,9 +13,10 @@ case class Redis(host: String, port: Int) extends Logging {
 
   private val utf = new Utf8StringCodec()
 
+  def info: RedisInfo = using(utf).info
+
   def isAlive: Boolean = using(utf).isAlive
 
   def using[K, V](codec: RedisCodec[K, V]): RedisWithCodec[K, V] = new RedisWithCodec(codec, this)
 
 }
-
