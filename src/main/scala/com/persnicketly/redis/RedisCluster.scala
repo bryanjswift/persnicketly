@@ -17,35 +17,30 @@ object RedisCluster {
 
   def master: Redis = {
     // Find potential masters
-    val (masters, slaves) = clients.partition({ client =>
-      val info = client.using(utf).exec(_.info).getOrElse("")
-      info.contains("role:master")
-    })
+    val (masters, slaves) = clients.filter(_.isAlive).map(_.info).partition(_.role == "master")
 
     // Select master and designate other potential masters as slaves
-    val king = masters match {
-      case master :: Nil => master
-      case master :: newSlaves => {
-        newSlaves.foreach({ slave => slave.using(utf).exec(_.slaveof(master.host, master.port)) })
-        master
-      }
+    val (king, newSlaves) = masters match {
+      case master :: Nil => (master, Nil)
+      case master :: newSlaves => (master, newSlaves)
       case Nil => {
         val master :: newSlaves = slaves
-        newSlaves.foreach({ slave => slave.using(utf).exec(_.slaveof(master.host, master.port)) })
-        master
+        (master, newSlaves)
       }
     }
 
+    // Make sure king is master
+    if (king.role != "master") { king.redis.using(utf).exec(_.slaveofNoOne) }
+
     // Make sure slaves have the right master
-    slaves.foreach({ slave =>
-      val info = slave.using(utf).exec(_.info).getOrElse("")
-      if (!(info.contains("master_host:" + king.host) || info.contains("master_port:" + king.port))) {
-        slave.using(utf).exec(_.slaveof(king.host, king.port))
+    (newSlaves ::: slaves).filterNot(_ == king).foreach({ slave =>
+      if (!(slave.masterHost == king.host || slave.masterPort == king.port)) {
+        slave.redis.using(utf).exec(_.slaveof(king.host, king.port))
       }
     })
 
     // Return the selected master
-    king
+    king.redis
   }
 
 }
