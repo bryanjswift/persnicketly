@@ -3,9 +3,11 @@ package com.persnicketly.redis
 import com.lambdaworks.redis.RedisConnection
 import com.lambdaworks.redis.codec.{RedisCodec, Utf8StringCodec}
 import com.persnicketly.net.ServerAddress
+import com.persnicketly.Logging
 import com.persnicketly.Persnicketly.Config
+import org.joda.time.DateTime
 
-object RedisCluster {
+object RedisCluster extends Logging {
 
   private val addresses = Config("redis.hosts").or(List(ServerAddress("localhost", 6379)))
 
@@ -13,9 +15,10 @@ object RedisCluster {
 
   val clients = addresses.map(address => { address.redis })
 
-  def using[K, V](codec: RedisCodec[K, V]) = master.using(codec)
+  private var lastElection: DateTime = (new DateTime()).minusYears(1)
+  private var elected: Redis = election
 
-  def master: Redis = {
+  private def election: Redis = {
     // Find potential masters
     val (masters, slaves) = clients.filter(_.isAlive).map(_.info).partition(_.role == "master")
 
@@ -42,5 +45,17 @@ object RedisCluster {
     // Return the selected master
     king.redis
   }
+
+  def master: Redis = {
+    val now = new DateTime()
+    if (lastElection.plusMinutes(3).isBefore(now)) {
+      log.debug("** Electing new master **")
+      elected = election
+      lastElection = now
+    }
+    elected
+  }
+
+  def using[K, V](codec: RedisCodec[K, V]) = master.using(codec)
 
 }
