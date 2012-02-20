@@ -23,42 +23,46 @@ object Foreman extends Command {
     // Schedule tasks
     if (options.hasOption("scheduled")) {
       log.info("Scheduling Mill updates")
-      executor.scheduleWithFixedDelay(new Runnable {
-          override def run() {
-            try {
-              log.info("Processing users")
-              Foreman.usersToUpdate.foreach(UserQueue.add)
-            } catch {
-              case e: Exception => log.error("Unable to process users", e)
-              case _ => log.error("Mystery exception while processing users")
-            }
-          }
-        }, 0L, 4L, TimeUnit.HOURS)
-      executor.scheduleWithFixedDelay(new Runnable {
-          override def run() {
-            try {
-              log.info("Computing recent scores")
-              config("compute").or(Array(14)).foreach(c => BookmarkDao.compute(c))
-              log.info("Finished with articles and scores")
-              // Queue an event saying there are new scores
-            } catch {
-              case e: Exception => log.error("Unable to compute scores", e)
-              case _ => log.error("Mystery exception while computing scores")
-            }
+      // Schedule user processing
+      schedule({
+        try {
+          log.info("Processing users")
+          Foreman.usersToUpdate.foreach(UserQueue.add)
+        } catch {
+          case e: Exception => log.error("Unable to process users", e)
+          case _ => log.error("Mystery exception while processing users")
+        }
+      }, 4L, TimeUnit.HOURS)
+      // Schedule score computations
+      schedule({
+        try {
+          log.info("Computing recent scores")
+          config("compute").or(Array(14)).foreach(c => BookmarkDao.compute(c))
+          log.info("Finished with articles and scores")
+          // Queue an event saying there are new scores
+        } catch {
+          case e: Exception => log.error("Unable to compute scores", e)
+          case _ => log.error("Mystery exception while computing scores")
+        }
 
-            try {
-              log.info("Updating RSS Article ranks")
-              RssArticleDao.update()
-              log.info("Finished updating RSS Article ranks")
-            } catch {
-              case e: Exception => log.error("Unable to update RSS ranks", e)
-              case _ => log.error("Mystery exception while updating RSS ranks")
-            }
-          }
-        }, 0L, 5L, TimeUnit.HOURS)
+        try {
+          log.info("Updating RSS Article ranks")
+          RssArticleDao.update()
+          log.info("Finished updating RSS Article ranks")
+        } catch {
+          case e: Exception => log.error("Unable to update RSS ranks", e)
+          case _ => log.error("Mystery exception while updating RSS ranks")
+        }
+      }, 5L, TimeUnit.HOURS)
     }
     // join consumers to main thread
     threads
+  }
+
+  def schedule(task: => Unit, delay: Long, unit: TimeUnit) = {
+    executor.scheduleWithFixedDelay(new Runnable {
+      override def run(): Unit = task
+    }, 0L, delay, unit)
   }
 
   def usersToUpdate: List[User] = {
