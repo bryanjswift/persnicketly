@@ -6,6 +6,7 @@ import com.persnicketly.Persnicketly.Config
 import com.persnicketly.redis.{RedisCluster, StringKeyCodec}
 import com.yammer.metrics.scala.Instrumented
 import org.joda.time.DateTime
+import java.util.concurrent.TimeUnit
 
 trait RedisQueue[T] extends Logging with Instrumented {
 
@@ -23,6 +24,16 @@ trait RedisQueue[T] extends Logging with Instrumented {
 
   /** Track queue size */
   def gauge = metrics.gauge(queueName)(size)
+
+  /** Move items from queueAck to queueName */
+  def helper(): Unit = {
+    log.debug("Moving items from {} to {}", queueAck, queueName)
+    withClient { client =>
+      while (client.llen(queueAck) > 0L) {
+        client.rpoplpush(queueAck, queueName)
+      }
+    }
+  }
 
   /**
    * Process the data in delivery and return if successful
@@ -82,6 +93,9 @@ trait RedisQueue[T] extends Logging with Instrumented {
    * @return Option wrapping number of deliveries remaining in queue when quitting
    */
   def startConsumer: Option[Long] = {
+    // Schedule helper execution
+    Foreman.schedule(helper, 30L, TimeUnit.SECONDS)
+
     withClient { client =>
       while (true) {
         val value = client.brpoplpush(timeout, queueName, queueAck)
