@@ -3,6 +3,7 @@ package com.persnicketly.readability
 import com.codahale.jerkson.AST._
 import com.codahale.jerkson.Json._
 import com.persnicketly.Logging
+import com.persnicketly.persistence.UserDao
 import com.persnicketly.readability.model.{Article, Bookmark, Meta, User, UserData}
 import com.persnicketly.readability.api._
 import com.yammer.metrics.scala.Instrumented
@@ -47,12 +48,9 @@ object Api extends Logging with Instrumented {
       val request = new OAuthRequest(Verb.GET, bookmarksUrl)
       request.addQuerystringParameter("per_page", "1")
       since.foreach(s => request.addQuerystringParameter("updated_since", s.toString(datePattern)))
-      val apiResponse = send(request, user) {
-        response => {
-          MetaExtractor((parse[JObject](response.getBody) \ "meta")).get
-        }
+      s(request, user) {
+        case ApiResponse(200, Some(body)) => MetaExtractor((parse[JObject](body) \ "meta"))
       }
-      apiResponse.body
     }
     def update(user: User, mark: Bookmark): Option[Bookmark] = {
       val request = new OAuthRequest(Verb.GET, bookmarksUrl + "/" + mark.bookmarkId)
@@ -102,6 +100,23 @@ object Api extends Logging with Instrumented {
       case 200 => ApiResponse(response.getCode, thunk(response))
       case _ => ApiResponse(response.getCode)
     }
+  }
+
+  type Handler[R] = PartialFunction[ApiResponse[String], R]
+  private def s[T](request: OAuthRequest, user: User)(handler: Handler[Option[T]]): Option[T] = {
+    apiMeter.mark()
+    ReadabilityApi.service.signRequest(user.accessToken.get, request)
+    val raw: Response = request.send
+    val response = ApiResponse(raw.getCode, raw.getBody)
+
+    log.debug("Request to '{}' responded with {}", request.getUrl, response)
+
+    val defaultHandler: PartialFunction[ApiResponse[String], Option[T]] = {
+      case ApiResponse(401, _) => { UserDao.delete(user); None }
+      case _ => None
+    }
+
+    handler.orElse(defaultHandler)(response)
   }
 }
 
