@@ -6,7 +6,6 @@ import com.persnicketly.Persnicketly.Config
 import com.persnicketly.redis.{RedisCluster, StringKeyCodec}
 import com.yammer.metrics.scala.Instrumented
 import org.joda.time.DateTime
-import java.util.concurrent.TimeUnit
 
 trait RedisQueue[T] extends Logging with Instrumented {
 
@@ -94,7 +93,7 @@ trait RedisQueue[T] extends Logging with Instrumented {
    */
   def startConsumer: Option[Long] = {
     // Schedule helper execution
-    Foreman.schedule(helper, 30L, TimeUnit.SECONDS)
+    Foreman.schedule(helper, 30)
 
     withClient { client =>
       while (true) {
