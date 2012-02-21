@@ -1,6 +1,6 @@
 package com.persnicketly.mill
 
-import com.lambdaworks.redis.RedisConnection
+import com.lambdaworks.redis.{RedisConnection, RedisException}
 import com.persnicketly.{Logging, Parse, Persnicketly, Serializer}
 import com.persnicketly.Persnicketly.Config
 import com.persnicketly.redis.{RedisCluster, StringKeyCodec}
@@ -87,6 +87,7 @@ trait RedisQueue[T] extends Logging with Instrumented {
       case e: NullPointerException => -1L
     }
 
+
   /**
    * Start a consumer process for this queue
    * @return Option wrapping number of deliveries remaining in queue when quitting
@@ -95,13 +96,23 @@ trait RedisQueue[T] extends Logging with Instrumented {
     // Schedule helper execution
     Foreman.schedule(helper, seconds = 30)
 
+
     withClient { client =>
       while (true) {
-        val value = client.brpoplpush(timeout, queueName, queueAck)
-        log.debug("Redis returned -- {}", value)
-        val delivery = 
-          if (value != null) { Some(value) }
-          else { None }
+        val delivery =
+          try {
+            val value = client.brpoplpush(timeout, queueName, queueAck)
+            log.debug("Redis returned -- {}", value)
+
+            if (value != null) { Some(value) }
+            else { None }
+          } catch {
+            case re: RedisException => {
+              if (re.getMessage == "Command timed out") { None }
+              else { throw re }
+            }
+          }
+
         try {
           delivery.map(data => {
             val result = process(data) // should trigger an 'in threshold nack'
