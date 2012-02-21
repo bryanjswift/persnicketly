@@ -67,6 +67,10 @@ trait RedisQueue[T] extends Logging with Instrumented {
     }
   }
 
+  /**
+   * Retrieve size of queue
+   * @return snapshot of queue size by length of queueName list
+   */
   def size: java.lang.Long =
     try { withClient({ c => c.llen(queueName) }).getOrElse(0L) }
     catch {
@@ -78,7 +82,7 @@ trait RedisQueue[T] extends Logging with Instrumented {
    * @return Option wrapping number of deliveries remaining in queue when quitting
    */
   def startConsumer: Option[Long] = {
-    RedisCluster.using(codec).exec { client =>
+    withClient { client =>
       while (true) {
         val value = client.brpoplpush(timeout, queueName, queueAck)
         log.debug("Redis returned -- {}", value)
