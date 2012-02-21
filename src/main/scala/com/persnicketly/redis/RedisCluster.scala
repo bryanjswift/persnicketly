@@ -6,6 +6,7 @@ import com.persnicketly.net.ServerAddress
 import com.persnicketly.Logging
 import com.persnicketly.Persnicketly.Config
 import org.joda.time.DateTime
+import scala.actors.Actor._
 
 object RedisCluster extends Logging {
 
@@ -15,7 +16,7 @@ object RedisCluster extends Logging {
 
   val clients = addresses.map(address => { address.redis })
 
-  private var lastElection: DateTime = (new DateTime()).minusYears(1)
+  private var lastElection: DateTime = new DateTime()
   private var elected: Redis = election
 
   private def election: Redis = {
@@ -46,12 +47,27 @@ object RedisCluster extends Logging {
     king.redis
   }
 
+  case object Elect
+  val elector = actor {
+    loop {
+      receive {
+        case Elect => {
+          log.debug("* Elect received *")
+          val now = new DateTime()
+          if (lastElection.plusMinutes(3).isBefore(now)) {
+            log.debug("** Electing new master **")
+            elected = election
+            lastElection = new DateTime()
+          }
+        }
+        case _ => log.warn("Rogue messages to elector")
+      }
+    }
+  }
+
   def master: Redis = {
-    val now = new DateTime()
-    if (lastElection.plusMinutes(3).isBefore(now)) {
-      log.debug("** Electing new master **")
-      elected = election
-      lastElection = now
+    if (lastElection.plusMinutes(3).isBefore(new DateTime())) {
+      elector ! Elect
     }
     elected
   }
