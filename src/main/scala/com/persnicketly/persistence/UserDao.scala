@@ -21,6 +21,11 @@ object UserDao extends Dao {
   def all: List[User] =
     collection.distinct("user_id").filter(_ != null).map(i => this.get(i.asInstanceOf[Int]).get).toList
 
+  /**
+   * Provide a way to remove a User
+   * @param user to delete
+   * @return Some(User) if removed, None otherwise
+   */
   def delete(user: User): Option[User] =
     collection.findAndRemove(user).map(User.apply)
 
