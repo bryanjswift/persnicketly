@@ -40,7 +40,8 @@ class PersnicketlyWebProject(info: ProjectInfo) extends DefaultWebProject(info)
   // oauth
   val scribe = "org.scribe" % "scribe" % "1.3.0"
   // Joda Time for nice immutable dates
-  val jodaTime = "joda-time" % "joda-time" % "1.6.2"
+  val jodaTime = "joda-time" % "joda-time" % "2.0"
+  val jodaConvert = "org.joda" % "joda-convert" % "1.1"
   // Command line argument processing
   val cli = "commons-cli" % "commons-cli" % "1.2"
   // MongoDB
