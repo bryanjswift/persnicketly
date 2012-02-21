@@ -81,7 +81,7 @@ trait RedisQueue[T] extends Logging with Instrumented {
     RedisCluster.using(codec).exec { client =>
       while (true) {
         val value = client.brpoplpush(timeout, queueName, queueAck)
-        log.debug("Connection returned -- {}", value)
+        log.debug("Redis returned -- {}", value)
         val delivery = 
           if (value != null) { Some(value) }
           else { None }
