@@ -59,11 +59,13 @@ object Foreman extends Command {
     threads
   }
 
-  def schedule(task: => Unit, delay: Long, unit: TimeUnit) = {
+  def schedule(task: => Unit, delay: Long, unit: TimeUnit): Unit = {
     executor.scheduleWithFixedDelay(new Runnable {
       override def run(): Unit = task
     }, 0L, delay, unit)
   }
+
+  def schedule(task: => Unit, delay: Int): Unit = schedule(task, delay.toLong, TimeUnit.SECONDS)
 
   def usersToUpdate: List[User] = {
     val threshold = (new DateTime).minusHours(16)
