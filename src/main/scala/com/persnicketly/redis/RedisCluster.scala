@@ -50,7 +50,7 @@ object RedisCluster extends Logging {
   case object Elect
   val elector = actor {
     loop {
-      receive {
+      react {
         case Elect => {
           log.debug("* Elect received *")
           val now = new DateTime()
