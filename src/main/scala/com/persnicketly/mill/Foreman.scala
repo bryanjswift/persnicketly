@@ -65,7 +65,7 @@ object Foreman extends Command {
     }, 0L, delay, unit)
   }
 
-  def schedule(task: => Unit, delay: Int): Unit = schedule(task, delay.toLong, TimeUnit.SECONDS)
+  def schedule(task: => Unit, seconds: Int): Unit = schedule(task, seconds.toLong, TimeUnit.SECONDS)
 
   def usersToUpdate: List[User] = {
     val threshold = (new DateTime).minusHours(16)

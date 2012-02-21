@@ -93,7 +93,7 @@ trait RedisQueue[T] extends Logging with Instrumented {
    */
   def startConsumer: Option[Long] = {
     // Schedule helper execution
-    Foreman.schedule(helper, 30)
+    Foreman.schedule(helper, seconds = 30)
 
     withClient { client =>
       while (true) {
