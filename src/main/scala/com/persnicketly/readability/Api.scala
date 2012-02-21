@@ -109,5 +109,7 @@ case class ApiResponse[+T](status: Int, body: Option[T])
 
 object ApiResponse {
   def apply(status: Int): ApiResponse[Nothing] = ApiResponse(status, None)
-  def apply[T](status: Int, body: T): ApiResponse[T] = ApiResponse(status, Some(body))
+  def apply[T](status: Int, body: T): ApiResponse[T] =
+    if (body == null) { ApiResponse(status, None) }
+    else { ApiResponse(status, Some(body)) }
 }
