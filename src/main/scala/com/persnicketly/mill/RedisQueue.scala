@@ -21,19 +21,6 @@ trait RedisQueue[T] extends Logging with Instrumented {
   /** Name of acknowledgement queue in broker */
   def queueAck = queueName + "-ack"
 
-  /** Track queue size */
-  def gauge = metrics.gauge(queueName)(size)
-
-  /** Move items from queueAck to queueName */
-  def helper(): Unit = {
-    log.debug("Moving items from {} to {}", queueAck, queueName)
-    withClient { client =>
-      while (client.llen(queueAck) > 0L) {
-        client.rpoplpush(queueAck, queueName)
-      }
-    }
-  }
-
   /**
    * Process the data in delivery and return if successful
    * @param delivery to be processed
@@ -48,6 +35,23 @@ trait RedisQueue[T] extends Logging with Instrumented {
   def ack(delivery: Delivery): Unit = {
     withClient { client =>
       client.lrem(queueAck, 1, delivery)
+    }
+  }
+
+  /** Track queue size */
+  def gauge = metrics.gauge(queueName)(size)
+
+  /** Move items from queueAck to queueName */
+  def helper(): Unit = {
+    log.debug("Moving items from {} to {}", queueAck, queueName)
+    withClient { client =>
+      while (client.llen(queueAck) > 0L) {
+        try {
+          client.rpoplpush(queueAck, queueName)
+        } catch {
+          case re: RedisException => log.warn("Helper command timed out")
+        }
+      }
     }
   }
 
@@ -108,8 +112,8 @@ trait RedisQueue[T] extends Logging with Instrumented {
             else { None }
           } catch {
             case re: RedisException => {
-              if (re.getMessage == "Command timed out") { None }
-              else { throw re }
+              log.warn(re.getMessage)
+              None
             }
           }
 
