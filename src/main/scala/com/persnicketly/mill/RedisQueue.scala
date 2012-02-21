@@ -100,7 +100,6 @@ trait RedisQueue[T] extends Logging with Instrumented {
     // Schedule helper execution
     Foreman.schedule(helper, seconds = 30)
 
-
     withClient { client =>
       while (true) {
         val delivery =
