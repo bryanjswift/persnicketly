@@ -59,14 +59,29 @@ object Foreman extends Command {
     threads
   }
 
+  /**
+   * Schedule a unit of work to be executed periodically
+   * @param task to be executed on schedule
+   * @param delay value of time to wait between executions
+   * @param unit of time to wait
+   */
   def schedule(task: => Unit, delay: Long, unit: TimeUnit): Unit = {
     executor.scheduleWithFixedDelay(new Runnable {
       override def run(): Unit = task
     }, 0L, delay, unit)
   }
 
+  /**
+   * Schedule a unit of work to be executed periodically
+   * @param task to be executed on schedule
+   * @param delay number of seconds to wait between executions
+   */
   def schedule(task: => Unit, seconds: Int): Unit = schedule(task, seconds.toLong, TimeUnit.SECONDS)
 
+  /**
+   * Get the users which haven't been updated recently
+   * @return List of User instances to be updated
+   */
   def usersToUpdate: List[User] = {
     val threshold = (new DateTime).minusHours(16)
     UserDao.all.filter(u => !u.lastProcessed.isDefined || u.lastProcessed.get.isBefore(threshold))
