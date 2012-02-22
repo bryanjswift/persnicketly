@@ -94,14 +94,16 @@ trait RedisQueue[T] extends Logging with Instrumented {
 
   /**
    * Start a consumer process for this queue
-   * @return Option wrapping number of deliveries remaining in queue when quitting
+   * @return Option wrapping number of deliveries handled before quitting
    */
   def startConsumer: Option[Long] = {
     // Schedule helper execution
     Foreman.schedule(helper, seconds = 30)
 
     withClient { client =>
-      while (true) {
+      var accessible = true
+      var count = 0L
+      while (accessible) {
         val delivery =
           try {
             val value = client.brpoplpush(timeout, queueName, queueAck)
@@ -112,6 +114,7 @@ trait RedisQueue[T] extends Logging with Instrumented {
           } catch {
             case re: RedisException => {
               log.warn(re.getMessage)
+              accessible = false
               None
             }
           }
@@ -128,9 +131,10 @@ trait RedisQueue[T] extends Logging with Instrumented {
             delivery.map(data => { nack(data) })
           }
         }
+        count = count + 1
       }
-      log.warn("Consumer quitting")
-      client.llen(queueName)
+      log.warn("Consumer quitting :: processed {} items", count)
+      count // client.llen(queueName)
     }
   }
 
