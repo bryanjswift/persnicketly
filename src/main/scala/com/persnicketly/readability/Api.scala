@@ -26,7 +26,7 @@ object Api extends Logging with Instrumented {
       val request = new OAuthRequest(Verb.POST, bookmarksUrl)
       request.addBodyParameter("url", pageUrl)
 
-      s(request, user) {
+      send(request, user) {
         case ApiResponse(200, response) => response
       }
     }
@@ -34,7 +34,7 @@ object Api extends Logging with Instrumented {
       val request = new OAuthRequest(Verb.GET, bookmarksUrl)
       conditions.map.foreach(p => request.addQuerystringParameter(p._1, p._2))
 
-      s(request, conditions.user) {
+      send(request, conditions.user) {
         case ApiResponse(200, Some(body)) => {
           val marks = (parse[JObject](body) \ "bookmarks") match {
             case JArray(els) => els
@@ -49,7 +49,7 @@ object Api extends Logging with Instrumented {
       request.addQuerystringParameter("per_page", "1")
       since.foreach(s => request.addQuerystringParameter("updated_since", s.toString(datePattern)))
 
-      s(request, user) {
+      send(request, user) {
         case ApiResponse(200, Some(body)) => MetaExtractor((parse[JObject](body) \ "meta"))
       }
     }
@@ -58,7 +58,7 @@ object Api extends Logging with Instrumented {
       request.addBodyParameter("favorite", (if (mark.isFavorite) "1" else "0"))
       request.addBodyParameter("archive", (if (mark.isArchived) "1" else "0"))
 
-      s(request, user) {
+      send(request, user) {
         case ApiResponse(200, Some(body)) => BookmarkExtractor(parse[JObject](body))
       }
     }
@@ -68,7 +68,7 @@ object Api extends Logging with Instrumented {
     def apply(user: User, articleId: String): Option[Article] = {
       val request = new OAuthRequest(Verb.GET, articlesUrl + "/" + articleId)
 
-      s(request, user) {
+      send(request, user) {
         case ApiResponse(200, Some(body)) => ArticleExtractor(parse[JObject](body))
       }
     }
@@ -79,27 +79,14 @@ object Api extends Logging with Instrumented {
     import scala.actors.Futures.future
     val marks = future { Bookmarks.fetch(BookmarkRequestConditions(1, user)) }
 
-    s(request, user) {
+    send(request, user) {
       case ApiResponse(200, Some(body)) =>
         UserDataExtractor(parse[JObject](body)).map(_.copy(userId = marks().flatMap(_.headOption.map(_.userId))))
     }
   }
 
-  private def send[T](request: OAuthRequest, user: User)(thunk: Response => T): ApiResponse[T] = {
-    apiMeter.mark()
-    ReadabilityApi.service.signRequest(user.accessToken.get, request)
-    val response: Response = request.send
-
-    log.debug("Request to '{}' responded with {}", request.getUrl, response.getBody)
-
-    response.getCode match {
-      case 200 => ApiResponse(response.getCode, thunk(response))
-      case _ => ApiResponse(response.getCode)
-    }
-  }
-
   type Handler[R] = PartialFunction[ApiResponse[String], R]
-  private def s[T](request: OAuthRequest, user: User)(handler: Handler[Option[T]]): Option[T] = {
+  private def send[T](request: OAuthRequest, user: User)(handler: Handler[Option[T]]): Option[T] = {
     apiMeter.mark()
     ReadabilityApi.service.signRequest(user.accessToken.get, request)
     val raw: Response = request.send
