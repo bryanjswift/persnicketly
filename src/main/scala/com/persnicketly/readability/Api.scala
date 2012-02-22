@@ -21,59 +21,56 @@ object Api extends Logging with Instrumented {
   lazy val apiErrorMeter = metrics.meter("api-errors", "errors")
 
   object Bookmarks {
-    def add(user: User, article: Article) { add(user, article.url) }
-    def add(user: User, pageUrl: String): ApiResponse[String] = {
+    def add(user: User, article: Article): Option[String] = { add(user, article.url) }
+    def add(user: User, pageUrl: String): Option[String] = {
       val request = new OAuthRequest(Verb.POST, bookmarksUrl)
       request.addBodyParameter("url", pageUrl)
-      send(request, user) {
-        response => { response.getBody }
+
+      s(request, user) {
+        case ApiResponse(200, response) => response
       }
     }
     def fetch(conditions: BookmarkRequestConditions): Option[List[Bookmark]] = {
       val request = new OAuthRequest(Verb.GET, bookmarksUrl)
       conditions.map.foreach(p => request.addQuerystringParameter(p._1, p._2))
-      val apiResponse = send(request, conditions.user) {
-        response => {
-          val body = response.getBody
+
+      s(request, conditions.user) {
+        case ApiResponse(200, Some(body)) => {
           val marks = (parse[JObject](body) \ "bookmarks") match {
             case JArray(els) => els
             case _ => List[JValue]()
           }
-          marks.map(m => BookmarkExtractor(m).get)
+          Some(marks.map(m => BookmarkExtractor(m).get))
         }
       }
-      apiResponse.body
     }
     def meta(user: User, since: Option[DateTime] = None): Option[Meta] = {
       val request = new OAuthRequest(Verb.GET, bookmarksUrl)
       request.addQuerystringParameter("per_page", "1")
       since.foreach(s => request.addQuerystringParameter("updated_since", s.toString(datePattern)))
+
       s(request, user) {
         case ApiResponse(200, Some(body)) => MetaExtractor((parse[JObject](body) \ "meta"))
       }
     }
     def update(user: User, mark: Bookmark): Option[Bookmark] = {
-      val request = new OAuthRequest(Verb.GET, bookmarksUrl + "/" + mark.bookmarkId)
+      val request = new OAuthRequest(Verb.POST, bookmarksUrl + "/" + mark.bookmarkId)
       request.addBodyParameter("favorite", (if (mark.isFavorite) "1" else "0"))
       request.addBodyParameter("archive", (if (mark.isArchived) "1" else "0"))
-      val apiResponse = send(request, user) {
-        response => {
-          BookmarkExtractor(parse[JObject](response.getBody)).get
-        }
+
+      s(request, user) {
+        case ApiResponse(200, Some(body)) => BookmarkExtractor(parse[JObject](body))
       }
-      apiResponse.body
     }
   }
 
   object Articles {
     def apply(user: User, articleId: String): Option[Article] = {
       val request = new OAuthRequest(Verb.GET, articlesUrl + "/" + articleId)
-      val apiResponse = send(request, user) {
-        response => {
-          ArticleExtractor(parse[JObject](response.getBody)).get
-        }
+
+      s(request, user) {
+        case ApiResponse(200, Some(body)) => ArticleExtractor(parse[JObject](body))
       }
-      apiResponse.body
     }
   }
 
@@ -81,12 +78,11 @@ object Api extends Logging with Instrumented {
     val request = new OAuthRequest(Verb.GET, userUrl)
     import scala.actors.Futures.future
     val marks = future { Bookmarks.fetch(BookmarkRequestConditions(1, user)) }
-    val apiResponse = send(request, user) {
-      response => {
-        UserDataExtractor(parse[JObject](response.getBody)).get.copy(userId = marks().flatMap(_.headOption.map(_.userId)))
-      }
+
+    s(request, user) {
+      case ApiResponse(200, Some(body)) =>
+        UserDataExtractor(parse[JObject](body)).map(_.copy(userId = marks().flatMap(_.headOption.map(_.userId))))
     }
-    apiResponse.body
   }
 
   private def send[T](request: OAuthRequest, user: User)(thunk: Response => T): ApiResponse[T] = {
