@@ -27,7 +27,7 @@ object UserDao extends Dao {
    * @return Some(User) if removed, None otherwise
    */
   def delete(user: User): Option[User] =
-    collection.findAndRemove(user).map(User.apply)
+    user.id.flatMap(id => collection.findAndRemove(MongoDBObject("_id" -> id)).map(User.apply))
 
   /**
    * Get a User by object id
