@@ -26,8 +26,10 @@ object UserDao extends Dao {
    * @param user to delete
    * @return Some(User) if removed, None otherwise
    */
-  def delete(user: User): Option[User] =
+  def delete(user: User): Option[User] = {
+    log.warn("Removing {}", user)
     user.id.flatMap(id => collection.findAndRemove(MongoDBObject("_id" -> id)).map(User.apply))
+  }
 
   /**
    * Get a User by object id
@@ -66,6 +68,10 @@ object UserDao extends Dao {
    * @return Some(User) if opt is defined and a User is found for Some(id)
    */
   def getById(opt: Option[String]) = opt.flatMap(id => get(new ObjectId(id)))
+
+  def prune: Unit = {
+    collection.find("last_updated" $exists false)
+  }
 
   /**
    * Save user data by updating existing record or inserting new

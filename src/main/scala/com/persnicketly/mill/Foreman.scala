@@ -54,6 +54,7 @@ object Foreman extends Command {
           case _ => log.error("Mystery exception while updating RSS ranks")
         }
       }, 5L, TimeUnit.HOURS)
+      // Schedule user removal
     }
     // join consumers to main thread
     threads
