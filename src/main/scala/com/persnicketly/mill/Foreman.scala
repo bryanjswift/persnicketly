@@ -54,6 +54,12 @@ object Foreman extends Command {
           case _ => log.error("Mystery exception while updating RSS ranks")
         }
       }, 5L, TimeUnit.HOURS)
+      // Schedule user removal
+      schedule({
+        log.info("Pruning users")
+        val count = UserDao.prune
+        log.warn("Pruned {} users", count)
+      }, 24L, TimeUnit.HOURS)
     }
     // join consumers to main thread
     threads

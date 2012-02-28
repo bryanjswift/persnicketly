@@ -92,10 +92,7 @@ trait RedisQueue[T] extends Logging with Instrumented {
     }
 
 
-  /**
-   * Start a consumer process for this queue
-   * @return Option wrapping number of deliveries handled before quitting
-   */
+  /** Start a consumer process for this queue */
   def startConsumer: Unit = {
     // Schedule helper execution
     Foreman.schedule(helper, seconds = 30)

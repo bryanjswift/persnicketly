@@ -3,6 +3,7 @@ package com.persnicketly.persistence
 import com.mongodb.casbah.Imports._
 import com.persnicketly.readability.model.User
 import org.bson.types.ObjectId
+import org.joda.time.DateTime
 
 object UserDao extends Dao {
   val collectionName = "users"
@@ -20,6 +21,16 @@ object UserDao extends Dao {
    */
   def all: List[User] =
     collection.distinct("user_id").filter(_ != null).map(i => this.get(i.asInstanceOf[Int]).get).toList
+
+  /**
+   * Provide a way to remove a User
+   * @param user to delete
+   * @return Some(User) if removed, None otherwise
+   */
+  def delete(user: User): Option[User] = {
+    log.warn("Removing {}", user)
+    user.id.flatMap(id => collection.findAndRemove(MongoDBObject("_id" -> id)).map(User.apply))
+  }
 
   /**
    * Get a User by object id
@@ -58,6 +69,17 @@ object UserDao extends Dao {
    * @return Some(User) if opt is defined and a User is found for Some(id)
    */
   def getById(opt: Option[String]) = opt.flatMap(id => get(new ObjectId(id)))
+
+  /**
+   * Eliminate users for whom data can't be retrieved
+   * @return Number of entries removed from collection
+   */
+  def prune: Int = {
+    val yesterday = DateTime.now.minusDays(1)
+    val neverUpdated = collection.find("last_updated" $exists false)
+    val neverRegistered = collection.find(("user_id" $exists false) ++ ("last_updated" $lt yesterday))
+    (neverUpdated ++ neverRegistered).map(o => UserDao.delete(User(o))).size
+  }
 
   /**
    * Save user data by updating existing record or inserting new

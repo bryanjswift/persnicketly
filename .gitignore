@@ -4,7 +4,6 @@ project/boot
 project/lib_managed
 project/plugins/lib_managed
 project/plugins/project/build.properties
-project/test
 src_managed
 tags
 target/
