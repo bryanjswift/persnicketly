@@ -3,6 +3,7 @@ package com.persnicketly.persistence
 import com.mongodb.casbah.Imports._
 import com.persnicketly.readability.model.User
 import org.bson.types.ObjectId
+import org.joda.time.DateTime
 
 object UserDao extends Dao {
   val collectionName = "users"
@@ -69,8 +70,12 @@ object UserDao extends Dao {
    */
   def getById(opt: Option[String]) = opt.flatMap(id => get(new ObjectId(id)))
 
-  def prune: Unit = {
-    collection.find("last_updated" $exists false)
+  def prune: Int = {
+    val yesterday = DateTime.now.minusDays(1)
+    var count = 0
+    count += collection.find("last_updated" $exists false).map(o => UserDao.delete(User(o))).size
+    count += collection.find(("user_id" $exists false) ++ ("last_updated" $lt yesterday)).map(o => UserDao.delete(User(o))).size
+    count
   }
 
   /**

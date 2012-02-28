@@ -55,6 +55,11 @@ object Foreman extends Command {
         }
       }, 5L, TimeUnit.HOURS)
       // Schedule user removal
+      schedule({
+        log.info("Pruning users")
+        val count = UserDao.prune
+        log.warn("Pruned {} users", count)
+      }, 24L, TimeUnit.HOURS)
     }
     // join consumers to main thread
     threads
