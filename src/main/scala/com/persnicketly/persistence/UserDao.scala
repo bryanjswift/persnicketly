@@ -70,12 +70,15 @@ object UserDao extends Dao {
    */
   def getById(opt: Option[String]) = opt.flatMap(id => get(new ObjectId(id)))
 
+  /**
+   * Eliminate users for whom data can't be retrieved
+   * @return Number of entries removed from collection
+   */
   def prune: Int = {
     val yesterday = DateTime.now.minusDays(1)
-    var count = 0
-    count += collection.find("last_updated" $exists false).map(o => UserDao.delete(User(o))).size
-    count += collection.find(("user_id" $exists false) ++ ("last_updated" $lt yesterday)).map(o => UserDao.delete(User(o))).size
-    count
+    val neverUpdated = collection.find("last_updated" $exists false)
+    val neverRegistered = collection.find(("user_id" $exists false) ++ ("last_updated" $lt yesterday))
+    (neverUpdated ++ neverRegistered).map(o => UserDao.delete(User(o))).size
   }
 
   /**
