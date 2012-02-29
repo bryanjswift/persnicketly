@@ -2,11 +2,14 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[${title} on Persnicketly]]></title>
-  <link href="${uri_base}${uri}.atom" rel="self"/>
-  <link href="${uri_base}${uri}"/>
+  <link href="${uri_base}${uri}.atom" rel="self" />
+  <link href="${uri_base}${uri}" />
   <id>${uri_base}${uri}</id>
   <generator uri="${uri_base}${uri}">Persnicketly</generator>
   #if ($lastRssUpdate.isDefined())<updated>${lastRssUpdate.get().toString()}</updated>#end
+  <icon>${uri_base}/apple-touch-icon.png</icon>
+  <logo>${uri_base}/open-graph-icon.png</logo>
+  <rights type="html">Works are &copy; by individual authors</rights>
 
   #foreach( $rssArticle in $articles )
   #set( $articleId = ${rssArticle.id().get()} )
@@ -16,17 +19,15 @@
 
   <entry>
     <title type="html"><![CDATA[${article.title()}]]></title>
-    <link href="${uri_base}/article/read/${articleId}"/>
+    <link href="${article.url()}" />
+    <link href="${uri_base}/article/read/${articleId}" rel="alternate" />
     <updated>${date.toString()}</updated>
     <id>${articleId}</id>
-    <content type="html"><![CDATA[
-      <div class="excerpt">#if(${article.excerpt().isDefined()})${article.excerpt().get()}#end</div>
-      <div class="data">
-        <p>[<a href="${article.url()}">original</a>]</p>
-        <p><span>Times Favorited: ${scored.numFavorites()}</span></p>
-        <p><span>Times Bookmarked: ${scored.numBookmarks()}</span></p>
+    <summary type="xhtml">
+      <div class="excerpt" xmlns="http://www.w3.org/1999/xhtml">
+      #if(${article.excerpt().isDefined()})${article.excerpt().get()}#end
       </div>
-    ]]></content>
+    </summary>
   </entry>
   #end
 
