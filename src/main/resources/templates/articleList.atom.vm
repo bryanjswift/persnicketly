@@ -22,7 +22,8 @@
     <link href="${article.url()}" />
     <link href="${uri_base}/article/read/${articleId}" rel="alternate" />
     <updated>${date.toString()}</updated>
-    <id>${articleId}</id>
+    <id>${uri_base}/article/read/${articleId}</id>
+    <author></author>
     <summary type="xhtml">
       <div class="excerpt" xmlns="http://www.w3.org/1999/xhtml">
       #if(${article.excerpt().isDefined()})${article.excerpt().get()}#end
