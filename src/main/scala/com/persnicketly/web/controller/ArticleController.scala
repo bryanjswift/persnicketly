@@ -68,7 +68,9 @@ object ArticleController extends Logging with Instrumented {
     renderTimer.time {
       val userId = helper.cookie(Constants.UserCookie)
       val view = new VelocityView(template)
-      val now = new DateTime()
+      // This isn't a perfect indicator but it is 'good enough'
+      val lastModified = Cache.get[DateTime](Constants.RssUpdated)
+      renderHeaders(helper, lastModified)
       val scored = UserDao.getById(userId) match {
         case Some(u) =>
           articles.map(s => {
@@ -77,7 +79,6 @@ object ArticleController extends Logging with Instrumented {
           })
         case None => articles
       }
-      helper.response.setContentType(helper.mime)
       view.render(Map[String,Any](
         "articles" -> scored,
         "user" -> userId,
@@ -94,12 +95,21 @@ object ArticleController extends Logging with Instrumented {
    */
   def renderRssArticles(helper: Servlet#HttpHelper, articles: List[RssArticle], daysAgo: Int) {
     val view = new VelocityView("/templates/articleList.atom.vm")
-    helper.response.setContentType(helper.mime)
+    val lastModified = Cache.get[DateTime](Constants.RssUpdated)
+    renderHeaders(helper, lastModified)
     view.render(Map[String,Any](
       "articles" -> articles.map(rss => { rss.copy(scored = ScoredArticleDao.get(daysAgo, rss.id.get)) }),
       "uri_base" -> ("http://" + Persnicketly.Config("http.domain").or("persnicketly.com")),
       "uri" -> helper.uri,
-      "lastRssUpdate" -> Cache.get[DateTime](Constants.RssUpdated)
+      "lastRssUpdate" -> lastModified
     ) ++ helper.extras, helper.response)
+  }
+
+  private def renderHeaders(helper: Servlet#HttpHelper, lastModified: Option[DateTime]) {
+    val now = new DateTime()
+    helper.response.setContentType(helper.mime)
+    helper.response.setCharacterEncoding("UTF-8")
+    helper.response.setDateHeader("Last-Modified", lastModified.getOrElse(now).getMillis)
+    helper.response.setDateHeader("Expires", lastModified.getOrElse(now).plusHours(5).getMillis)
   }
 }
