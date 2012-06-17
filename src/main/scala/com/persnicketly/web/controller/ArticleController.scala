@@ -92,11 +92,11 @@ object ArticleController extends Logging with Instrumented {
    * @param helper wrapping HttpServletRequest and HttpServletResponse
    * @param articles to be rendered
    */
-  def renderRssArticles(helper: Servlet#HttpHelper, articles: List[RssArticle]) {
+  def renderRssArticles(helper: Servlet#HttpHelper, articles: List[RssArticle], daysAgo: Int) {
     val view = new VelocityView("/templates/articleList.atom.vm")
     helper.response.setContentType(helper.mime)
     view.render(Map[String,Any](
-      "articles" -> articles.map(rss => { rss.copy(scored = ScoredArticleDao.get(60, rss.id.get)) }),
+      "articles" -> articles.map(rss => { rss.copy(scored = ScoredArticleDao.get(daysAgo, rss.id.get)) }),
       "uri_base" -> ("http://" + Persnicketly.Config("http.domain").or("persnicketly.com")),
       "uri" -> helper.uri,
       "lastRssUpdate" -> Cache.get[DateTime](Constants.RssUpdated)

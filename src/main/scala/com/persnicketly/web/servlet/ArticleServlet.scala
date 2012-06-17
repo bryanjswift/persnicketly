@@ -78,9 +78,9 @@ class ArticleServlet extends Servlet with Logging with Instrumented {
     helper.addExtra("since", since).addExtra("until", until).addExtra("title", title)
     helper.format match {
       case "atom" =>
-        ArticleController.renderRssArticles(helper, RssArticleDao.select(from, count))
+        ArticleController.renderRssArticles(helper, RssArticleDao.select(from, count), from)
       case "rss" =>
-        ArticleController.renderRssArticles(helper, RssArticleDao.select(from, count))
+        ArticleController.renderRssArticles(helper, RssArticleDao.select(from, count), from)
       case _ => 
         ArticleController.renderArticles(helper, ScoredArticleDao.select(from, count), template)
     }
