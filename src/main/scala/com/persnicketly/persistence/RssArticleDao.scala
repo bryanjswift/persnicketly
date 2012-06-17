@@ -41,11 +41,12 @@ class RssArticleDao(days: Int) extends Dao {
       i = i + 1
       val id = a.articleId
 
-      val raw: RssArticle =
-        existing.getOrElse(Some(id), RssArticle(Some(id), Some(now))).copy(rank = Some(i))
+      val base: RssArticle = existing.getOrElse(Some(id), RssArticle(Some(id), Some(now)))
+      val raw = base.copy(rank = Some(i), lastRank = base.rank)
 
       val article =
-        if (raw.rank.isDefined && raw.lastRank.isDefined && raw.rank.get < 10 && raw.lastRank.get > 10) {
+        if (raw.rank.isDefined && raw.rank.get < 10
+            && ((raw.lastRank.isDefined && raw.lastRank.get > 10) || !raw.lastRank.isDefined)) {
           raw.copy(updated = Some(now))
         } else {
           raw
