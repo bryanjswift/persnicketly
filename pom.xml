@@ -4,7 +4,7 @@
 
   <groupId>com.persnicketly</groupId>
   <artifactId>persnicketly-web</artifactId>
-  <version>1.2.2-SNAPSHOT</version>
+  <version>1.2.2</version>
   <packaging>jar</packaging>
   <name>persnicketly-web</name>
 
